@@ -8,7 +8,7 @@
 \setotherlanguage{english}
 
 \usepackage[skip=4pt]{caption}
-\captionsetup[table]{position=above}
+\captionsetup*[table]{position=above}
 
 \usepackage{tabularray}
 \DefTblrTemplate{firsthead}{caption}{%
@@ -28,6 +28,7 @@
 \usepackage[unicode]{hyperref}
 \usepackage[inline]{enumitem}
 \usepackage{amsmath,amsfonts,amssymb}
+\usepackage{eucal}
 \usepackage{import}
 \usepackage{pdflscape}
 % \usepackage{indentfirst}
@@ -62,8 +63,55 @@
 \UseTblrLibrary{varwidth}
 \UseTblrLibrary{diagbox}
 
-\edef\resourcespath{resources}
-\edef\figurespath{\resourcespath/figures}
-\edef\imagespath{\figurespath}
+\newcommand{\resourcespath}{resources}
+\newcommand{\figurespath}{\resourcespath/figures}
+\newcommand{\imagespath}{\figurespath}
 \graphicspath{{\figurespath}}
-\edef\tablespath{\resourcespath/tables}
+\newcommand{\tablespath}{\resourcespath/tables}
+
+% Terminology config
+
+\ExplSyntaxOn
+
+\msg_new:nnn { report } { missing-term }
+  { Warning:~The~term~'#1'~is~not~defined! }
+
+\cs_new:Nn \report_apply_case:nn {
+  \str_if_eq:eeTF { #1 } { \text_uppercase:n {#1} }
+    { \text_uppercase:n {#2} }
+    {
+      \str_if_eq:eeTF { #1 } { \text_lowercase:n {#1} }
+        { #2 }
+        { \text_titlecase:n {#2} }
+    }
+}
+
+\cs_new:Nn \report_handle_tr_pure:n {
+  \cs_if_exist:cTF { \text_lowercase:n {#1} }
+    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1} } } }
+    { #1 }
+}
+
+\cs_new_protected:Nn \report_handle_tr_with_msg:n {
+  \cs_if_exist:cTF { \text_lowercase:n {#1} }
+    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1} } } }
+    {
+      \msg_warning:nnn { report } { missing-term } { #1 }
+      #1
+    }
+}
+
+\NewDocumentCommand{\tr}{ m }
+ {
+  \texorpdfstring
+    { \report_handle_tr_with_msg:n {#1} }
+    { \report_handle_tr_pure:n {#1} }
+ }
+
+\pdfstringdefDisableCommands{
+  \let\tr\report_handle_tr_pure:n
+}
+
+\ExplSyntaxOff
+
+\newcommand{\kernel}{nhân}
