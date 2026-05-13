@@ -1,4 +1,5 @@
 \subsection{\tr{Kernel} đối xứng xác định dương}
+
 \begin{defn}[\tr{Kernel} đối xứng xác định dương]
   Một \tr{kernel} $K\colon \mathcal{X}\times\mathcal{X}\rightarrow\mathbb{R}$
   được gọi là \tr{kernel} đối xứng xác định dương (positive definite symmetric
@@ -6,3 +7,76 @@
   ma trận $\mathbf{K} = \bigl[K(x_i,x_j)\bigr]_{ij} \in \mathbb{R}^{m\times m}$
   đối xứng nửa xác định dương (symmetric positive semidefinite, SPSD).
 \end{defn}
+
+Ma trận $\mathbf{K}$ là SPSD nếu nó đối xứng và thoả một trong hai điều kiện
+tương sau: \begin{itemize}
+  \item các trị riêng của $\mathbf{K}$ không âm;
+  \item với mọi vector $\mathbf{c} = (c_1,\dots,c_m)^\intercal \in
+    \mathbb{R}^{m\times 1}$ thì: \begin{equation}
+      \mathbf{c}^\intercal\mathbf{K}\mathbf{c} =
+      \sum_{i=1}^m\sum_{j=1}^mc_ic_jK(x_i,x_j) \ge 0.
+    \end{equation}
+\end{itemize} Với mẫu $S = (x_1,\dots,x_m)$, $\mathbf{K} =
+\bigl[K(x_i,x_j)\bigr]_{ij}$ được gọi là \emph{ma trận \tr{kernel}} (kernel
+matrix) hay \emph{ma trận Gram} (Gram matrix) liên kết $K$ và $S$.
+
+Sau đây là một số ví dụ về PDS \tr{kernel} thường được dùng trong ứng dụng:
+
+\begin{exmp}[\tr{Kernel} đa thức]
+  Với mỗi hằng số $c > 0$, một \tr{kernel} đa thức (polynomial kernel) bậc
+  $d\in\mathbb{N}$ là \tr{kernel} $K$ được định nghĩa trên $\mathbb{R}^N$ bởi:
+  \begin{equation}
+    \forall\mathbf{x},\mathbf{x}'\in\mathbb{R}^N,\quad
+    K(\mathbf{x},\mathbf{x}') = (\mathbf{x}\cdot\mathbf{x}' + c)^d.
+  \end{equation} \tr{Kernel} đa thức ánh xạ không gian đầu vào đến không gian
+  nhiều chiều hơn với số chiều là $\binom{N+d}{d}$. \elaborate\ Điều này có thể
+  được chứng minh bằng cách giả sử $\mathbf{x} = (x_1,\dots,x_N)^\intercal$ và
+  $\mathbf{x}' = (x'_1,\dotsc,x'_N)$. Khi đó $\mathbf{x}\cdot\mathbf{x}' =
+  \sum_{i=1}^Nx_ix'_i$. Lúc này các số hạng sau khi khai triển và rút gọn
+  $(\mathbf{x}\cdot\mathbf{x}' + c)^d$ có dạng:
+  \begin{equation}\label{eq:poly-kernel-term}\begin{split}
+    P^\ast_d(k_0,\dots,k_N) c^{k_0}\prod_{i=1}^N(x_ix'_i)^{k_i} &=
+      \biggl(\bigl(P^\ast_d(k_0,\dots,k_N)\bigr)^{1/2} c^{k_0/2}
+      \prod_{i=1}^Nx_i^{k_i} \biggr) \\
+    &\quad\cdot\biggl(\bigl(P^\ast_d(k_0,\dots,k_N)\bigr)^{1/2} \cdot
+      c^{k_0/2}\prod_{i=1}^N{x'_i}^{k_i} \biggr),
+  \end{split}\end{equation}với $P^\ast_d$ là số hoán vị lặp trên $d$ phần tử và
+  $\sum_{i=0}^Nk_i = d$. Nhìn vào vế phải của \eqref{eq:poly-kernel-term},
+  ta thấy rằng có thể biểu diễn $K$ thành phép tích trong trên không gian có
+  số chiều là số số hạng có thể có của \eqref{eq:poly-kernel-term}. Mặt khác,
+  số số hạng cũng là số nghiệm nguyên không âm của phương trình
+  $\sum_{i=0}^Nk_i = d$ và bằng số tổ hợp lặp $N+1$ loại trên $d$ phần tử, tức
+  là $K^d_{N+1} = \binom{N+d}{d}$.
+
+  Với $N = 2$, \tr{kernel} đa thức bậc 2 tương ứng với tích trong trong không
+  gian 6 chiều: \begin{equation}
+    \forall\mathbf{x},\mathbf{x}'\in\mathbb{R}^2,\quad
+    K(\mathbf{x},\mathbf{x}') = (x_1x'_1+x_2x'_2+c)^2 = \begin{bmatrix}
+      x_1^2 \\ x_2^2 \\ \sqrt{2}\,x_1x_2 \\ \sqrt{2c}\,x_1 \\ \sqrt{2c}\,x_2 \\
+      c
+    \end{bmatrix} \cdot \begin{bmatrix}
+      {x'_1}^2 \\ {x'_2}^2 \\ \sqrt{2}\,x'_1x'_2 \\ \sqrt{2c}\,x'_1 \\
+      \sqrt{2c}\, x'_2 \\ c
+    \end{bmatrix}.
+  \end{equation}
+
+  Như đã trình bày ở \eqref{eq:poly-kernel-term}, các đặc trưng liên kết với
+  \tr{kernel} đa thức bậc $d$ là tất cả các đơn thức với bậc không lớn hơn $d$
+  với các biến là các đặc trưng gốc. Với cách viết dạng tích trong như trên, ta
+  có thể chứng minh được \tr{kernel} đa thức là \tr{kernel} PDS. \elaborate~Giả
+  sử $\Phi$ là ánh xạ không gian đặc trưng gốc vào không gian đặc
+  trưng của \tr{kernel} đa thức hay $K(\mathbf{x},\mathbf{x}') =
+  \bigl\langle\Phi(\mathbf{x}), \Phi(\mathbf{x}')\bigr\rangle$. Nhờ tính tuyến
+  tính của tích trong, ta có: \begin{align}
+    \mathbf{c}^\intercal\mathbf{K}\mathbf{c} &=
+      \sum_{i=1}^m\sum_{j=1}^mc_ic_jK(\mathbf{x}_i,\mathbf{x}_j) \\
+    &= \sum_{i=1}^m\sum_{j=1}^mc_ic_j \bigl\langle \Phi(\mathbf{x}_i),
+      \Phi(\mathbf{x}_j) \bigr\rangle \\
+    &= \biggl\langle \sum_{i=1}^mc_i\Phi(\mathbf{x}_i),
+      \sum_{j=1}^m c_j\Phi(\mathbf{x}_j) \biggr\rangle \\
+    &= \biggl\lVert \sum_{i = 1}^m c_i\Phi(\mathbf{x}_i)\biggr\rVert^2 \ge 0.
+  \end{align}
+
+  Để minh họa ứng dụng của \tr{kernel} đa thức, ta xem xét một ví dụ đơn giản
+  của bài toán XOR.
+\end{exmp}
