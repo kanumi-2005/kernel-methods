@@ -108,7 +108,7 @@
      { \text_purify:n { \report_handle_tr:nn {#2} {#1} } }
   }
 
-\NewDocumentCommand{\trdef}{ O{\empty} m m }
+\NewDocumentCommand{\trdef}{ O{vn} m m }
 {
   \exp_args:Nc \tl_set:Nn {#2-#1} {#3}
 }
