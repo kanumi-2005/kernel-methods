@@ -23,19 +23,19 @@ gian gốc $\mathcal{X}$, không phụ thuộc vào số chiều của $\mathbb{
 \begin{defn}[\tr{Kernel}]
   Một hàm $K\colon \mathcal{X} \times \mathcal{X}$ được gọi là \tr{kernel}
   (kernel) trên $\mathcal{X}$.
+\end{defn}
 
-  Ý tưởng là định nghĩa một \tr{kernel} $K$ sao cho với bất kỳ hai điểm
-  $x, x'\in \mathcal{X}, K(x, x')$ bằng tích trong của các véc-tơ $\Phi(x)$
-  và $\Phi(x')$:
-  \begin{equation}
-    \forall x, x' \in \mathcal{X}, \quad K(x, x') = \bigl\langle \Phi(x),
-    \Phi(x') \bigr\rangle,
-  \end{equation}
-  với ánh xạ $\Phi(x)\colon \mathcal{X} \to \mathbb{H}$ vào một không gian
-  Hilbert $\mathbb{H}$ được gọi là không gian đặc trưng. Vì tích trong là độ
-  đo sự tương đồng của hai véc-tơ $K$ thường được hiểu là độ đo sự tương đồng
-  giữa các phần các phần tử của không gian đầu vào $\mathcal{X}$.
-\end{defn}\
+Ý tưởng là định nghĩa một \tr{kernel} $K$ sao cho với bất kỳ hai điểm
+$x, x'\in \mathcal{X}, K(x, x')$ bằng tích trong của các véc-tơ $\Phi(x)$
+và $\Phi(x')$:
+\begin{equation}
+  \forall x, x' \in \mathcal{X}, \quad K(x, x') = \bigl\langle \Phi(x),
+  \Phi(x') \bigr\rangle,
+\end{equation}
+với ánh xạ $\Phi(x)\colon \mathcal{X} \to \mathbb{H}$ vào một không gian
+Hilbert $\mathbb{H}$ được gọi là không gian đặc trưng. Vì tích trong là độ
+đo sự tương đồng của hai véc-tơ $K$ thường được hiểu là độ đo sự tương đồng
+giữa các phần các phần tử của không gian đầu vào $\mathcal{X}$.
 
 Một ưu điểm quan trọng của \tr{kernel} $K$ là hiệu quả tính toán: $K$ thường
 hiệu quả hơn đáng kể so với việc tính $\Phi(x)$ và tích trong $\mathbb{H}$.
@@ -45,7 +45,7 @@ $\bigl\langle \Phi(x), \Phi(x') \bigr\rangle$ thường đòi hỏi
 $O(\dim(\mathbb{H}))$ phép tính, với $\dim(\mathbb{H}) \gg N$. Hơn nữa,
 trong một số trường hợp, số chiều của $\mathbb{H}$ là vô hạn.
 
-Có lẽ lợi ích quan trọng hơn của hàm kernel $K$ là tính linh hoạt: không cần
+Có lẽ lợi ích quan trọng hơn của hàm \tr{kernel} $K$ là tính linh hoạt: không cần
 định nghĩa hay tính toán tường minh ánh xạ $\Phi$. Kernel $K$ có thể được chọn
 tùy ý miễn là sự tồn tại của $\Phi$ được đảm bảo, tức là $K$ thỏa mãn điều
 kiện Mercer (xem định lý~\ref{thm:mercer-condition}).
@@ -64,9 +64,10 @@ kiện Mercer (xem định lý~\ref{thm:mercer-condition}).
     \iint_{\mathcal{X} \times \mathcal{X}} c(x)c(x')K(x,x')\,dx\,dx' \geq 0.
   \end{equation}
 \end{thm}
+
 Điều kiện này quan trọng để đảm bảo tính lồi của bài toán tối ưu trong các
 thuật toán như SVM, từ đó đảm bảo hội tụ về cực tiểu toàn cục. Một điều kiện
 tương đương với điều kiện Mercer dưới các giả thiết của định lý là kernel $K$
-phải là \textit{\tr{kernel} đối xứng xác định dương}
+phải là \emph{\tr{kernel} đối xứng xác định dương}
 (Positive Definite Symmetric, PDS). Tính chất này thực ra tổng quát hơn vì
 đặc biệt nó không đòi hỏi bất kỳ giả thiết nào về $\mathcal{X}$.
