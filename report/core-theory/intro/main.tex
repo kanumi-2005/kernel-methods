@@ -1,0 +1,72 @@
+\subsection{Giới thiệu}
+
+Phương pháp \tr{kernel} (kernel methods) được sử dụng rộng rãi trong học máy.
+Đây là các kỹ thuật linh hoạt có thể mở rộng các thuật toán như SVM để xác
+định các ranh giới quyết định phi tuyến. Các thuật toán khác chỉ phụ thuộc vào
+tích trong giữa các điểm mẫu cũng có thể được mở rộng tương tự. Ý tưởng cốt
+lõi dựa trên các hàm \tr{kernel}, vốn---dưới một số điều kiện kỹ thuật về
+tính đối xứng và xác định dương---ngầm định nghĩa một tích trong trong không
+gian nhiều chiều. Thay thế tích trong ban đầu trong không gian đầu vào bằng
+\tr{kernel} xác định dương cho phép mở rộng các thuật toán như SVM thành phép
+tách tuyến tính trong không gian đó, hay tương đương, thành phép tách phi tuyến
+trong không gian đầu vào.
+
+Cụ thể, ý tưởng là ánh xạ mỗi điểm dữ liệu $x \in \mathcal{X}$ vào một không
+gian Hilbert $\mathbb{H}$ có số chiều cao hơn thông qua ánh xạ $\Phi \colon
+\mathcal{X} \to \mathbb{H}$, nơi phép tách tuyến tính trở nên khả thi. Tuy
+nhiên, $\mathcal{H}$ có thể có số chiều cực lớn---thậm chí vô hạn---khiến
+việc tính tường minh $\Phi(x)$ là bất khả thi. Phương pháp \tr{kernel} giải quyết
+điều này bằng cách thay thế trực tiếp tích trong $\langle \Phi(x), \Phi(x')
+\rangle_{\mathbb{H}}$ bằng một hàm \tr{kernel} được tính hoàn toàn trong không
+gian gốc $\mathcal{X}$, không phụ thuộc vào số chiều của $\mathbb{H}$.
+
+\begin{defn}[\tr{Kernel}]
+  Một hàm $K\colon \mathcal{X} \times \mathcal{X}$ được gọi là \tr{kernel}
+  (kernel) trên $\mathcal{X}$.
+
+  Ý tưởng là định nghĩa một \tr{kernel} $K$ sao cho với bất kỳ hai điểm
+  $x, x'\in \mathcal{X}, K(x, x')$ bằng tích trong của các véc-tơ $\Phi(x)$
+  và $\Phi(x')$:
+  \begin{equation}
+    \forall x, x' \in \mathcal{X}, \quad K(x, x') = \bigl\langle \Phi(x),
+    \Phi(x') \bigr\rangle,
+  \end{equation}
+  với ánh xạ $\Phi(x)\colon \mathcal{X} \to \mathbb{H}$ vào một không gian
+  Hilbert $\mathbb{H}$ được gọi là không gian đặc trưng. Vì tích trong là độ
+  đo sự tương đồng của hai véc-tơ $K$ thường được hiểu là độ đo sự tương đồng
+  giữa các phần các phần tử của không gian đầu vào $\mathcal{X}$.
+\end{defn}\
+
+Một ưu điểm quan trọng của \tr{kernel} $K$ là hiệu quả tính toán: $K$ thường
+hiệu quả hơn đáng kể so với việc tính $\Phi(x)$ và tích trong $\mathbb{H}$.
+Chúng ta sẽ thấy một số ví dụ phổ biến có thể đạt được trong đó việc tính
+$K(x, x')$ có thể đạt được trong $O(N)$ trong khi tính
+$\bigl\langle \Phi(x), \Phi(x') \bigr\rangle$ thường đòi hỏi
+$O(\dim(\mathbb{H}))$ phép tính, với $\dim(\mathbb{H}) \gg N$. Hơn nữa,
+trong một số trường hợp, số chiều của $\mathbb{H}$ là vô hạn.
+
+Có lẽ lợi ích quan trọng hơn của hàm kernel $K$ là tính linh hoạt: không cần
+định nghĩa hay tính toán tường minh ánh xạ $\Phi$. Kernel $K$ có thể được chọn
+tùy ý miễn là sự tồn tại của $\Phi$ được đảm bảo, tức là $K$ thỏa mãn điều
+kiện Mercer (xem định lý~\ref{thm:mercer-condition}).
+
+\begin{thm}[Điều kiện Mercer]
+  \label{thm:mercer-condition}
+  Cho $\mathcal{X} \subset \mathbb{R^N}$ là một tập compact và $K \colon
+  \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ là một hàm liên tục và đối
+  xứng. Khi đó, $K$ có thể khai triển hội tụ đều dưới dạng
+  \begin{equation}
+    K(x, x') = \sum_{n=0}^{\infty} a_n \phi_n(x)\phi_n(x'),
+  \end{equation}
+  với $a_n > 0$ nếu với mọi hàm bình phương khả tích $c \in
+  L^2(\mathcal{X})$, điều kiện sau được thỏa mãn:
+  \begin{equation}
+    \iint_{\mathcal{X} \times \mathcal{X}} c(x)c(x')K(x,x')\,dx\,dx' \geq 0.
+  \end{equation}
+\end{thm}
+Điều kiện này quan trọng để đảm bảo tính lồi của bài toán tối ưu trong các
+thuật toán như SVM, từ đó đảm bảo hội tụ về cực tiểu toàn cục. Một điều kiện
+tương đương với điều kiện Mercer dưới các giả thiết của định lý là kernel $K$
+phải là \textit{\tr{kernel} đối xứng xác định dương}
+(Positive Definite Symmetric, PDS). Tính chất này thực ra tổng quát hơn vì
+đặc biệt nó không đòi hỏi bất kỳ giả thiết nào về $\mathcal{X}$.
