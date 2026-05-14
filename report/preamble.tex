@@ -76,44 +76,43 @@
 \ExplSyntaxOn
 
 \msg_new:nnn { report } { missing-term }
-  { Warning:~The~term~'#1'~is~not~defined! }
+  { warning:~the~term~'#1'~is~not~defined! }
 
 \cs_new:Nn \report_apply_case:nn {
-  \str_if_eq:eeTF { #1 } { \text_uppercase:n {#1} }
-    { \text_uppercase:n {#2} }
+  \str_case_e:nnF { #1 }
     {
-      \str_if_eq:eeTF { #1 } { \text_lowercase:n {#1} }
-        { #2 }
-        { \text_titlecase:n {#2} }
+      { \text_uppercase:n { #1 } } { \text_uppercase:n { #2 } }
+      { \text_lowercase:n { #1 } } { #2 }
+      { \text_titlecase_all:n { \text_lowercase:n {#1} } }
+        { \text_titlecase_all:n { #2 } }
+      { \text_titlecase_first:n { \text_lowercase:n {#1} } }
+        { \text_titlecase_first:n { #2 } }
     }
-}
-
-\cs_new:Nn \report_handle_tr_pure:n {
-  \cs_if_exist:cTF { \text_lowercase:n {#1} }
-    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1} } } }
     { #1 }
 }
 
-\cs_new_protected:Nn \report_handle_tr_with_msg:n {
-  \cs_if_exist:cTF { \text_lowercase:n {#1} }
-    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1} } } }
+\cs_new:Nn \report_handle_tr:nn {
+  \cs_if_exist:cTF { \text_lowercase:n {#1}-#2 }
+    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1}-#2 } } }
     {
-      \msg_warning:nnn { report } { missing-term } { #1 }
+      \msg_warning:nne { report } { missing-term }
+      { \text_lowercase:n {#1}-#2 }
       #1
     }
 }
 
-\NewDocumentCommand{\tr}{ m }
- {
-  \texorpdfstring
-    { \report_handle_tr_with_msg:n {#1} }
-    { \report_handle_tr_pure:n {#1} }
- }
+\NewExpandableDocumentCommand{\tr}{ O{vn} m }
+  {
+    \texorpdfstring
+     { \report_handle_tr:nn {#2} {#1} }
+     { \text_purify:n { \report_handle_tr:nn {#2} {#1} } }
+  }
 
-\pdfstringdefDisableCommands{
-  \let\tr\report_handle_tr_pure:n
+\NewDocumentCommand{\trdef}{ O{\empty} m m }
+{
+  \exp_args:Nc \tl_set:Nn {#2-#1} {#3}
 }
 
 \ExplSyntaxOff
 
-\newcommand{\kernel}{nhân}
+\trdef{kernel}{nhân}
