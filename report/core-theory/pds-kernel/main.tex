@@ -11,7 +11,7 @@
 Ma trận $\mathbf{K}$ là SPSD nếu nó đối xứng và thoả một trong hai điều kiện
 tương sau: \begin{itemize}
   \item các trị riêng của $\mathbf{K}$ không âm;
-  \item với mọi vector $\mathbf{c} = (c_1,\dots,c_m)^\intercal \in
+  \item với mọi \tr{vector} $\mathbf{c} = (c_1,\dots,c_m)^\intercal \in
     \mathbb{R}^{m\times 1}$ thì: \begin{equation}
       \mathbf{c}^\intercal\mathbf{K}\mathbf{c} =
       \sum_{i=1}^m\sum_{j=1}^mc_ic_jK(x_i,x_j) \ge 0.
@@ -101,4 +101,36 @@ Sau đây là một số ví dụ về PDS \tr{kernel} thường được dùng 
   \end{equation}Điều này cho thấy \tr{kernel} $K'$, và cả \tr{kernel} Gaussian,
   là tổ hợp tuyến tính dương của các \tr{kernel} đa thức với tất cả bậc $n\ge
   0$.
+\end{exmp}
+
+\begin{exmp}[\tr{Kernel} Sigmoid]
+  Với mỗi hai hằng số $a, b > 0$, một \tr{kernel} sigmoid (sigmoid kernel) được
+  định nghĩa trên $\mathbb{R}^n$ bởi: \begin{equation}
+    \forall \mathbf{x}, \mathbf{x}^\prime \in \mathbb{R}^N, \quad K(\mathbf{x},
+    \mathbf{x}^\prime) = \tanh\bigl(a(\mathbf{x} \cdot \mathbf{x}^\prime) + b
+    \bigr).
+  \end{equation} Sử dụng \tr{kernel} sigmoid với SVM dẫn đến thuật toán có mối
+  liên hệ gần gũi với thuật toán học bằng mạng \tr{neural} thường được định
+  nghĩa qua hàm sigmoid. Khi $a < 0$ hay $b < 0$, \tr{kernel} không phải là PDS
+  và mạng \tr{neural} tương ứng không đảm bảo hội tụ bởi tối ưu lồi.
+  \elaborate\ Với trường hợp $b < 0$, ta có $K(\mathbf{0}, \mathbf{0}) =
+  \tanh(b) < 0$. Khi đó tồn tại mẫu $S = {\mathbf{0}}$ và \tr{vector}
+  $\mathbf{c} = \mathbf{1}^\intercal$ để $\mathbf{c}^\intercal K c = K(\mathbf{0},
+  \mathbf{0}) < 0$. Tương tự, với trường hợp $a < 0$ và $b > 0$, ta chọn
+  $\mathbf{x}$ sao cho $\lVert x\rVert^2 > -b / a$ hay $a(\mathbf{x} \cdot
+  \mathbf{x}) + b < 0$. Lập luận tương tự thì $K$ không là PDS. \elaborate\ Mối
+  liên SVM và mạng \tr{neural} có thể xem xét như sau:
+  \begin{gather}\label{eq:s-ker-vs-nn1}
+    h(\mathbf{x}) = \sign\biggl(\sum_{i = 1}^m \alpha_iy_i \tanh\bigl(
+    a(\mathbf{x_i} \cdot \mathbf{x}) + b\bigr)\biggr), \\
+    \label{eq:s-ker-vs-nn2}
+    h'(\mathbf{x}) = \sigma\biggl(\sum_{i = 1}^Hw_j\tanh(\mathbf{v}_j^\intercal
+    \mathbf{x} + b_j) + b_out\biggr).
+  \end{gather}Trong đó, $h$ là giả thuyết học bởi SVM với \tr{kernel} sigmoid
+  và $h'$ là giả thuyết học bởi mạng nơ-ron 3 lớp (lớp đầu vào, $H$ lớp ẩn với
+  hàm kích hoạt $\tanh$ và lớp đầu ra với hàm kích hoạt sigmoid). Nhìn vào
+  \eqref{eq:s-ker-vs-nn1} và~\eqref{eq:s-ker-vs-nn2} ta thấy rằng có nét tương
+  đồng giữa hai giả thuyết được học. Số lượng biểu thức có ý nghĩa trong $h$
+  (với $\alpha_i \ne 0$) bằng với số lượng \tr{vector} hỗ trợ và có sự tương
+  ứng với số nút ẩn $H$.
 \end{exmp}
