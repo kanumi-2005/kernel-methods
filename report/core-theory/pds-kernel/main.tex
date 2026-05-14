@@ -80,3 +80,25 @@ Sau đây là một số ví dụ về PDS \tr{kernel} thường được dùng 
   Để minh họa ứng dụng của \tr{kernel} đa thức, ta xem xét một ví dụ đơn giản
   của bài toán XOR.
 \end{exmp}
+
+\begin{exmp}[\tr{Kernel} Gaussian]
+  Với mỗi hằng số $\sigma > 0$, một \tr{kernel} Gaussian (Gaussian kernel) hay
+  hàm cơ sở xuyên tâm (radical basis function, RBF) là \tr{kernel} $K$ được
+  định nghĩa trên $\mathbb{R}^N$ bởi: \begin{equation}
+    \forall\mathbf{x}, \mathbf{x}^\prime \in \mathbb{R}^N,\quad K(\mathbf{x},
+    \mathbf{x}^\prime) = \exp\biggl(-\frac{\lVert \mathbf{x}^\prime -
+    \mathbf{x} \rVert^2}{2\sigma^2}\biggr).
+  \end{equation}
+
+  \tr{Kernel} Gaussian là một trong những \tr{kernel} được dùng nhiều nhất
+  trong ứng dụng. Phần sau sẽ chứng minh $K$ là \tr{kernel} PDS chuẩn hoá từ
+  \tr{kernel} $K'\colon (\mathbf{x},\mathbf{x}^\prime) \mapsto \exp(
+  \mathbf{x}\cdot\mathbf{x}^\prime / \sigma^2)$. Bằng cách sử dụng khai triển
+  chuỗi lũy thừa của $K'$, ta được: \begin{equation}
+    \forall \mathbf{x}, \mathbf{x}^\prime \in \mathbb{R}^N, \quad
+    K'(\mathbf{x}, \mathbf{x}^\prime) = \sum_{n=0}^{+\infty}\frac{
+      \mathbf{x}\cdot\mathbf{x}^\prime }{\sigma^{2n}n!}.
+  \end{equation}Điều này cho thấy \tr{kernel} $K'$, và cả \tr{kernel} Gaussian,
+  là tổ hợp tuyến tính dương của các \tr{kernel} đa thức với tất cả bậc $n\ge
+  0$.
+\end{exmp}
