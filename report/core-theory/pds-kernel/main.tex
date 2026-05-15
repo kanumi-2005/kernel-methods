@@ -1,5 +1,7 @@
 \subsection{\protect\tr{Kernel} đối xứng xác định dương}
 
+\subsubsection{Định nghĩa}
+
 \begin{defn}[\tr{Kernel} đối xứng xác định dương]
   Một \tr{kernel} $K\colon \mathcal{X}\times\mathcal{X}\rightarrow\mathbb{R}$
   được gọi là \tr{kernel} đối xứng xác định dương (positive definite symmetric
@@ -134,3 +136,202 @@ Sau đây là một số ví dụ về PDS \tr{kernel} thường được dùng 
   (với $\alpha_i \ne 0$) bằng với số lượng \tr{vector} hỗ trợ và có sự tương
   ứng với số nút ẩn $H$.
 \end{exmp}
+
+\subsubsection{Không gian Hilbert \tr{kernel} tái tạo}
+
+Ở phần này, ta chứng minh một tính chất quyết định của \tr{kernel} PDS, đưa ra
+phép tích trong trong một không gian Hilbert. Trước hết, ta cần bổ đề sau.
+
+\begin{lem}[Bất đẳng thức Cauchy--Schwarz cho \tr{kernel} PDS]
+  \label{lem:c-s-ineq-pds-ker}
+  Cho $K$ là một \tr{kernel} PDS. Khi đó, với mọi $x, X'\in \mathcal{X}$ thì:
+  \begin{equation}
+    K(x, x')^2\ge K(x, x)K(x',x').
+  \end{equation}
+\end{lem}
+
+\begin{proof}
+  Xét ma trận $\mathbf{K} = \begin{bmatrix} K(x, x) & K(x, x') \\ K(x', x) &
+  K(x', x') \end{bmatrix}$. Vì $K$ là \tr{kernel} PDS nên $\mathbf{K}$ là
+  SPSD với mọi $x, x' \in \mathcal{X}$. Do đó tích các trị riêng của
+  $\mathbf{K}$, tức là $\det(\mathbf{K})$, không âm hay: \begin{equation}
+    \det(\mathbf{K}) = K(x, x)K(x', x') - K(x, x')^2 \ge 0,
+  \end{equation}ở đây sử dụng tính đối xứng của ma trận.
+\end{proof}
+
+Tiếp theo là kết quả chính của phần này.
+
+\begin{thm}[Không gian Hilbert \tr{kernel} tái tạo]
+  \label{thm:rkhs}
+  Cho $K\colon \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ là một
+  \tr{kernel} PDS. Khi đó, tồn tại một không gian Hilbert $\mathbb{H}$ và một
+  ánh xạ $\Phi$ từ $\mathcal{X}$ vào $\mathbb{H}$ sao cho: \begin{equation}
+    \forall x, x' \in \mathcal{X}, \quad K(x, x') = \bigl\langle \Phi(x), \Phi(x')
+    \bigr\rangle.
+  \end{equation} Ngoài ra, $\mathbb{H}$ có tính chất sau được gọi là \emph{tính
+  chất tái tạo}: \begin{equation}
+    \forall h \in \mathbb{H},\forall x \in \mathcal{X}, \quad h(x) =
+    \bigl\langle h, K(x,\cdot) \bigr\rangle.
+  \end{equation} $\mathbb{H}$ được gọi là không gian Hilbert \tr{kernel} tái
+  tạo (reproducing kernel Hilbert space, RKHS) gắn với $K$.
+\end{thm}
+
+\begin{proof}
+  Với mỗi $x \in \mathcal{X}$, định nghĩa $\Phi(x)\colon \mathcal{X} \to
+  \mathbb{R}^{\mathcal{X}}$ như sau: \begin{equation}
+    \forall x' \in \mathcal{X}, \Phi(x)(x') = K(x, x').
+  \end{equation} Khi đó, định nghĩa $\mathbb{H}_0$ là tập gồm các tổ hợp tuyến
+  tính hữu hạn các hàm $\Phi(x)$: \begin{equation}
+    \mathbb{H}_0 = \biggl\{\sum_{i\in I}a_i\Phi(x_i)\colon a_i \in \mathbb{R},
+    x_i \in \mathcal{X}, \lvert I \rvert < \infty \biggr\}.
+  \end{equation} Ta định nghĩa toán tự $\langle\cdot, \cdot\rangle$ trên
+  $\mathbb{H}_0 \times \mathbb{H}_0$ cho mọi $f, g \in \mathbb{H}_0$ với $f
+  = \sum_{i\in I}a_i \Phi(x_i)$ và $g = \sum_{j \in J}b_j \Phi(x'_j)$ bởi:
+  \begin{equation}
+    \langle f, g \rangle = \sum_{i\in I, j \in J}a_ib_j K(x_i, x'_j) =
+    \sum_{j\in J}b_jf(x'_j) = \sum_{i\in I}a_ig(x_i).
+  \end{equation}Rõ ràng $\langle \cdot, \cdot \rangle$ đối xứng. Hai phương
+  trình cuối cho ta thấy rằng $\langle f, g\rangle$ không phụ thuộc vào cách
+  biểu diễn của $f$ và $g$ và cũng chỉ ra rằng $\langle \cdot, \cdot \rangle$
+  là song tuyến tính (bilinear). Ngoài ra, với mọi $f = \sum_{i\in
+  I}a_i\Phi(x_i) \in \mathbb{H}_0$, do $K$ là PDS nên: \begin{equation}
+    \langle f, f\rangle = \sum_{i, j \in I}a_ia_jK(x_i, x_j) \ge 0.
+  \end{equation} Do đó, $\langle \cdot, \cdot \rangle$ là dạng song tuyến tính
+  nửa xác định dương. Ta có thể tổng quát hóa bất đẳng thức trên với mọi
+  $f_1,\dots, f_m$ và $c_1,\dots, c_m \in \mathbb{R}$ bằng cách sử dụng tính
+  song tuyến tính của $\langle \cdot, \cdot\rangle$: \begin{equation}
+    \sum_{i,j=1}^mc_ic_j\langle f_i, f_j\rangle = \biggl\langle
+    \sum_{i=1}^m c_if_i, \sum_{j=1}^m c_jf_j \biggr\rangle \ge 0.
+  \end{equation} Do đó, $\langle \cdot, \cdot \rangle$ là một \tr{kernel} PDS
+  trên $\mathbb{H}_0$. Khi đó, với mọi $f\in \mathbb{H}_0$ và mọi
+  $x\in\mathcal{X}$, sử dụng Bổ~đề~\ref{lem:c-s-ineq-pds-ker}, ta có:
+  \begin{equation}
+    \bigl\langle f, \Phi(x)\bigr\rangle^2 \le \langle f, f\rangle \bigl\langle
+    \Phi(x), \Phi(x) \bigr\rangle.
+  \end{equation} Mặt khác, ta còn có tính tái tạo của $\langle \cdot, \cdot
+  \rangle$: với mọi $f = \sum_{i\in I} a_i\Phi(x_i) \in \mathbb{H}_0$, dùng
+  định nghĩa $\langle\cdot, \cdot\rangle$, ta có:
+  \begin{equation}
+    \forall x\in\mathcal{X}, \quad f(x) = \sum_{i\in I} a_iK(x_i, x) =
+    \bigl\langle f, \Phi(x)\bigr\rangle.
+  \end{equation} Khi đó $\bigl[f(x)\bigr]^2 \le \langle f, f\rangle K(x, x)$
+  mọi $x\in\mathcal{X}$. Vậy $\langle cdot, cdot\rangle$ thỏa cả 3 tính chất là
+  song tuyến tính, đối xứng và xác định dương và do đó $\mathbb{H}_0$ trở thành
+  không gian tiền Hilbert. $\mathbb{H}_0$ có thể đầy đủ thành không gian
+  Hilbert $\mathbb{H}$ mà nó trù mật trong đó thông qua cách xây dựng chuẩn.
+  Theo bất đẳng thức Cauchy--Schwarz, với mọi $x$ thì $f\mapsto\bigl\langle f,
+  \Phi(x) \bigr\rangle$ là Lipschitz, do đó liên tục. Khi đó, do $\mathbb{H}_0$
+  trù mật trong $\mathbb{H}$ nên tính chất tái tạo vẫn đúng trên $\mathbb{H}$.
+  \elaborate\ Mô tả về cách xây dựng như sau. Xét không gian \tr{metric} $X$
+  với hàm khoảng cách $d$. Ta định nghĩa hai dãy Cauchy $(p_n)$ và $(q_n)$
+  trong $X$ là \emph{bằng nhau} nếu: \begin{equation}
+    \lim_{n\to\infty}d(p_n, q_n) = 0.
+  \end{equation} Ta dễ dàng chứng minh tính phản xạ và đối xứng của \emph{bằng
+  nhau}. Với tính bắt cầu, giả sử $(p_n)$ và $(q_n)$; $(q_n)$ và $(r_n)$ bằng
+  nhau. Khi đó với mọi $\varepsilon > 0$, tồn tại $N_1 \in \mathbb{N}$ và $N_2
+  \in \mathbb{N}$ sao cho $d(p_{}n, q_n) <
+  \varepsilon/2$ với mọi $n > N_1$  và $d(q_n, r_n) < \varepsilon/2$ với mọi $n
+  > N_2$. Khi đó $d(p_n, r_n) \le d(p_n, q_n) + d(q_n, r_n) < \varepsilon$. Do
+  đó, $\lim_{n\to\infty}d(p_n, r_n) = 0$ hay $(p_n)$ và $(r_n)$ \emph{bằng
+  nhau}. Vậy \emph{bằng nhau} là một quan hệ bằng. Sau đó, gọi $X^\ast$ là tập
+  các lớp bằng nhau trong $X$. với $P \in X^\ast$, $Q\in X^\ast$, $(p_n) \in
+  P$, $(q_n) \in Q$, định nghĩa: \begin{equation}
+    \Delta(P, Q) = \lim_{n\to\infty}d(p_n, q_n);
+  \end{equation}($\lim$ tồn tại vì với mọi $n, m$ thì  $d(p_n, q_n) \le d(p_n,
+  p_m) + d_p(m, q_m) + d(q_m, q_n)$, do $(p_n)$ và $(q_n)$ là dãy Cauchy nên dễ
+  dàng chứng minh $d(p_n, q_n)$ là dãy Cauchy trên $\mathbb{R}$ và hội tụ).
+  Định nghĩa trên là đúng. Khi ta thay $(p_n)$ bởi $(p'_n) \in P$, ta có:
+  \begin{equation}
+    d(p_n, q_n) - d(p'_n, p_n) \le d(p'_n, q_n) \le d(p'_n, p_n) + d(p_n, q_n).
+  \end{equation}Mà $\lim_{n\to\infty}d(p'_n, p_n) = 0$ theo định nghĩa nên
+  \begin{equation}
+    \lim_{n\to\infty}d(p'_n, q_n) = \lim_{n\to\infty}d(p_n, q_n).
+  \end{equation}Mặt khác, với $R \in X^\ast$, $(r_n) \in R$, ta có:
+  \begin{equation}
+    \forall n \in\mathbb{N}, \quad d(p_n, r_n) \le d(p_n, q_n) + d(q_n, r_n),
+  \end{equation}Lấy $\lim$ hai vế ta được: \begin{equation}
+    \Delta(P, R) \le \Delta(P, Q) + \Delta(P, R).
+  \end{equation}Do vậy, $\Delta$ là hàm khoảng cách trong $X^\ast$. Ta chứng
+  minh $X^\ast$ là đầy đủ. Thật vậy, xét $(P_n)$ là dạy Cauchy trong $X^\ast$.
+  Với mỗi $n$, xét $(p_{nk})_{k=1}^\infty \in P_n$. Xét $(l_n)$ trong $X$ sao
+  cho $l_n = p_{nk_n}$ thỏa mãn \begin{gather}
+    k_1 < k_2 < \dotsc, \\
+    \forall n' < n, k \ge k_n, \quad d(p_{nk}, p_{n'k}) < \lim d(p_{nk}, p_{n'k})
+    + 1/2^n = \Delta(P_n, P_{n'}) + 1/2^n, \\
+    \intertext{và}
+    \forall k_1, k_2 \ge k_n, \quad d(p_{nk_1}, p_{nk_2}) < 1/2^n.
+  \end{gather}Tồn tại $(k_n)$, hay tồn tại $(l_n)$ vì $(p_{nk})$ và $(d(p_{nk},
+  p_{mk}))$ đều là dãy Cauchy với mọi $n$ và $m$. Với mọi $\varepsilon > 0$,
+  tồn tại $N$ sao cho:
+  \begin{equation}
+    \forall n, m > N, \quad  \Delta(P_n, P_m) < \varepsilon/2.
+  \end{equation} Chọn $N_0 \in\mathbb{N}$ sao cho $N_0 > \log_2(\varepsilon/2)$
+  và $N_0 > N$, ta có: \begin{align}
+      \forall m\ge n > N_0, \quad d(l_n, l_m) &= d(p_{nk_n}, p_{mk_m})\\
+      &\le d(p_{nk_n}, p_{nk_m}) + d(p_{nk_m}, p_{mk_m}) \\
+      &\le \frac{1}{2^n} + \frac{1}{2^m} + \Delta(P_n, P_{m})\\
+      &\le \frac{1}{2^{n-1}} + \frac{\varepsilon}{2}\\
+      &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2}\\
+      &< \varepsilon.
+  \end{align}Vậy $(l_n)$ là dãy Cauchy. Gọi $L\in X^\ast$ sao cho $(l_n) \in
+  L$. Ta có: \begin{align}
+    \forall t, \quad \Delta(P_t, L) &= \lim_{n\to\infty}d(p_{tn}, l_n) \\
+    &= \lim_{n\to\infty}d(p_{tn}, p_{nk_n}), \\
+  \end{align}Để ý rằng nếu $n \le k_t \le t$ thì: \begin{align}
+    d(p_{tn}, p_{nk_n}) &\le d(p_{tn}, p_{tk_n}) + d(p_{tk_n}, p_{nk_n}) \\
+    &< \frac{1}{2^t} + \frac{1}{2^n} + \Delta(P_t, P_n) \\
+    &< \frac{1}{2^{t-1}} + \Delta(P_t, P_n).
+  \end{align}Khi đó, với mọi $\varepsilon>0$ thì tồn tại $N$ đủ lớn sao cho:
+  \begin{gather}
+    \forall n, m > N, \quad \Delta(P_n, P_m) < \frac{\varepsilon}{2}\\
+    \intertext{và}
+    \forall t > N, \quad \frac{1}{2^{t-1}} < \frac{\varepsilon}{2}
+  \end{gather}Khi đó với mọi $t > N$ và $n\le k_t \le t$  thì \begin{gather}
+    d(p_{tn}, p_{nk_n}) < \varepsilon,\\
+    \intertext{hay}
+    \lim_{n\to\infty}d(p_{tn}, p_{nk_n}) < \varepsilon,
+    \intertext{hay}
+    \quad\Delta(P_t, L) < \varepsilon.
+  \end{gather}Theo định nghĩa, ta có \begin{equation}
+    L = \lim_{t\to\infty}P_t
+  \end{equation}Do đó $X^\ast$ là đầy đủ. Với mỗi $p\in X$, tồn tại dãy Cauchy
+  có tất cả số hạng đều là $p$. Gọi $P_p\in X^\ast$ chứa dãy này. Dễ thấy
+  $\Delta(P_p, P_q) = d(p, q)$ với mọi $p, q\in X$. Do đó, ánh xạ $\varphi$
+  định nghĩa bởi $\varphi(p) = P_p$ là một đẳng cự (isometry) từ $X$ và
+  $X^\ast$. Dễ thấy nếu $P\in X^\ast$ và $(p_n) \in P$ thì $(P_{p_n})$ hội tụ
+  về $P$. Do đó, $\varphi(X)$ trù mật trong $X^\ast$. Bằng cách đồng nhất $X$
+  và $\varphi(X)$ để nhúng $X$ vào $X^\ast$.
+\end{proof}
+
+Không gian Hilbert $\mathbb{H}$ được định nghĩa trong chứng minh của định lý
+cho một \tr{kernel} xác định dương $K$ được gọi là không gian Hilbert
+\tr{kernel} tái tạo gắn với $K$. Bất kỳ không gian Hilbert $\mathbb{H}$ nào mà
+tồn tại ánh xạ $\Phi \colon X \to \mathbb{H}$ sao cho $K(x, x') = \bigl\langle
+\Phi(x), \Phi(x') \bigr\rangle$ với mọi $x, x' \in \mathcal{X}$ đều được gọi là
+mộtkhông gian đặc trưng gắn với $K$, và $\Phi$ được gọi là một ánh xạ đặc
+trưng.
+
+Ta ký hiệu $\lVert \cdot \rVert_{\mathbb{H}}$ là chuẩn sinh bởi tích
+vô hướng trong không gian đặc trưng $\mathbb{H}$:
+$\lVert\mathbf{w}\rVert_{\mathbb{H}} = \sqrt{\langle \mathbf{w}, \mathbf{w}
+\rangle}$ với mọi $\mathbf{w} \in \mathbb{H}$. Lưu ý rằng các không gian đặc
+trưng gắn với $K$ nhìn chung là không duy nhất và có thể có số chiều khác nhau.
+Trong thực tế, khi nhắc đến số chiều của không gian đặc trưng gắn với $K$,
+ta hoặc đang đề cập đến số chiều của không gian đặc trưng dựa trên một
+ánh xạ đặc trưng được mô tả tường minh, hoặc là số chiều của chính không gian
+RKHS gắn với $K$.
+
+Định~lý~\ref{thm:rkhs} cho thấy các \tr{kernel} PDS có thể được sử dụng để
+định nghĩa ẩn một không gian đặc trưng hoặc các \tr{vector} đặc trưng. Vai trò
+của các đặc trưng đối với sự thành công của các thuật toán học máy là quan
+trọng: với những đặc trưng kém, không tương quan với các nhãn mục tiêu, việc
+học có thể trở nên rất khó khăn hoặc thậm chí là bất khả thi; ngược lại, những
+đặc trưng tốt có thể cung cấp những dấu hiệu vô giá cho thuật toán.
+
+Do đó, trong bối cảnh học máy với các \tr{kernel} PDS và đối với một không gian
+đầu vào cố định, bài toán tìm kiếm các đặc trưng hữu ích được thay thế bằng bài
+toán tìm kiếm các \tr{kernel} PDS hữu ích. Trong khi các đặc trưng đại diện cho
+tri thức tiền nghiệm (prior knowledge) của người dùng về tác vụ trong các bài
+toán học máy tiêu chuẩn, thì ở đây các \tr{kernel} PDS sẽ đóng vai trò này. Vì
+vậy, trong thực tế, việc lựa chọn một \tr{kernel} PDS phù hợp cho một tác vụ sẽ
+mang tính quyết định.
