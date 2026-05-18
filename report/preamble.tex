@@ -1,12 +1,15 @@
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
 \usepackage{tikz}
+\usetikzlibrary{automata,positioning}
 
 % \usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{vietnamese}
 \setotherlanguage{english}
 
+\usepackage{subcaption}
+\captionsetup{subrefformat=parens}
 \usepackage[skip=4pt]{caption}
 \captionsetup*[table]{position=above}
 
@@ -83,10 +86,10 @@
     {
       { \text_uppercase:n { #1 } } { \text_uppercase:n { #2 } }
       { \text_lowercase:n { #1 } } { #2 }
-      { \text_titlecase_all:n { \text_lowercase:n {#1} } }
-        { \text_titlecase_all:n { #2 } }
       { \text_titlecase_first:n { \text_lowercase:n {#1} } }
         { \text_titlecase_first:n { #2 } }
+      { \text_titlecase_all:n { \text_lowercase:n {#1} } }
+        { \text_titlecase_all:n { #2 } }
     }
     { #1 }
 }
@@ -122,7 +125,36 @@
 \trdef{cosine}{cô-sin}
 \trdef{tensor}{ten-xơ}
 \trdef{compact}{compact}
+\trdef{transducer}{bộ chuyển đổi}
+\trdef{transition}{bước chuyển}
+\trdef{automaton}{ô-tô-mát}
+\trdef{bigram}{bigram}
+\trdef{gappy}{có khoảng trống}
+\trdef{gappy bigram}{\tr{bigram} \tr{gappy}}
 \DeclareMathOperator{\sign}{sgn}
 \DeclareMathOperator{\real}{Re}
 \DeclareMathOperator{\expect}{\mathbb{E}}
 \DeclareMathOperator{\prob}{\mathbb{P}}
+
+\tikzset{
+  self loop/.style={
+    above,
+    in=75,
+    out=105,
+    min distance = 0.3in,
+  },
+  self loop again/.style={
+    above,
+    in=45,
+    out=135,
+    min distance=1in,
+  },
+  initial/.style={
+    thick,
+    initial distance=0pt,
+    initial text={},
+  },
+  every picture/.style={
+    >=latex % stealth
+  }
+}
