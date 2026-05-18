@@ -1,0 +1,225 @@
+\subsubsection{\protect\tr{Kernel} hữu tỉ}
+
+Định nghĩa sau đây thiết lập một khuôn khổ tổng quát cho việc định nghĩa các
+\tr{kernel} chuỗi.
+
+\begin{defn}[\tr{Kernel} hữu tỉ]
+  Một \tr{kernel} $K \colon \Sigma^\ast \times \Sigma^\ast \to \mathbb{R}$ được
+  gọi là \tr{kernel} hữu tỉ (rational kernel) nếu nó trùng với một ánh xạ được
+  định nghĩa bởi một \tr{transducer} có trọng số $U$: $\forall x, y \in
+  \Sigma^\ast, K(x, y) = U(x, y)$.
+\end{defn}
+
+Lưu ý rằng ta hoàn toàn có thể chọn một định nghĩa tổng quát hơn: thay vì sử
+dụng các \tr{transducer} có trọng số, ta có thể dùng những ánh xạ chuỗi mạnh
+hơn, chẳng hạn như các phép chuyển đổi đại số (algebraic transductions)---là
+đối tượng hàm tương ứng với các ngôn ngữ phi ngữ cảnh (context-free
+languages)---hoặc thậm chí những mô hình còn mạnh hơn nữa.
+
+Tuy nhiên, một yêu cầu thiết yếu đối với \tr{kernel} là khả năng tính toán hiệu
+quả, và các định nghĩa phức tạp hơn sẽ dẫn đến độ phức tạp tính toán của việc
+tính \tr{kernel} tăng lên đáng kể.
+
+Đối với \tr{kernel} hữu tỉ, tồn tại một thuật toán tính toán tổng quát và hiệu
+quả.
+
+\paragraph{Tính toán}
+
+Chúng ta sẽ giả định rằng \tr{transducer} $U$ dùng để định nghĩa một
+\tr{kernel} hữu tỉ $K$ không chứa chu trình $\epsilon$ ($\epsilon$-cycle) nào
+có trọng số khác không; nếu không, giá trị của hàm \tr{kernel} sẽ là vô hạn đối
+với mọi cặp chuỗi. Với chuỗi $x$ bất kì, gọi $T_x$ là một \tr{transducer} có
+trọng số chỉ có duy nhất một đường đi chấp nhận, trong đó cả nhãn đầu vào và
+nhãn đầu ra đều là $x$, và trọng số của nó bằng 1. $T_x$ có thể được xây dựng
+một cách dễ dàng từ $x$ trong thời gian tuyến tính $O\bigl( |x| \bigr)$. Khi
+đó, với mọi $x, y \in \Sigma^*$, giá trị $U(x, y)$ có thể được tính toán thông
+qua hai bước sau: \begin{enumerate}
+  \item Tính $V = T_x \circ U \circ T_y$ bằng cách sử dụng thuật toán hợp với
+    độ phức tạp thời gian là $O\bigl(|U||T_x||T_y|\bigr)$.
+  \item Tính tổng trọng số của tất cả các đường đi chấp nhận của $V$ bằng cách
+    sử dụng thuật toán tìm khoảng cách ngắn nhất tổng quát (general
+    shortest-distance algorithm) với độ phức tạp thời gian là $O\bigl( |V|
+    \bigr)$.
+\end{enumerate}
+Theo định nghĩa của phép hợp, $V$ là một \tr{transducer} có trọng số mà các
+đường đi chấp nhận của nó chính là những đường đi chấp nhận của $U$ có nhãn đầu
+vào là $x$ và nhãn đầu ra là $y$. Bước thứ hai sẽ tính tổng trọng số của các
+đường đi này, tức là bằng chính xác $U(x, y)$. Vì $U$ không chứa chu trình
+$\epsilon$ nên $V$ không có chu trình, và bước này có thể được thực hiện trong
+thời gian tuyến tính. Do đó, độ phức tạp tổng thể của thuật toán để tính $U(x,
+y)$ là $O\bigl(|U||T_x||T_y|\bigr)$. Vì $U$ là cố định đối với \tr{kernel} hữu
+tỉ $K$, và $|T_x| = O\bigl(|x|\bigr)$ với mọi $x$, điều này cho thấy các giá
+trị của hàm \tr{kernel} có thể tính được trong thời gian bậc hai $O\bigl(|x|
+|y| \bigr)$. Đối với một số \tr{transducer} có trọng số $U$ cụ thể, việc tính
+toán có thể hiệu quả hơn, ví dụ như trong $O(|x| + |y|)$.
+
+\paragraph{\protect\tr{Kernel} hữu tỉ PDS}
+
+Với bất kỳ \tr{transducer} $T$ nào, gọi $T^{-1}$ là bộ chuyển đổi nghịch đảo
+của $T$, tức là \tr{transducer} thu được từ $T$ bằng cách hoán đổi nhãn đầu vào
+và nhãn đầu ra của mọi \tr{transition}. Với mọi $x, y$, ta luôn có $T^{-1}(x,
+y) = T(y, x)$. Định lý sau đây đưa ra một phương pháp tổng quát để xây dựng một
+\tr{kernel} hữu tỉ PDS từ một \tr{transducer} có trọng số bất kì.
+
+\begin{thm}
+  Với mọi \tr{transducer} có trọng số $T = (\Sigma, \Delta, I, F, E, \rho)$,
+  hàm $K = T \circ T^{-1}$ là một \tr{kernel} hữu tỉ PDS.
+\end{thm}
+
+\begin{proof}
+  Theo định nghĩa của phép hợp và nghịch đảo, với mọi $x, y \in \Sigma^\ast$,
+  \begin{equation}
+    K(x, y) = \sum_{z \in \Delta^\ast} T(x, z) T(y, z).
+  \end{equation}$K$ là giới hạn điểm của dãy \tr{kernel} $(K_n)_{n\ge 0}$ định
+  nghĩa bởi: \begin{equation}
+    \forall n \in \mathbb{N}, \forall x, y \in \Sigma^\ast, \quad K_n(x, y) =
+    \sum_{|z| \le n} T(x, z) T(y, z),
+  \end{equation} với tổng chạy trên tất cả chuỗi trong $\Delta^\ast$ có độ dài
+  không quá $n$. $K_n$ là PDS vì ma trận \tr{kernel} nhân tương ứng
+  $\mathbf{K}_n$ với mọi mẫu $\{x_1, \dots, x_m\}$ là SPSD. Điều này dễ thấy vì
+  $\mathbf{K}_n$ có thể viết thành $\mathbf{K}_n = \mathbf{A}
+  \mathbf{A}^\intercal$ với $\mathbf{A} = \bigl( K_n(x_i, z_j) \bigr )_{i \in
+  [m], j \in [N]}$, trong đó $z_1,\dots, z_N$ là phép liệt kê tùy ý trong tập
+  các chuỗi kí tự trong $\Sigma^\ast$ với độ dài không quá $n$. Do đó, $K$ là
+  PDS vì nó là giới hạn điểm của dãy các \tr{kernel} PDS $(K_n)_{n \in
+  \mathbb{N}}$.
+\end{proof}
+
+Các \tr{kernel} chuỗi thường được dùng trong sinh học tính toán (computational
+biology), xử lí ngôn ngữ tự nhiên, thị giác máy tính và các ứng dụng khác là
+tất cả trường hợp đặc biệt của \tr{kernel} hữu tỉ có dạng $T \circ T^{-1}$. Các
+\tr{kernel} có thể được tính hiệu quả thông qua cùng thuật toán tổng quát để
+tính \tr{kernel} hữu tỉ được trình bày ở đoạn trước. Bởi vì \tr{transducer} $U
+= T \circ T^{-1}$ định nghĩa \tr{kernel} hữu tỉ PDS có dạng cụ thể, có nhiều
+lựa chọn khác nhau để tính $T_x \circ U \circ T_y$: \begin{itemize}
+  \item tính $U = T \circ T^{-1}$ trước sau đó đến $V = T_x \circ U \circ T_y$;
+  \item tính $V_1 = T_x \circ T$ và $V_2 = T_y \circ T$ trước, sau đó tính $V =
+    V_1 \circ V_2^{-1}$;
+  \item tính trước $V_1 = T_x \circ T$1, sau đó $V_2 = V_1 \circ T^{-1}$, sau
+    đó $V = V_2 \circ T_y$, hoặc chuỗi các phép toán tương tự với $x$ và $y$
+    được hoán vị.
+\end{itemize} Các phương pháp trên đều có cùng kết quả khi tính tổng các
+trọng số của đường đi chấp nhận và có cùng độ phức tạp trong trường hợp xáu
+nhất. Tuy nhiên, trong thực tế, do độ thưa các kết quả hợp trung gian, có thể
+có sự khác biệt lớn về chi phí tính toán về mặt thời gian và không gian giữa
+chúng. Một phương pháp thay thế dựa trên hợp $n$ thành phần ($n$-way
+composition) có thể giúp tính toán hiệu quả hơn.
+
+\begin{exmp}[\tr{Kernel} chuỗi \tr{bigram} và \tr{gappy bigram}]
+  \figurename~\ref{fig:bigram-transducer} cho thấy một \tr{transducer} có trọng
+  số $T_\text{bigram}$ định nghĩa một \tr{kernel} chuỗi phổ phổ biến,
+  \emph{\tr{kernel} chuỗi bigram} (bigram sequence kernel), cho trường hợp cụ
+  thể của bảng chữ cái được thu hẹp còn $\Sigma = \{a, b\}$. \tr{Kernel}
+  \tr{bigram} gắn với với chuỗi $x$ và $y$ bất kì tổng các tích của đếm tất cả
+  \tr{bigram} trong $x$ và $y$. Với mọi chuỗi $x \in \Sigma^\ast$ và
+  \tr{bigram} $z \in \{aa, ab, ba, bb\}$, $T_\text{bigram}(x, z)$ chính xác là
+  số lần xuất của \tr{bigram} $z$ trong $x$. Do đó, theo định nghĩa của phép
+  hợp, và nghịch đảo, $T_\text{bigram} \circ T_\text{bigram}^{-1}$ tính chính
+  xác \tr{kernel} \tr{bigram}.
+
+  \begin{figure}[htbp]
+    \centering
+
+    \begin{subfigure}{\textwidth}
+      \centering
+      \import{\figurespath}{bigram-transducer}
+      \caption{}
+      \label{fig:bigram-transducer}
+    \end{subfigure}
+
+    \begin{subfigure}{\textwidth}
+      \centering
+      \import{\figurespath}{gappy-bigram-transducer}
+      \caption{}
+      \label{fig:gappy-bigram-transducer}
+    \end{subfigure}
+    \caption[\protect\tr{Transducer} \protect\tr{bigram} và \protect\tr{gappy
+    bigram}]{\subref*{fig:bigram-transducer}~\tr{Transducer} $T_\text{bigram}$
+    định nghĩa \tr{kernel} \tr{bigram} $T_\text{bigram} \circ
+    T_\text{bigram}^{-1}$ với $\Sigma = \{a, b\}$.
+    \subref*{fig:gappy-bigram-transducer}~\tr{Transducer}
+    $T_\text{gappy\_bigram}$ định nghĩa \tr{kernel} \tr{gappy bigram}
+    $T_\text{gappy\_bigram} \circ T_\text{gappy\_bigram}^{-1}$ với phạt khoảng
+    trổng $\lambda \in (0, 1)$.}
+  \end{figure}
+
+  \figurename~\ref{fig:gappy-bigram-transducer} cho thấy một \tr{transducer} có
+  trọng số $T_\text{gappy\_bigram}$ định nghĩa \emph{\tr{kernel} \tr{gappy
+  bigram}} (gappy bigram kernel). \tr{Kernel} \tr{gappy bigram} gắn với hai
+  chuỗi $x$ và $y$ tổng các tích của đếm tất cả \tr{gappy bigram}
+  trong $x$ và $y$ và phạt bởi độ dài khoảng trống (gap) của chúng. \tr{Gappy
+  bigram} là những chuỗi có dạng $aua$, $aub$, $bua$, $bub$, với $u \in
+  \Sigma^\ast$ được gọi là khoảng trống. Kết quả đếm của một \tr{gappy bigram}
+  được nhân với $\lambda^{|u|}$ với $\lambda \in (0, 1)$ cố định, do đó
+  \tr{gappy bigram} với khoảng trống càng dài thì đóng góp càng ít vào định
+  nghĩa của sự tương đồng. Trong khi định nghĩa này có vẻ phức tạp,
+  \figurename~\ref{fig:gappy-bigram-transducer} cho thấy
+  $T_\text{gappy\_bigram}$ có thể suy ra trực tiếp từ $T_\text{bigram}$. Việc
+  biểu diễn \tr{kernel} hữu tỉ bằng đồ thị giúp ta hiểu hoặc tùy biến định
+  nghĩa của chúng trực quan hơn.
+\end{exmp}
+
+\paragraph{\protect\tr{Transducer} đếm}
+
+Định nghĩa của hầu hết các \tr{kernel} chuỗi đều dựa trên số lần xuất hiện (số
+đếm) của một số mẫu (patterns) phổ biến trong các chuỗi dữ liệu. Trong các ví
+dụ vừa được khảo sát ở trên, các mẫu này chính là các bigram hoặc các \tr{gappy
+bigram}. Hiện tồn tại một phương pháp đơn giản và tổng quát để xây dựng một
+\tr{transducer} có trọng số nhằm đếm số lần xuất hiện của các mẫu, từ đó sử
+dụng chúng để định nghĩa các \tr{kernel} hữu tỉ PDS. Gọi $\mathcal{X}$ là một
+\tr{automaton} hữu hạn biểu diễn tập hợp các mẫu cần đếm. Trong trường
+hợp của các hạt nhân bigram với bảng chữ cái $\Sigma = \{a, b\}$, $\mathcal X$
+sẽ là một \tr{automaton} chấp nhận chính xác tập hợp các chuỗi $\{aa, ab, ba,
+bb\}$.  Khi đó, \tr{transducer} có trọng số trong
+\figurename~\ref{fig:counting-transducer} có thể được sử dụng để tính toán
+chính xác số lần xuất hiện của từng mẫu được chấp nhận bởi $\mathcal X$.
+
+\begin{figure}[htbp]
+  \centering
+  \import{\figurespath}{counting-transducer}
+  \caption[\protect\tr{Transducer} đếm]{\tr{Transducer} đếm $T_\text{count}$
+  với $\Sigma = \{a, b\}$. ``\tr{transition}'' X:X/1 đại diện cho một
+  \tr{transducer} có trọng số được tạo từ một \tr{automaton} $\mathcal{X}$ bằng
+  cách thêm vào mỗi \tr{transition} một nhãn đầu ra đồng nhất với nhãn hiện có,
+  và gán tất cả trọng số ở mỗi \tr{transition} và trọng số kết thúc bằng 1.}
+  \label{fig:counting-transducer}
+\end{figure}
+
+\begin{thm}
+  Với mọi $x \in \Sigma^\ast$ và chuỗi $z$ được chấp nhận bởi $\mathcal{X}$,
+  $T_\text{count}(x, z)$ là số lần xuất hiện của $z$ trong $x$.
+\end{thm}
+
+\begin{proof}
+  Gọi $x \in \Sigma^\ast$ là một chuỗi bất bất kì và $z$ là một chuỗi được chấp
+  nhận bởi $\mathcal{X}$. Bởi vì mọi đường đi chấp nhận của $T_\text{count}$
+  đều có trọng số là 1 nên $T_\text{count}(x, z)$ bằng với số đường đi chấp
+  nhận trong $T_\text{count}$ nhãn đầu vào là $x$ và nhãn đầu ra $z$.
+
+  Để ý rằng, mỗi đường đi chấp nhận $\pi$ trong $T_\text{count}$ có thể phân
+  tích thành $\pi = \pi_0\pi_{01}\pi_1$, trong đó $\pi_0$ là đường đi chỉ qua
+  vòng của trạng thái 0 với nhãn đầu vào là tiền tố $x_0$ và nhãn đầu ra
+  $\epsilon$, $\pi_{01}$ là đường đi chấp nhận từ 0 đến 1 với nhãn đầu vào và
+  đầu ra đều là $z$, và $\pi_1$ là đường đi chỉ qua vòng tại trạng thái 1 với
+  nhãn đầu vào là hậu tố $x_1$ và nhãn đầu ra là $\epsilon$. Do đó, số đường đi
+  chính là số cách khác nhau biểu diễn $x$ thành $x=x_0zx_1$, tức là số lần
+  xuất hiện của $z$ trong $x$.
+\end{proof}
+
+Định lý trên cung cấp một phương pháp rất tổng quát để xây dựng các \tr{kernel}
+hữu tỉ PDS dạng $T_{\text{count}} \circ T_{\text{count}}^{-1}$ dựa trên số lần
+xuất hiện (số đếm) của các mẫu có thể được định nghĩa thông qua một
+\tr{automaton} hữu hạn, hoặc tương đương là một biểu thức chính quy (regular
+expression). \figurename~\ref{fig:counting-transducer} hiển thị bộ chuyển đổi
+cho trường hợp bảng chữ cái đầu vào được thu hẹp còn $\Sigma = \{a, b\}$.
+Trường hợp tổng quát có thể được suy ra một cách trực tiếp bằng cách bổ sung
+thêm các vòng vào các trạng thái 0 và 1 bằng các ký tự khác ngoài $a$ và
+$b$. Trong thực tế, cơ chế tính toán lười (lazy evaluation) có thể được áp dụng
+để tránh việc phải khởi tạo tường minh các \tr{transition} này cho toàn bộ các
+ký tự trong bảng chữ cái; thay vào đó, chúng chỉ được tạo ra theo nhu cầu  dựa
+trên các ký tự thực tế xuất hiện trong chuỗi đầu vào $x$. Cuối cùng, ta
+có thể gán các trọng số khác nhau cho các mẫu được đếm để nhấn mạnh hoặc giảm
+bớt tầm quan trọng của một số mẫu nhất định, giống như trong trường hợp của các
+\tr{gappy bigram}. Điều này có thể được thực hiện một cách đơn giản bằng cách
+thay đổi trọng số của các bước chuyển hoặc trọng số kết thúc của \tr{automaton}
+$\mathcal X$ được dùng để định nghĩa $T_{\text{count}}$.

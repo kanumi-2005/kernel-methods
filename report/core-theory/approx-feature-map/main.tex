@@ -1,0 +1,283 @@
+\subsection{Xấp xỉ ánh xạ đặc trưng \protect\tr{kernel}}
+
+Trong những lần trước, chúng ta đã thấy những lợi ích mà phương pháp
+\tr{kernel} có thể cung cấp bằng ánh xạ ngầm và hiệu quả một bài toán học từ
+không gian đầu vào $\mathcal{X}$ đến không gian đặc trưng phong phú hơn
+$\mathbb{H}$. Một nhược điểm tiềm ẩnkhi sử dụng phương pháp \tr{kernel} đó là
+hàm \tr{kernel} cần được tính trên tất cả cặp điểm trong tập huấn luyện. Nếu
+tập huấn luyện trở nên rất lớn, thì cần đến $O(m^2)$ chi phí bộ nhớ và
+$O(m^2C_K)$ chi phí tính toán, trong đó $C_K$ là chi phí của một lần tính giá
+trị hàm \tr{kernel}, có thể là quá lớn. Một điều khác cần xem xét đó là chi phí
+dự đoán của một mô hình đã huấn luyện. Tính toán hàm \tr{kernel} hóa $h(x) =
+\sum_{i = 1}^m \alpha_i K(x_i, x) + b$ cần đến $O(m)$ chi phí bộ nhớ và
+$O(mC_K)$ chi phí tính toán (tất nhiên số lượng chính xác bộ nhớ và số lần tính
+phụ thuộc vào số lượng \tr{vector} hỗ trợ).
+
+Lưu ý rằng nếu ta sử dụng các \tr{vector} đặc trưng tường minh $\mathbf{x} \in
+\mathbb{R}^N$, thì bài toán SVM dạng gốc có thể được áp dụng cho quá trình huấn
+luyện. Bài toán dạng gốc này chỉ tốn $O(Nm)$ chi phí bộ nhớ và quá trình tính
+toán chỉ cần $O(N)$ chi phí bộ nhớ và thời gian tính toán: $h(\mathbf{x}) =
+\mathbf{w}\cdot \mathbf{x} + b$. Tuy nhiên, điều này chỉ có ích nếu $N < m$,
+vốn thường không xảy ra khi xem xét ánh xạ đặc trưng tường minh $\Phi(x)$ sinh
+bởi hàm \tr{kernel}. Ví dụ, cho một không gian đặc trưng đầu vào có $N$ chiều,
+số chiều của không gian đặc trưng \tr{kernel} của \tr{kernel} đa thức bậc $d$
+là $O(n^d)$. Còn của \tr{kernel} Gaussian là vô hạn. Rõ ràng, việc sử dụng ánh
+xạ đặc trưng \tr{kernel} tường minh thường là không khả thi và lại nhấn mạnh
+việc sử dụng hàm \tr{kernel} để tính tích trong ngầm là then chốt.
+
+Trong phần này, ta sẽ cho thấy sự dung hòa là khả thi bằng cách xây dựng ánh xạ
+đặc trưng \tr{kernel} xấp xỉ. Đó là những ánh xạ đặc trưng với số chiều $D$ do
+người dùng cụ thể , $\Psi(x) \in \mathbb{R}^D$, đảm bảo $\Psi(x) \cdot \Psi(x')
+\approx K(x, x')$ khi số chiều $D$ đủ lớn. Ta bắt đầu với một kết quả kinh điển
+trong giải tích điều hòa.
+
+\begin{thm}[Định lý Bochner]
+  \label{thm:bochner}
+  Một \tr{kernel} liên tục có dạng $K(x, x') = G(x - x')$ được định nghĩa trên
+  một tập $\mathcal{X}$ \tr{compact} địa phương là xác định dương khi và chỉ
+  khi $G$ là biến đổi Fourier của độ đo không âm. Tức là, \begin{equation}
+    G(x) = \int_{\mathcal{X}} p(\omega)e^{i\omega\cdot x}\, d\omega,
+  \end{equation}với $p$ là một độ đo không âm.
+\end{thm}
+
+\tr{Kernel} có dạng $K(x, x') = G(x - x')$ được gọi là \tr{kernel} \emph{bất
+biến tịnh tiến} (shift-invariant). Nếu $G$ được chuẩn hóa tỉ lệ sao cho $G(0) =
+1$, khi đó $p$ thực tế là một phân phối xác suất. Một số ví dụ về các
+\tr{kernel} như thế được trình bày ở \tablename~\ref{tab:s-i-ker}. Mệnh đề tiếp
+theo cung cấp biểu thức đơn giản hóa trong trường hợp \tr{kernel} nhận giá trị
+thực.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Ví dụ về một số \tr{kernel} bất biến tịnh tiến được chuẩn hóa (định
+  nghĩa trên $\mathbf{x}, \mathbf{x}^\prime \in \mathbb{R}^N$) và hàm mật độ
+  tương ứng (định nghĩa trên $\boldsymbol{\omega} \in \mathbb{R}^N$).}
+  \label{tab:s-i-ker}
+  \import{\tablespath}{shift-invariant-kernel}
+\end{table}
+
+\begin{prop}\label{prop:expect-real-kernel}
+  Cho $K$ là một \tr{kernel} giá trị nhận giá trị thực, bất biến tịnh tiến và
+  $p$ là độ đo không âm tương ứng trong Định lý~\ref{thm:bochner}. Ngoài ra,
+  giả sử rằng với mọi $x \in \mathcal{X}$, ta có $K(x, x) = 1$, để $p$ là một
+  phân phối xác suất. Khi đó, ta có đẳng thức sau: \begin{equation}
+    \expect_{\omega \sim p}\Bigl[ \bigl[ \cos(\omega \cdot x),
+    \sin(\omega \cdot x) \bigr ]^\intercal \bigl[ \cos(\omega
+    \cdot x'), \sin(\omega \cdot x') \bigr ] \Bigr ] = K(x, x').
+  \end{equation}
+\end{prop}
+
+\begin{proof}
+  Trước hết, vì $K$ và $p$ đều nhận giá trị thực nên ta chỉ dùng phần thực của
+  $e^{ix}$. Tức là sử dụng $\real[e^{ix}] = \real\bigl[ \cos(x) +
+  i\sin(x) \bigr] = \cos(x)$. Khi đó, \begin{equation}
+    K(x, x') = \real\bigl[ K(x, x') \bigr ] = \int_\mathcal{X} p(\omega)
+    \cos \bigl( \omega \cdot (x - x') \bigr )\, d\omega.
+  \end{equation} Tiếp theo, sử dụng đẳng thức $\cos(a - b) = \cos(a)\cos(b) -
+  \sin(a)\sin(b)$, ta có \begin{align}
+    \int_\mathcal{X} p(\omega) \cos\bigl( \omega \cdot ( x - x' ) \bigr ) \,
+      d\omega &= \int_\mathcal{X} p(\omega) \bigl( \cos(\omega \cdot x)
+      \cos(\omega \cdot x') + \sin(\omega \cdot x) \sin(\omega \cdot x') \bigr
+      ) \, d\omega \\
+    &= \expect_{\omega \sim p} \Bigl[ \bigl[ \cos(\omega \cdot x), \sin(\omega
+    \cdot x) \bigr ]^\intercal \bigl[ \cos(\omega \cdot x'), \sin(\omega \cdot
+    x') \bigr] \Bigr ],
+  \end{align} kết thúc chứng minh mệnh đề.
+\end{proof}
+
+Mệnh đề trên cung cấp một phương pháp rất đơn giản để sinh một ánh xạ
+\tr{kernel} xấp xỉ $\Psi \in \mathbb{R}^{2D}$ với mỗi $D \ge 1$, được định
+nghĩa với mọi $x \in \mathcal{X}$ bởi \begin{equation}
+  \Psi(x) = \sqrt{\frac{1}{D}} \bigl[ \cos(\omega_1 \cdot x), \sin(\omega_1
+  \cdot x), \dots, \cos(\omega_D \cdot x), \sin(\omega_D \cdot x) \bigr
+  ]^\intercal,
+\end{equation} với $w_i$, $i = 1, \dots, D$, là các mẫu độc lập cùng phân phối
+(i.i.d.) theo độ đo $p$ trên $\mathcal{X}$ tương ứng với \tr{kernel} $K$ đang
+xét. Do đó, \begin{equation}
+  \Psi(x) \Psi(x') = \frac{1}{D} \sum_{i = 1}^D \bigl[ \cos(\omega_i \cdot x),
+  \sin(\omega_i \cdot x) \bigr]^\intercal \bigl[ \cos(\omega_i \cdot x'),
+  \sin(\omega_i \cdot x') \bigr]
+\end{equation} là phiên bản thực nghiệm của kì vọng được tính trong Mệnh
+đề~\ref{prop:expect-real-kernel}.  Bổ đề sau đây cho thấy ước lượng thực nghiệm
+hội tụ đều trên tất cả các điểm trong tập xác định \tr{compact} khi $D$ tăng.
+
+\begin{lem}
+  \label{lem:prob-sup-bound}
+  Cho $K$ là một hàm \tr{kernel} khả vi liên tục thỏa mãn các điều kiện của
+  Mệnh đề~\ref{prop:expect-real-kernel} và có độ đo $p$ tương ứng. Ngoài ra,
+  giả sử $\mathcal{X}$ là \tr{compact} và có số chiều $N$, $R$ là bán kính quả
+  cầu Euclid chứa $\mathcal{X}$ và $\sigma_p^2 = \expect_{\omega \sim p }
+  \bigl[ \lVert \omega \rVert^2 \bigr ] < \infty$. Khi đó, với $\Psi$ được định
+  nghĩa như trong chứng minh Mệnh đề~\ref{prop:expect-real-kernel}, với mọi $0<
+  r \le 2R$ và $\epsilon > 0$, bất đẳng thức sau đúng: \begin{equation}
+    \prob \biggl[ \sup_{x, x' \in \mathcal{X}} \bigl\lvert \Psi(x) \cdot
+    \Psi(x') - K(x, x') \bigr\rvert \ge \epsilon \biggr ] \le 2\mathcal{N}(2R,
+    r) \exp\biggl( -\frac{D\epsilon^2}{8} \biggr ) +
+    \frac{4r\sigma_p}{\epsilon}.
+  \end{equation}Trong đó xác suất được lấy khi $\omega \sim p$ và
+  $\mathcal{N}(R, r)$ là số lượng nhỏ nhất quả cầu bán kính $r$ cần để phủ quả
+  cầu bán kính $R$.
+\end{lem}
+
+\begin{proof}
+  Gọi $\mathcal{Z} = \{z\colon z = x - x',\, x, x' \in \mathcal{X} \}$, khi đó
+  $\mathcal{Z}$ nằm trong quả cầu bán kính $2R$. Vì $\mathcal{X}$ đóng nên
+  $\mathcal{Z}$ đóng và do đó $\mathcal{Z}$ \tr{compact}. Để cho tiện, kí hiệu
+  $B = \mathcal{N}(2R, r)$ là số quả cầu bán kính $r$ nhỏ nhất phủ quả cầu bán
+  kính $2R$ hay là phủ $\mathcal{Z}$ và gọi $z_j$, với $j \in [B]$, là tâm của
+  các quả cầu này. Khi đó, với mọi $z\in \mathcal{Z}$, tồn tại $j$ sao cho $z =
+  z_j + \delta$ với $\lvert \delta \rvert < r$.
+
+  Tiếp theo, định nghĩa $S(z) = \Psi(x) \cdot \Psi(x') - K(x, x')$, với $z = x
+  - x'$. Bởi vì $S$ khả vi liên tục trên tập \tr{compact} $\mathcal{Z}$ nên nó
+  $L$-Lipschitz với $L = \sup_{z \in \mathcal{Z}} \bigl\lVert \nabla S(z)
+  \bigr\rVert$.  Nếu $L < \epsilon / (2r)$ và với mọi $j \in [B]$ ta có
+  $\bigl\lvert S(z_j) \bigr\rvert < \epsilon / 2$ thì bất đẳng thức sau đúng
+  với mọi $z = z_j + \delta \in \mathcal{Z}$: \begin{equation}
+    \label{eq:bound-easy-case}
+    \bigl\lvert S(z) \bigr\rvert = \bigl\lvert S(z_j + \delta) \bigr\rvert \le
+    L \lvert z_j - (z_j + \delta) \rvert + \bigl\lvert S(z_j) \bigr\rvert \le
+    rL + \frac{\epsilon}{2} < \epsilon.
+  \end{equation} Phần còn lại của chứng minh đó là chặn xác suất biến cố $L >
+  \epsilon / (2r)$ và $\bigl\lvert S(z_j) \bigr\rvert > \epsilon / 2$.  Các xác
+  suất và kì vọng ở phần sau đều tương ứng với các biến ngẫu nhiên
+  $\omega_1, \dots, \omega_D$.
+
+  Để chặn xác suất sự biến cố đầu, ta dùng Mệnh
+  đề~\ref{prop:expect-real-kernel} và tính tuyến tính của kì vọng để có
+  $\expect\Bigl[ \nabla\bigl( \Psi(x)
+  \cdot \Psi(x') \bigr ) \Bigr ] = \nabla K(x, x')$. Khi đó, \begin{align}
+    \expect[L^2] &= \expect \biggl[ \sup_{z \in \mathcal{Z}} \bigl\lVert \nabla
+    S(z) \bigr\rVert^2 \biggr] \\
+    &= \expect \biggl[ \sup_{x, x' \in \mathcal{X}} \Bigl\lVert \nabla\bigl(
+    \Psi(x) \cdot \Psi(x') \bigr ) - \nabla K(x, x') \Bigr\rVert^2 \biggr ] \\
+    &\le 2\expect \biggl[ \sup_{x, x' \in \mathcal{X}} \Bigl\lVert \nabla
+    \bigl( \Psi(x) \cdot \Psi(x') \bigr ) \Bigl\rVert \biggr ] + 2\sup_{x, x'
+    \in \mathcal{X}} \bigl\lVert \nabla K(x, x') \bigr\rVert^2 \\
+    &\le 2\expect \biggl[ \sup_{x, x' \in \mathcal{X}} \Bigl\lVert \nabla
+    \bigl( \Psi(x) \cdot \Psi(x') \bigr ) \Bigl\rVert \biggr ] + 2\sup_{x, x'
+    \in \mathcal{X}} \biggl\lVert \expect\Bigl[ \nabla\bigl( \Psi(x) \cdot
+    \Psi(x') \bigr ) \Bigr ] \biggr\rVert \\
+    &\le 4\expect \biggl[ \sup_{x, x' \in \mathcal{X}} \Bigl\lVert \nabla
+    \bigl( \Psi(x) \cdot \Psi(x') \bigr ) \Bigl\rVert \biggr ],
+  \end{align} trong đó bất đẳng thức đầu (ở dòng 2 xuống dòng 3) sử dụng
+  $\lVert a + b \rVert^2 \le 2\lVert a\rVert^2 + 2 \lVert b \rVert^2$ (suy ra
+  từ bất đẳng thức Jensen) và tính cộng tính dưới của chặn trên nhỏ nhất. Bất
+  đẳng thức thứ hai (ở dòng kế cuối xuống dòng cuối) cũng từ bất đẳng thức
+  Jensen (dùng hai lần) và tính cộng tính dưới của chặn trên nhỏ nhất. Mặt
+  khác, ta có thể rút gọn $\nabla\bigl( \Psi(x) \cdot \Psi(x') \bigr )$ theo $z
+  = x - x'$ như sau: \begin{align}
+    \nabla\bigl( \Psi(x) \cdot \Psi(x') \bigr ) &= \nabla \biggl( \frac{1}{D}
+    \sum_{i=1}^D \cos(\omega_i \cdot x) \cos(\omega_i \cdot x') + \sin(\omega_i
+    \cdot x) \sin(\omega_i \cdot x') \biggr ) \\
+    &= \nabla \biggl( \frac{1}{D} \sum_{i = 1}^D \cos\bigl( \omega_i \cdot (x -
+    x') \bigr ) \biggr ) \\
+    &= -\frac{1}{D} \sum_{i = 1}^D \omega_i \sin\bigl( \omega_i \cdot (x - x')
+    \bigr).
+  \end{align} Kết hợp hai kết quả trước ta được \begin{align}
+    \expect[L^2] &\le 4\expect \Biggl[ \sup_{x, x' \in \mathcal{X}}
+    \biggl\lVert \frac{1}{D} \sum_{i = 1}^D -\omega_i \sin\bigl( \omega \cdot
+    (x - x') \bigr ) \biggr\rVert^2 \Biggr ] \\
+    &\le 4 \expect_{\omega_1,\dots,\omega_D} \Biggl[ \biggl( \frac{1}{D}
+    \sum_{i = 1}^D \lVert \omega_i \rVert \biggr )^2 \Biggr ] \\
+    &\le 4 \expect_{\omega_1,\dots,\omega_D} \biggl[ \frac{1}{D} \sum_{i = 1}^D
+    \lVert \omega_i \rVert^2 \biggr ] \\
+    &\le 4 \expect_{\omega}\bigl[ \lVert x \rVert^2 \bigr ] = 4\sigma_p^2,
+  \end{align}suy ra từ bất đẳng thức tam giác, $\bigl\lvert \sin(\cdot)
+  \bigr\rvert \le 1$, bất đẳng thức Jensen và $w_i$ là i.i.d.\ trong biến đổi
+  cuối. Do đó ta có thể chặn trên cho biến cố đầu bằng bất đẳng thức Markov:
+  \begin{equation}\label{eq:1st-event-bound}
+    \prob\biggl[ L \ge \frac{\epsilon}{2r} \biggr ] \le \biggl(
+    \frac{4r\sigma_p}{\epsilon} \biggr )^2.
+  \end{equation} Để chặn cho biến cố sau, để ý rằng, theo định nghĩa, $S(z)$ là
+  tổng $D$ biến i.i.d., mỗi biến có giá trị tuyệt đối chặn bởi $2/D$ (vì với
+  mọi $x$ và $x'$, ta có $\bigl\lvert K(x, x') \bigr\rvert \le 1$ và
+  $\bigl\lvert \Psi(x) \cdot \Psi(x') \bigr\rvert \le 1$), và $\expect\bigl[
+    S(z) \bigr ] = 0$. Do đó, theo bất đẳng thức Hoeffding và chặn hợp xác suất
+  các biến cố, ta có: \begin{equation}\label{eq:2nd-event-bound}
+    \prob\biggl[ \exists j \in [B] \colon \bigl\lvert S(z_j) \bigr\rvert \ge
+    \frac{\epsilon}{2} \bigr\rvert \biggr ] \le \sum_{i=1}^B \prob\biggl[
+      \bigl\lvert S(z_j) \bigr\rvert \frac{\epsilon}{2} \biggr] \le
+    2B\exp\biggl( - \frac{D\epsilon^2}{8} \biggr ).
+  \end{equation} Cuối cùng theo \eqref{eq:bound-easy-case},
+  \eqref{eq:1st-event-bound} và~\eqref{eq:2nd-event-bound}, và định nghĩa $B$
+  ta có \begin{equation}
+    \prob\biggl[ \sup_{z\in \mathcal{Z}} \bigl\lvert S(z) \bigr\lvert \ge
+    \epsilon \biggr ] \le 2\mathcal{N}(2R, r) \exp\biggl(-
+    \frac{D\epsilon^2}{8} \biggr) + \biggl( \frac{4r\sigma_p^2}{\epsilon}
+    \biggr ),
+  \end{equation} điều phải chứng minh.
+\end{proof}
+
+Một yếu tố then chốt trong biên chặn của bổ đề này là số bao phủ
+$\mathcal{N}(2R, r)$, đại lượng phụ thuộc rất lớn vào số chiều $N$ của không
+gian. Trong bổ đề tiếp theo dưới đây, ta sẽ làm rõ sự phụ thuộc này một
+cách tường minh đối với một trường hợp đặc biệt đơn giản, mặc dù các lập luận
+tương tự vẫn sẽ đúng cho các trường hợp tổng quát hơn.
+
+\begin{lem}
+  \label{lem:n-ball-bound}
+  Cho $\mathcal{X} \in \mathbb{R}^N$ là \tr{compact} và $R$ là bán kính hình
+  cầu nhỏ nhất chứa $\mathcal{X}$. Khi đó, ta có bất đẳng thức sau:
+  \begin{equation}
+    \mathcal{N}(R, r) \le \biggl( \frac{3R}{r} \biggr )^N.
+  \end{equation}
+\end{lem}
+
+\begin{proof}
+  Bằng cách sử dụng thể tích của quả cầu trong $\mathbb{R}^N$ ta có ngay $R^N /
+  (r / 3)^N = (3R / r)^N$ là chặn trên của số lượng quả cầu bán kính $r/3$ có
+  thể nằm trong quả cầu bán kính $R$ mà không cắt nhau. Xét một trường hợp số
+  lượng quả cầu nhiều nhất này. Khi đó, mỗi điểm trong quả cầu bán kính $R$ này
+  phải có khoảng cách tới tâm một trong các quả cầu nó chứa không quá $r$. Nếu
+  không, ta có thể thêm vào một quả cầu bán kính $r/3$ khác vào quả cầu bán
+  kính $R$ này mà vẫn thỏa điều kiện, mâu thuẫn với điều giả sử. \elaborate\
+  Thật vậy, gọi $B$ là số quả cầu bán kính $r/3$ này. Giả sử các tâm của các
+  quả cầu bán kính $r/3$ này là $c_i$ với $i \in [B]$; và điểm đang xét là $x$.
+  Khi đó, ta có $\lVert x - c_i \rVert > r$ với mọi $i \in [B]$. Gọi điểm $c_0$
+  sao cho trên \tr{vector} $\overrightarrow{xc_0}$ sao cho $\lVert x - c_0
+  \rVert = r/3$.  Vẽ quả cầu tâm $c_0$ bán kính $r/3$. Khi đó quả cầu này không
+  cắt bất kì các quả cầu bán kính $r/3$ khác. Nếu không, tồn tại điểm $y \in
+  \mathbb{R}^N$ và $j \in [B]$ sao cho $\lVert c_0 - y \rVert, \lVert c_j - y
+  \rVert < r/3$. Khi đó $\lVert x - c_j \rVert \le \lVert x - c_0 \rVert +
+  \lVert c_0 - y \rVert + \lVert y - c_j \rVert < r$ (mâu thuẫn). Do đó khi
+  thay các quả cầu bán kính  $r/3$ này bởi các quả cầu khác cùng tâm nhưng có
+  bán kính $r$ thì các quả cầu này sẽ phủ quả cầu có bán kính $R$.
+\end{proof}
+
+Cuối cùng, kết hợp hai bổ đề trên, ta có thể chặn xấp xỉ mẫu hữu hạn một cách
+tường minh.
+
+\begin{thm}
+  Cho $K$ là một hàm \tr{kernel} khả vi liên tục thỏa các điều kiện của Mệnh
+  đề~\ref{prop:expect-real-kernel} và có độ đo tương ứng $p$. Ngoài ra giả sử
+  $\sigma_p^2 = \expect_{\omega \sim p}\bigl[ \lVert \omega \rVert^2 \bigr ] <
+  \infty$ và $\mathcal{X} \subset \mathcal{R}^N$. Gọi $R$ là bán kính của quả
+  cầu Euclid chứa $\mathcal{X}$. Khi đó, với $\Psi \in \mathbb{R}^D$ được định
+  nghĩa trong chứng minh của Mệnh đề~\ref{prop:expect-real-kernel} và mọi $0 <
+  \epsilon \le 32R\sigma_p$ ta có bất đẳng thức sau: \begin{equation}
+    \prob \biggl[ \sup_{x, x' \in \mathcal{X}} \bigl\lvert \Psi(x) \cdot
+    \Psi(x') - K(x, x') \bigr\rvert \ge \epsilon \biggr ] \le \biggl(
+    \frac{48R\sigma_p}{\epsilon}\biggr )^2\exp\biggl( - \frac{D\epsilon^2}{4(N
+    = 2)} \biggr ).
+  \end{equation}
+\end{thm}
+
+\begin{proof}
+  Sử dụng Bổ đề~\ref{lem:prob-sup-bound} và~\ref{lem:n-ball-bound} với giá trị
+  r được chọn: \begin{equation}
+    r = \Biggl[ \frac{2(6R)^N \exp(-D\epsilon^2 / 8)}{ \bigl((4\sigma_p) /
+    \epsilon \bigr)^2 } \Biggr ]^{2/(N + 2)},
+  \end{equation}ta được biểu thức sau: \begin{equation}
+    \prob\biggl[ \sup_{z \in \mathcal{Z}} \bigl\lvert S(z) \bigr\rVert \biggr ]
+    \le 4\biggl( \frac{ 24R\sigma_p } { \epsilon } \biggr ) ^{(2N) / (N + 2)}
+    \exp\biggl( - \frac{D\epsilon^2} { 4(N + 2) } \biggr ).
+  \end{equation} Vì $32R\sigma_p / \epsilon \le 1$, số mũ $(2N) / (N + 2)$ có
+  thể thay bằng 2, điều này kéo theo điều phải chứng minh.
+\end{proof}
+
+Định lý trước đó đưa ra một sự đảm bảo rằng có thể tìm được một ước lượng tốt
+cho hàm Kernel với xác suất cao, bằng cách lấy mẫu một số lượng hữu hạn các tọa
+độ $D$. Cụ thể, để đạt được một sai số tuyệt đối tối đa là $\epsilon$, ta chỉ
+cần lấy mẫu một số lượng tọa độ là $D = O\bigl( N/\epsilon^2 \cdot \log(
+R\sigma_p / \epsilon ) \bigr)$.

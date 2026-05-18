@@ -1,0 +1,194 @@
+\subsection{\protect\tr{Kernel} đối xứng xác định âm}
+
+Thường trong thực nghiệm, một khoảng cách tự nhiên hoặc \tr{metric} là đủ cho
+một tác vụ học. \tr{Metric} này có thể dùng để định nghĩa sự tương đồng. Ví dụ,
+\tr{kernel} Gaussian có dạng $\exp(-d^2)$ với $d$ là một \tr{metric} cho không
+gian \tr{vector} đầu vào. Một số câu hỏi đặt ra là: có những \tr{kernel} PDS
+nào ta có thể xây dựng từ một \tr{metric} trong không gian Hilbert? Một định
+nghĩa toán học có thể giúp ta trả lời câu hỏi này đó là \tr{kernel} đối xứng
+xác định âm.
+
+\begin{defn}[\tr{Kernel} đối xứng xác định âm]
+  Một \tr{kernel} $K\colon \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ được
+  gọi là \tr{kernel} đối xứng xác định âm (negative definite symmetric kernel,
+  NDS kernel) nếu nó đối xứng và với mọi $\{x_1, \dots, x_m\} \subseteq
+  \mathcal{X}$ và $\mathbf{c} \in \mathbb{R}^{m \times 1}$ với
+  $\mathbf{1}^\intercal \mathbf{c} = 0$, đẳng thức sau thỏa mãn:
+  \begin{equation}
+    \mathbf{c}^\intercal \mathbf{K} \mathbf{c} \le 0.
+  \end{equation}
+\end{defn}
+
+Hiển nhiên, nếu $K$ à PDS thì $-K$ là NDS. Ngược lại không đúng. Sau đây là một
+ví dụ tiêu chuẩn về \tr{kernel} NDS.
+
+\begin{exmp}[Khoảng cách bình phương--\tr{kernel} NDS]
+  Khoảng cách bình phương $(x, x') \mapsto \lVert x - x' \rVert^2$ trong
+  $\mathbb{R}^N$ định nghĩa một \tr{kernel} NDS. Thật vậy, xét $\mathbf{c} \in
+  \mathbb{R}^{m \times 1}$ với $\sum_{i=1}^m c_i = 0$. Khi đó với mọi
+  $\{\mathbf{x}_1, \dots, \mathbf{x}_m\} \subseteq \mathbb{R}^N$, ta có
+  \begin{align}
+    \sum_{i, j = 1}^m c_ic_j \lVert \mathbf{x}_i - \mathbf{x}_j \rVert^2 &=
+      \sum_{i, j = 1}^m c_ic_j \bigl(\lVert \mathbf{x}_i\rVert^2 + \lVert
+      \mathbf{x}_i\rVert^2 - 2\mathbf{x}_i \cdot \mathbf{x_j} \bigr) \\
+    &= \sum_{i, j = 1}^m c_ic_j \bigl(\lVert \mathbf{x}_i\rVert^2 + \lVert
+      \mathbf{x}_i\rVert^2 \bigr) - 2 \sum_{i = 1}^m c_i\mathbf{x}_i\cdot
+      \sum_{j = 1}^m c_j \mathbf{x}_j \\
+    &= \sum_{i, j = 1}^m c_ic_j \bigl(\lVert \mathbf{x}_i\rVert^2 + \lVert
+      \mathbf{x}_i\rVert^2 \bigr) - 2 \biggl\lVert c_i\mathbf{x}_i\biggr\rVert
+      \\
+    &\le \sum_{i, j = 1}^m c_ic_j \bigl(\lVert \mathbf{x}_i\rVert^2 + \lVert
+      \mathbf{x}_i\rVert^2 \bigr) \\
+    &\le \biggl(\sum_{j = 1}^m c_j\biggr) \biggl( \sum_{i = 1}^m c_i \lVert
+    \mathbf{x}_i \rVert^2 ) + \biggl(\sum_{i = 1}^m c_i\biggr) \biggl( \sum_{j
+    = 1}^m c_j \lVert \mathbf{x}_j \rVert^2 ) \\
+    &\le 0.
+  \end{align}
+  \elaborate\ Đây cũng là phản ví dụ cho nhận xét ở trên. Khi xét trong một
+  chiều và với 2 mẫu $x\ne x'$, ta có $\mathbf{K} = \begin{bmatrix}
+    0 & \lvert x - x' \rvert^2 \\
+    \lvert x - x' \rvert^2 & 0
+  \end{bmatrix}$ có $\det(-\mathbf{K}) = \det(\mathbf{K}) = - \lvert x - x'
+  \rvert^4 < 0$. Do đó $-\mathbf{K}$ không SPSD nên $-K$ không là PDS.
+\end{exmp}
+
+Định lý tiếp theo sẽ cho ta thấy mối liên hệ giữa \tr{kernel} NDS và PDS. Kết
+quả cung cấp môt số công cụ để thiết kết một \tr{kernel} PDS.
+
+\begin{thm}\label{thm:nds-pds}
+  Cho $K'$ được định nghĩa với mỗi $x_0$ bởi \begin{equation}
+    K'(x, x') = K(x, x_0) + K(x', x_0) - K(x, x') - K(x_0, x_0)
+  \end{equation}với mọi $x, x' \in \mathcal{X}$. Khi đó $K$ là NDS khi và chỉ
+  khi $K'$ là PDS.
+\end{thm}
+
+\begin{proof}
+  Giả sử $K'$ là PDS. Lúc này $K(x, x') = K(x, x_0) + K(x_0, x') - K(x_0, x_0)
+  - K'(x, x')$. Với mọi $\mathbf{c} \in \mathbb{R}^{m \times 1}$ thỏa
+  $\mathbf{c}^\intercal \mathbf{1} = 0$ và tập các điểm $(x_1,\dots, x_m)
+  \subseteq \mathcal{X}$ thì \begin{multline}
+    \sum_{i, j = 1}^m c_ic_jK(x_i, x_j) = \biggl(\sum_{i = 1}^mc_i K(x_i,
+    x_0)\biggl)\biggl( \sum_{j = 1}^m c_j \biggr) + \biggl( \sum_{i = 1}^m
+    c_i\biggr) \biggl( \sum_{j = 1}^m c_j K(x_0, x_j) \biggr) \\
+    - \biggl( \sum_{i = 1}^m c_i \biggr)^2K(x_0, x_0) - \sum_{i, j = 1}^m
+    c_ic_j K'(x_i, x_j) = -\sum_{i, j = 1}^m c_ic_j K'(x_i, x_j) \le 0.
+  \end{multline}Do đó $K$ là NDS. Giả sử $K$ là NDS. Với mọi $\mathbf{c} \in
+  \mathbb{R}^{m \times 1}$, ta định nghĩa $c_0 = - \mathbf{c}^\intercal
+  \mathbf{1}$ và $(x_1, \dots, x_m) \subseteq \mathcal{X}$. Khi thêm $x_0$ vào
+  điểm dữ liệu và có hệ số tương ứng là $c_0$ thì theo tính chất NDS ta có:
+  $\sum_{i, j = 0}^mK(x_i, x_j) \le 0$. Kéo theo: \begin{multline}
+    0\ge \biggl( \sum_{i = 0}^m c_i K(x_i, x0) \biggr) \biggl( \sum_{j = 0}^m
+    c_j \biggr) + \biggl(\sum_{i = 0}^m \biggr) \biggl( \sum_{j = 0}^m K(x_0,
+    x_j) \biggr ) \\
+    - \biggl( \sum_{i = 0}^m c_i \biggr )^2 K(x_0, x_0) - \sum_{i, j = 0}^m
+    c_ic_j K'(x_i, x_j) = \sum_{i, j = 0}^m K'(x_i, x_j).
+  \end{multline} Kéo theo $2\sum_{i, j = 1}^m c_ic_j K'(x_i, x_j) \ge 0 - 2c_0
+  \sum_{i = 0}^m c_iK'(x_i, x_0) + c_0^2 K'(x_0, x_0) = 0$, đúng vì với mọi $x
+  \in \mathcal{X}$, $K'(x_0, x_0) = 0$. Do đó $K'$ là PDS.
+\end{proof}
+
+Từ định lý sau ta có thể chứng minh 2 định lý sau.
+
+\begin{thm}
+  Cho $K\colon \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ là một
+  \tr{kernel} đối xứng. Khi đó, $K$ là NDS khi và chỉ khi $\exp(-Kt)$ là PDS
+  với mọi $t > 0$.
+\end{thm}
+
+\begin{proof}\elaborate\
+  Giả sử $K$ là NDS. Với $x_0$ bất kì, theo Định lý~\ref{thm:nds-pds}, ta có:
+  \begin{equation}
+    K'(x, x') = K(x, x_0) + K(x_0, x') - K(x, x') - K(x_0, x_0),
+  \end{equation}với mọi $x, x' \in \mathcal{X}$ là PDS. Chuyển số hạng thứ
+  nhất, thứ hai và thứ tư ở vế phải qua và nhân hai vế cho $t>0$ và lấy $\exp$
+  ta được \begin{align}
+    \exp\bigl(-tK(x, x')\bigr) &= \exp\bigl(tK'(x, x') + tK(x_0, x_0)\bigr)
+    \exp\bigl(-tK(x_0, x')\bigr) \exp\bigl(-tK(x, x_0)\bigr) \\
+    &= \exp\bigl(H(x, x')\bigr)a(x)a(x'),
+  \end{align}với $a(x) = \exp\bigl(-tK(x, x_0)\bigr)$ vì $K$ đối xứng và
+  $H(x, x') = \exp\bigl(tK'(x, x') + tK(x_0, x_0)\bigr)$. Nhận xét rằng $H$ là
+  PDS bởi $K(x_0, x_0) \ge 0$, $t>0$ và $K'$ là PDS theo tính đóng của phép
+  toán lấy  tổng và tích và hợp với chuỗi lũy thừa của $\exp$. Khi đó với
+  $\{x_1, \dots, x_m\} \subseteq \mathcal{X}$ và $\mathbf{c} \in \mathbb{R}^{m
+  \times 1}$ bất kì, ta có: \begin{equation}
+    \sum_{i, j = 1}^mc_ic_j\exp\bigl( -tK(x_i, x_j)\bigr ) = \sum_{i, j = 1}^m
+    \bigl(c_ia(x_i)\bigr) \bigl(c_ja(x_j)\bigr) H(x_i, x_j) \ge 0.
+  \end{equation}Do đó $\exp\bigl(-tK)$ là PDS với mọi $k > 0$. Ngược lại, giả
+  sử $\exp(-tK)$ là PDS với mọi $t > 0$. Theo khai triển Taylor của
+  $\exp(x)$, ta có \begin{align}
+    \exp(-tK) &= \sum_{n = 0}^\infty \frac{(-tK)^n}{n!} \\
+    &= 1 - tK + t^2\sum_{n = 2}^\infty \frac{(-t)^{n-2}K^n}{n!} \\
+    &= 1 - tK + t^2f(t).\\
+  \end{align}Khi đó, với $\{x_1,\dots, x_m\} \subseteq \mathcal{X}$ và
+  $\mathbf{c} \in \mathbb{R}^{m \times 1}$ bất kì thỏa $\mathbf{c}^\intercal
+  \mathbf{1} = 0$, ta có: \begin{align}
+    \sum_{i, j = 1}^m c_ic_j\exp\bigl( -tK(x_i, x_j)\bigr ) &= \sum_{i, j =
+    1}^m c_ic_j + t\sum_{i, j = 1}^mc_ic_jK(x_i, x_j) + t^2\sum_{i, j = 1}^m
+    c_ic_jf(t) \\
+    &= \biggl( \sum_{i = 1}^m c_i \biggr )^2 - t\sum_{i, j = 1}^mc_ic_jK(x_i,
+    x_j) + t^2\sum_{i, j = 1}^m c_ic_jf(t) \\
+    &= - t\sum_{i, j = 1}^mc_ic_jK(x_i, x_j) + t^2\sum_{i, j = 1}^m c_ic_jf(t).
+  \end{align} Chia hai vế cho $t>0$ và để ý vế trái không nhỏ hơn 0 nên
+  \begin{equation}
+    \sum_{i, j = 1}^mc_ic_jK(x_i, x_j) \le t\sum_{i, j = 1}^m c_ic_jf(t),
+  \end{equation}với mọi $t > 0$. Do $\lim_{t\to0^+} t\sum_{i, j = 1}^m
+  c_ic_jf(t) = 0$ nên \begin{equation}
+    \sum_{i, j = 1}^m c_ic_j K(x_i, x_j) \le 0.
+  \end{equation} Do đó $K$ là NDS.
+\end{proof}
+
+Định lý này cũng cho một chứng minh khác rằng \tr{kernel} Gaussian là PDS: bởi
+theo ví dụ trước bình phương khoảng cách $(x, x') \mapsto \lVert x - x'
+\rVert^2$ là NDS nên $(x, x') \mapsto \exp(-t\lVert x - x' \rVert^2)$ là PDS
+với mọi $t > 0$. Ở đây $t$ đóng vai trò là $1/(2\sigma^2)$.
+
+\begin{thm}
+  Cho $K\colon \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ là một
+  \tr{kernel} NDS sao cho với mọi $x, x' \in \mathcal{X}$, $K(x, x') = 0$ khi
+  và chỉ khi $x = x'$. Khi đó, tồn tại một không gian Hilbert $\mathbb{H}$ và
+  một ánh xạ $\Phi \colon \mathcal{X} \to \mathbb{H}$ sao cho với mọi $x, x'
+  \in \mathcal{X}$, \begin{equation}
+    K(x, x') = \bigl\lVert \Phi(x) - \Phi(x') \bigr\rVert^2.
+  \end{equation} Do đó, dưới các giả thiết của định lý, $\sqrt{K}$ định nghĩa
+  một \tr{metric}.
+\end{thm}
+
+\begin{proof}\elaborate\
+ Giả sử $K$ là NDS. Với $x_0$ bất kì, theo Định lý~\ref{thm:nds-pds}, ta có:
+  \begin{equation}
+    K'(x, x') = K(x, x_0) + K(x_0, x') - K(x, x') - K(x_0, x_0),
+  \end{equation}với mọi $x, x' \in \mathcal{X}$ là PDS. Vì $K(x_0, x_0) = 0$
+  nên \begin{equation}
+    K'(x, x') = K(x, x_0) + K(x_0, x') - K(x, x').
+  \end{equation} Thay $x'$ bởi $x$ ta được \begin{equation}
+    K'(x, x) = 2K(x, x_0),
+  \end{equation} với mọi $x \in \mathcal{X}$. Do đó \begin{equation}
+    K'(x, x') = \frac{K'(x, x)}{2} + \frac{K'(x', x')}{2} - K(x, x'),
+  \end{equation}với mọi $x, x' \in \mathcal{X}$.  Theo định lý
+  RKHS~\ref{thm:rkhs}, tồn tại không gian Hilbert $\mathbb{H}$ và ánh xạ đặc
+  trưng $\Phi\colon \mathcal{X}\to\mathbb{H}$ sao cho $K'(x, x') = \bigl\langle
+  \Phi(x), \Phi(x') \big\rangle$. Khi đó, \begin{align}
+    K(x, x') &= \frac{K'(x, x)}{2} - K'(x, x') + \frac{K'(x', x')}{2} \\
+    &= \frac{1}{2}\bigl\langle \Phi(x), \Phi(x) \bigr\rangle - \bigl\langle
+      \Phi(x), \Phi(x') \bigr\rangle + \frac{1}{2}\bigl\langle \Phi(x'), \Phi(x')
+      \bigr\rangle \\
+    &= \biggl\langle \frac{\Phi(x) - \Phi(x')}{\sqrt{2}}, \frac{\Phi(x) -
+    \Phi(x')}{\sqrt{2}} \biggr\rangle \\
+    &= \biggl\lVert \frac{\Phi(x)}{\sqrt{2}} - \frac{\Phi(x')}{\sqrt{2}}
+    \biggr\rVert^2_\mathbb{H}.
+  \end{align} Do đó tồn tại ánh xạ $\Phi^\ast = \Phi/\sqrt{2}$ trong không gian
+  Hilbert $\mathbb{H}$ để \begin{equation}
+    K(x, x') = \bigl\lVert \Phi^\ast(x) - \Phi^\ast(x')
+    \bigr\rVert^2_\mathbb{H}.
+  \end{equation}
+\end{proof}
+
+Định lý này có thể được sử dụng để chứng minh rằng \tr{kernel} $(x, x') \mapsto
+\exp(-|x - x'|^p)$ trong $\mathbb{R}$ không phải là PDS với $p > 2$. Ngược lại,
+nếu điều đó đúng, với mọi $t > 0$, $\{x_1, \dots, x_m\} \subseteq \mathcal{X}$
+và $\mathbf{c} \in \mathbb{R}^{m \times 1}$, ta sẽ có: \begin{equation}
+  \sum_{i,j=1}^{m} c_i c_j \exp(-t|x_i - x_j|^p) = \sum_{i,j=1}^{m} c_i c_j
+  \exp(-|t^{1/p}x_i - t^{1/p}x_j|^p) \geq 0.
+\end{equation} Điều này dẫn đến hệ quả là $(x, x') \mapsto |x - x'|^p$ là một
+NDS kernel với $p > 2$, nhưng điều này có thể được chứng minh là không hợp lệ
+(thông qua định lý trên).

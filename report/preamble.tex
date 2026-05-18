@@ -1,12 +1,15 @@
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
 \usepackage{tikz}
+\usetikzlibrary{automata,positioning}
 
 % \usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{vietnamese}
 \setotherlanguage{english}
 
+\usepackage{subcaption}
+\captionsetup{subrefformat=parens}
 \usepackage[skip=4pt]{caption}
 \captionsetup*[table]{position=above}
 
@@ -69,51 +72,89 @@
 \graphicspath{{\figurespath}}
 \newcommand{\tablespath}{\resourcespath/tables}
 
-\newcommand{\elaborate}{[MỞ RỘNG]}
+\newcommand{\elaborate}{\textbf{[MỞ RỘNG]}}
 
 % Terminology config
 
 \ExplSyntaxOn
 
 \msg_new:nnn { report } { missing-term }
-  { Warning:~The~term~'#1'~is~not~defined! }
+  { warning:~the~term~'#1'~is~not~defined! }
 
 \cs_new:Nn \report_apply_case:nn {
-  \str_if_eq:eeTF { #1 } { \text_uppercase:n {#1} }
-    { \text_uppercase:n {#2} }
+  \str_case_e:nnF { #1 }
     {
-      \str_if_eq:eeTF { #1 } { \text_lowercase:n {#1} }
-        { #2 }
-        { \text_titlecase:n {#2} }
+      { \text_uppercase:n { #1 } } { \text_uppercase:n { #2 } }
+      { \text_lowercase:n { #1 } } { #2 }
+      { \text_titlecase_first:n { \text_lowercase:n {#1} } }
+        { \text_titlecase_first:n { #2 } }
+      { \text_titlecase_all:n { \text_lowercase:n {#1} } }
+        { \text_titlecase_all:n { #2 } }
     }
-}
-
-\cs_new:Nn \report_handle_tr_pure:n {
-  \cs_if_exist:cTF { \text_lowercase:n {#1} }
-    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1} } } }
     { #1 }
 }
 
-\cs_new_protected:Nn \report_handle_tr_with_msg:n {
-  \cs_if_exist:cTF { \text_lowercase:n {#1} }
-    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1} } } }
+\cs_new:Nn \report_handle_tr:nn {
+  \cs_if_exist:cTF { \text_lowercase:n {#1}-#2 }
+    { \report_apply_case:nn { #1 } { \use:c { \text_lowercase:n {#1}-#2 } } }
     {
-      \msg_warning:nnn { report } { missing-term } { #1 }
+      \msg_warning:nne { report } { missing-term }
+      { \text_lowercase:n {#1}-#2 }
       #1
     }
 }
 
-\NewDocumentCommand{\tr}{ m }
- {
-  \texorpdfstring
-    { \report_handle_tr_with_msg:n {#1} }
-    { \report_handle_tr_pure:n {#1} }
- }
+\NewExpandableDocumentCommand{\tr}{ O{vn} m }
+  {
+    \texorpdfstring
+     { \report_handle_tr:nn {#2} {#1} }
+     { \text_purify:n { \report_handle_tr:nn {#2} {#1} } }
+  }
 
-\pdfstringdefDisableCommands{
-  \let\tr\report_handle_tr_pure:n
+\NewDocumentCommand{\trdef}{ O{vn} m m }
+{
+  \exp_args:Nc \tl_set:Nn {#2-#1} {#3}
 }
 
 \ExplSyntaxOff
 
-\newcommand{\kernel}{nhân}
+\trdef{kernel}{nhân}
+\trdef{vector}{véc-tơ}
+\trdef{neural}{nơ-ron}
+\trdef{metric}{mê-tríc}
+\trdef{cosine}{cô-sin}
+\trdef{tensor}{ten-xơ}
+\trdef{compact}{compact}
+\trdef{transducer}{bộ chuyển đổi}
+\trdef{transition}{bước chuyển}
+\trdef{automaton}{ô-tô-mát}
+\trdef{bigram}{bigram}
+\trdef{gappy}{có khoảng trống}
+\trdef{gappy bigram}{\tr{bigram} \tr{gappy}}
+\DeclareMathOperator{\sign}{sgn}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\expect}{\mathbb{E}}
+\DeclareMathOperator{\prob}{\mathbb{P}}
+
+\tikzset{
+  self loop/.style={
+    above,
+    in=75,
+    out=105,
+    min distance = 0.3in,
+  },
+  self loop again/.style={
+    above,
+    in=45,
+    out=135,
+    min distance=1in,
+  },
+  initial/.style={
+    thick,
+    initial distance=0pt,
+    initial text={},
+  },
+  every picture/.style={
+    >=latex % stealth
+  }
+}

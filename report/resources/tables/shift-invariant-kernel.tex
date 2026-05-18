@@ -1,0 +1,13 @@
+\begin{tblr}{
+  colspec = {*{3}{c}},
+  vlines, hlines
+}
+  & $G(\mathbf{x}, \mathbf{x}^\prime)$ & $p(\boldsymbol{\omega})$ \\
+  Gaussian & $\exp\bigl( - \lVert \mathbf{x} - \mathbf{x}^\prime \rVert^2 /
+  2\bigr )$ & $(2\pi)^{-D/2} \exp\bigl( - \lVert \boldsymbol{\omega} \rVert^2 /
+  2 \bigr)$ \\
+  Laplacian & $\exp\bigl( - \lVert \mathbf{x} - \mathbf{x}^\prime \rVert_1
+  \bigr )$ & $\sum_{i = 1}^N 1/\bigl( \pi (1 + \omega_i^2) \bigr )$ \\
+  Cauchy & $\sum_{i = 1}^N 2/\bigl( 1 + (x_i - x'_i)^2 \bigr )$ & $\exp\bigl( -
+  \lVert \boldsymbol{\omega}_1 \rVert \bigr)$
+\end{tblr}

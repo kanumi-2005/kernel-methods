@@ -1,0 +1,10 @@
+\begin{tikzpicture}[node distance=2cm,every node/.style={above=-2pt}]
+  \node[state,initial] (q0) {0};
+  \node[state,accepting] (q1) [right=of q0] {1/1};
+  \path[->]
+    (q0) edge[self loop] node {a:$\epsilon$/1} (q0)
+    (q0) edge[self loop again] node {b:$\epsilon$/1} (q0)
+    (q0) edge node {X:X/1} (q1)
+    (q1) edge[self loop] node {a:$\epsilon$/1} (q1)
+    (q1) edge[self loop again] node {b:$\epsilon$/1} (q1);
+\end{tikzpicture}
