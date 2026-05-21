@@ -1,4 +1,4 @@
-\subsection{Một số hướng nghiên cứu gần đây về phương pháp
+\section{Một số hướng nghiên cứu gần đây về phương pháp
 \protect\tr{kernel}}
 
 Trong những năm gần đây, các phương pháp \tr{kernel} tiếp tục được nghiên cứu
@@ -46,9 +46,9 @@ $p$ không nhất thiết phải bằng $n$. Nhờ vậy, kích thước mô hì
 dữ liệu có thể được mở rộng một cách độc lập.
 
 Bên cạnh đó, bài báo giới thiệu thuật toán EigenPro 3.0, dựa trên hạ gradient
-ngẫu nhiên đối ngẫu có tiền điều kiện hóa và phép chiếu projected
-(dual preconditioned stochastic gradient descent). Thuật toán này giúp huấn
-luyện các mô hình \tr{kernel} lớn hơn nhiều so với các phương pháp \tr{kernel}
+ngẫu nhiên đối ngẫu có tiền điều kiện hóa và phép chiếu (projected dual
+preconditioned stochastic gradient descent). Thuật toán này giúp huấn luyện
+các mô hình \tr{kernel} lớn hơn nhiều so với các phương pháp \tr{kernel}
 truyền thống, đồng thời có thể tận dụng tính toán trên GPU.
 
 Mối liên hệ với lý thuyết \tr{kernel} trong chương đã chọn là rất trực tiếp.
@@ -87,8 +87,7 @@ Nơ-ron. Thứ ba, tác giả đề xuất Đặc trưng Gegenbauer Ngẫu nhiê
 bảo đảm lý thuyết như xấp xỉ phổ (spectral approximation) và bảo toàn chi phí
 chiếu (projection-cost preserving). Các kết quả này cho phép áp dụng đặc trưng
 ngẫu nhiên được đề xuất vào các bài toán học máy như \tr{kernel} hồi quy ridge
-(ridge regression), \tr{kernel} k-means và principal/canonical component
-analysis.
+(ridge regression), \tr{kernel} k-means.
 
 Ngoài ra, bài báo cũng áp dụng các kết quả lý thuyết cho \tr{kernel} tích
 trong và \tr{kernel} Gaussian, qua đó cho thấy phương pháp đề xuất có thể cải
@@ -100,10 +99,9 @@ Mối liên hệ với lý thuyết trong chương sách là rất rõ ở phầ
 \tr{kernel} bằng ánh xạ đặc trưng. Nếu với Đặc trưng Fourier Ngẫu nhiên, ta sử
 dụng định lý Bochner để viết \tr{kernel} bất biến tịnh tiến dưới dạng kỳ vọng:
 \begin{equation}
-  K(x,x') = \mathbb{E}_{\omega \sim p}
-  \left[
-    \cos\bigl(\omega^\top(x-x')\bigr)
-  \right],
+  K(x,x') = \expect_{\omega \sim p}\Bigl[ \bigl[ \cos(\omega \cdot x),
+    \sin(\omega \cdot x) \bigr ]^\intercal \bigl[ \cos(\omega
+    \cdot x'), \sin(\omega \cdot x') \bigr ] \Bigr ],
 \end{equation}
 thì bài báo này phát triển một cơ chế tương tự nhưng cho lớp \tr{kernel} tổng
 quát hơn. Nói cách khác, bài báo mở rộng tinh thần của Đặc trưng Ngẫu nhiên:
@@ -159,7 +157,7 @@ thay thế ma trận \tr{kernel} lớn bằng các biểu diễn đặc trưng h
 \tr{kernel}.
 
 Thứ ba là xu hướng kết nối phương pháp \tr{kernel} với học sâu. Các công trình
-về \tr{Kernel} tiếp tuyến nơ-ron, học sâu \tr{kernel} (deep kernel learning)
+về \tr{Kernel} tiếp tuyến nơ-ron, học \tr{kernel} sâu (deep kernel learning)
 và RKHM sâu cho thấy phương pháp \tr{kernel} đang trở thành một công cụ quan
 trọng để giải thích và phân tích mạng nơ-ron sâu. Thay vì xem phương pháp
 \tr{kernel} và học sâu là hai hướng tách biệt, các nghiên cứu gần đây đang cố

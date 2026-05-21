@@ -1,8 +1,8 @@
 \subsection{Ứng dụng \protect\tr{kernel} trong SVM}
 
-\figurename~\ref{fig:kernel-in-svm} minh họa ranh giới quyết định (decision
-boundary) của mô hình SVM khi sử dụng bốn loại kernel khác nhau gồm:
-\tr{kernel} linear, \tr{kernel} polynomial, \tr{kernel} RBF và \tr{kernel}
+\figurename~\ref{fig:kernel-in-svm} minh họa biên quyết định (decision
+boundary) của mô hình SVM khi sử dụng bốn loại \tr{kernel} khác nhau gồm:
+\tr{kernel} linear, \tr{kernel} đa thức, \tr{kernel} RBF và \tr{kernel}
 sigmoid. Các điểm dữ liệu thuộc hai lớp được biểu diễn bằng hai màu khác nhau,
 trong khi đường liền nét thể hiện siêu phẳng phân tách và các đường nét đứt
 biểu diễn biên của mô hình.
@@ -10,22 +10,23 @@ biểu diễn biên của mô hình.
 \begin{itemize}[font=\bfseries,align=left]
     \item[\tr{Kernel} tuyến tính:] Ranh giới quyết định là một đường thẳng, phù
     hợp với dữ liệu có khả năng phân tách tuyến tính. Tuy nhiên, với tập dữ
-    liệu có sự phân bố phức tạp, kernel tuyến tính chưa thể phân loại tối ưu.
+    liệu có sự phân bố phức tạp, \tr{kernel} tuyến tính chưa thể phân loại tối
+    ưu.
 
     \item[\tr{Kernel} đa thức:] Ranh giới quyết định trở nên cong
-    hơn, cho phép mô hình học được các quan hệ phi tuyến giữa các lớp. Kernel
-    này cải thiện khả năng phân loại so với \tr{kernel} linear nhưng vẫn còn
-    hạn chế ở những vùng dữ liệu chồng lấn mạnh.
+    hơn, cho phép mô hình học được các quan hệ phi tuyến giữa các lớp.
+    \tr{Kernel} này cải thiện khả năng phân loại so với \tr{kernel} linear
+    nhưng vẫn còn hạn chế ở những vùng dữ liệu chồng lấn mạnh.
 
-    \item[\tr{Kernel} RBF:] Kernel RBF tạo ra ranh giới quyết định linh
-    hoạt và phi tuyến mạnh mẽ nhất. Mô hình có khả năng bao quát tốt cấu trúc dữ
-    liệu phức tạp, giúp phân tách hai lớp hiệu quả hơn. Đây thường là
-    \tr{kernel} cho kết quả tốt trong nhiều bài toán thực tế.
+    \item[\tr{Kernel} RBF:] Ranh giới quyết định linh hoạt và phi tuyến mạnh
+    mẽ nhất. Mô hình có khả năng bao quát tốt cấu trúc dữ liệu phức tạp, giúp
+    phân tách hai lớp hiệu quả hơn. Đây thường là \tr{kernel} cho kết quả tốt
+    rong nhiều bài toán thực tế.
 
     \item[\tr{Kernel} Sigmoid:] Ranh giới quyết định có dạng tương tự mạng
     nơ-ron với các vùng phân tách phức tạp. Tuy nhiên, kết quả phân loại trong
-    hình cho thấy kernel sigmoid không ổn định bằng RBF và có thể tạo ra các
-    biên phân tách chưa tối ưu.
+    hình cho thấy \tr{kernel} sigmoid không ổn định bằng RBF và có thể tạo ra
+    các biên phân tách chưa tối ưu.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -37,5 +38,5 @@ biểu diễn biên của mô hình.
 
 Từ kết quả trực quan có thể thấy rằng việc lựa chọn \tr{kernel} ảnh hưởng lớn
 đến hiệu suất phân loại của SVM. Với dữ liệu phi tuyến, các \tr{kernel} như
-polynomial và đặc biệt là RBF thường cho khả năng phân tách tốt hơn so với
-\tr{kernel} linear.
+\tr{kernel} đa thức và đặc biệt là RBF thường cho khả năng phân tách tốt hơn
+so với \tr{kernel} tuyến tính.
