@@ -1,0 +1,171 @@
+\section{Một số hướng nghiên cứu gần đây về phương pháp
+\protect\tr{kernel}}
+
+Trong những năm gần đây, các phương pháp \tr{kernel} tiếp tục được nghiên cứu
+mạnh mẽ theo nhiều hướng khác nhau. Một mặt, các công trình mới tìm cách mở
+rộng khả năng tính toán của phương pháp \tr{kernel} cho dữ liệu lớn. Mặt khác,
+nhiều nghiên cứu khai thác mối liên hệ giữa phương pháp \tr{kernel} và mạng
+nơ-ron sâu, đặc biệt thông qua các khái niệm như \tr{Kernel} Tiếp tuyến Nơ-ron
+(Neural Tangent Kernel), Đặc trưng Ngẫu nhiên (Random Features), RKHS và các
+mở rộng của RKHS.
+
+Trong phần này, ta khảo sát ba bài báo tiêu biểu sau năm 2021 có liên quan
+trực tiếp đến chủ đề phương pháp \tr{kernel}:
+\begin{enumerate}
+  \item Toward Large Kernel Models;
+  \item Random Gegenbauer Features for Scalable Kernel Methods;
+  \item Deep Learning with Kernels through RKHM and the Perron--Frobenius
+  Operator.
+\end{enumerate}
+
+\subsection{Toward Large Kernel Models}
+
+Bài báo \emph{Toward Large Kernel Models} được công bố tại ICML 2023. Bài toán
+chính mà bài báo đặt ra là làm thế nào để mở rộng phương pháp \tr{kernel} cho
+các tập dữ liệu lớn trong khi vẫn giữ được khả năng biểu diễn mạnh của mô hình
+\tr{kernel}.
+
+Trong máy \tr{kernel} (kernel machine) truyền thống, hàm dự đoán thường có
+dạng:
+\begin{equation}
+  f(x) = \sum_{i=1}^{n} \alpha_i K(x,x_i),
+\end{equation}
+phụ thuộc trực tiếp vào số mẫu huấn luyện $n$. Vì vậy, khi dữ liệu lớn, kích
+thước ma trận \tr{kernel} và chi phí tính toán tăng rất nhanh. Điều này làm
+cho phương pháp \tr{kernel} khó cạnh tranh với học sâu (deep learning) trong
+các bài toán quy mô lớn.
+
+Đóng góp chính của bài báo là đề xuất mô hình \tr{kernel} tổng quát
+(general kernel model), trong đó số lượng tâm (center) có thể được chọn độc
+lập với số lượng mẫu huấn luyện. Mô hình có dạng:
+\begin{equation}
+  f(x) = \sum_{j=1}^{p} \alpha_j K(x,z_j),
+\end{equation}
+với $p$ là kích thước mô hình và $\{z_j\}_{j=1}^{p}$ là tập các tâm. Khi đó,
+$p$ không nhất thiết phải bằng $n$. Nhờ vậy, kích thước mô hình và kích thước
+dữ liệu có thể được mở rộng một cách độc lập.
+
+Bên cạnh đó, bài báo giới thiệu thuật toán EigenPro 3.0, dựa trên hạ gradient
+ngẫu nhiên đối ngẫu có tiền điều kiện hóa và phép chiếu (projected dual
+preconditioned stochastic gradient descent). Thuật toán này giúp huấn luyện
+các mô hình \tr{kernel} lớn hơn nhiều so với các phương pháp \tr{kernel}
+truyền thống, đồng thời có thể tận dụng tính toán trên GPU.
+
+Mối liên hệ với lý thuyết \tr{kernel} trong chương đã chọn là rất trực tiếp.
+Bài báo sử dụng biểu diễn \tr{kernel} trong RKHS, định lý biểu diễn và bài
+toán học hàm trong không gian Hilbert sinh bởi \tr{kernel}. Nếu trong lý
+thuyết cơ bản, nghiệm của bài toán \tr{kernel} thường được biểu diễn thông qua
+toàn bộ tập huấn luyện, thì bài báo này mở rộng cách biểu diễn đó bằng cách
+tách tập tâm \tr{kernel} khỏi tập dữ liệu. Do đó, bài báo có thể được xem là
+một hướng phát triển nhằm làm cho lý thuyết \tr{kernel} cổ điển phù hợp hơn
+với bài toán học máy quy mô lớn.
+
+\subsection{Random Gegenbauer Features for Scalable Kernel Methods}
+
+Bài báo \emph{Random Gegenbauer Features for Scalable Kernel Methods} được
+công bố tại ICML 2022. Bài toán chính của bài báo là xây dựng một phương pháp
+xấp xỉ \tr{kernel} hiệu quả cho một lớp \tr{kernel} rộng hơn so với các phương
+pháp Đặc trưng Ngẫu nhiên truyền thống.
+
+Các phương pháp \tr{kernel} thường gặp khó khăn vì cần lưu trữ và xử lý ma
+trận Gram:
+\begin{equation}
+  K(X,X) = \bigl(K(x_i,x_j)\bigr)_{i,j=1}^{n},
+\end{equation}
+có kích thước $n \times n$. Khi $n$ lớn, chi phí bộ nhớ và tính toán trở thành
+rào cản chính. Đặc trưng Fourier ngẫu nhiên giải quyết vấn đề này cho các
+\tr{kernel} bất biến tịnh tiến bằng cách xấp xỉ \tr{kernel} thông qua một ánh
+xạ đặc trưng ngẫu nhiên hữu hạn chiều.
+
+Đóng góp chính của bài báo gồm các điểm sau. Thứ nhất, tác giả xây dựng lớp
+\tr{Kernel} Generalized Zonal (Generalized Zonal Kernels) và đưa ra phân tích
+Mercer cho lớp \tr{kernel} này dựa trên các đa thức Gegenbauer. Thứ hai, bài
+báo chứng minh rằng lớp \tr{kernel} được đề xuất là khá rộng, bao gồm toàn bộ
+\tr{kernel} tích trong, \tr{kernel} Gaussian và một số \tr{Kernel} Tiếp tuyến
+Nơ-ron. Thứ ba, tác giả đề xuất Đặc trưng Gegenbauer Ngẫu nhiên
+(Random Gegenbauer Features) để xấp xỉ \tr{kernel}, đồng thời chứng minh các
+bảo đảm lý thuyết như xấp xỉ phổ (spectral approximation) và bảo toàn chi phí
+chiếu (projection-cost preserving). Các kết quả này cho phép áp dụng đặc trưng
+ngẫu nhiên được đề xuất vào các bài toán học máy như \tr{kernel} hồi quy ridge
+(ridge regression), \tr{kernel} k-means.
+
+Ngoài ra, bài báo cũng áp dụng các kết quả lý thuyết cho \tr{kernel} tích
+trong và \tr{kernel} Gaussian, qua đó cho thấy phương pháp đề xuất có thể cải
+thiện so với một số phương pháp xấp xỉ \tr{kernel} trước đó. Các kết quả thực
+nghiệm cũng cho thấy Đặc trưng Gegenbauer Ngẫu nhiên đạt hiệu quả tốt trong
+việc xấp xỉ \tr{kernel} Gaussian.
+
+Mối liên hệ với lý thuyết trong chương sách là rất rõ ở phần xấp xỉ
+\tr{kernel} bằng ánh xạ đặc trưng. Nếu với Đặc trưng Fourier Ngẫu nhiên, ta sử
+dụng định lý Bochner để viết \tr{kernel} bất biến tịnh tiến dưới dạng kỳ vọng:
+\begin{equation}
+  K(x,x') = \expect_{\omega \sim p}\Bigl[ \bigl[ \cos(\omega \cdot x),
+    \sin(\omega \cdot x) \bigr ]^\intercal \bigl[ \cos(\omega
+    \cdot x'), \sin(\omega \cdot x') \bigr ] \Bigr ],
+\end{equation}
+thì bài báo này phát triển một cơ chế tương tự nhưng cho lớp \tr{kernel} tổng
+quát hơn. Nói cách khác, bài báo mở rộng tinh thần của Đặc trưng Ngẫu nhiên:
+thay vì làm việc trực tiếp với ma trận \tr{kernel} lớn, ta xây dựng một ánh xạ
+đặc trưng ngẫu nhiên sao cho tích vô hướng trong không gian đặc trưng xấp xỉ
+giá trị \tr{kernel} ban đầu.
+
+\subsection{Deep Learning with Kernels through
+RKHM and the Perron--Frobenius Operator}
+
+Bài báo \emph{Deep Learning with Kernels through RKHM
+and the Perron--Frobenius Operator} được công bố tại NeurIPS 2023. Bài toán
+chính của bài báo là xây dựng một khung lý thuyết kết hợp giữa phương pháp
+\tr{kernel} và deep learning thông qua Mô-đun $C^*$ với \tr{Kernel} Tái tạo
+(Hilbert Reproducing Kernel Hilbert $C^*$-Module), viết tắt là RKHM.
+
+Trong phương pháp \tr{kernel} cổ điển, ta thường làm việc với RKHS, tức là
+không gian Hilbert sinh bởi một \tr{kernel} xác định dương. Tuy nhiên, RKHS
+chủ yếu phù hợp với các hàm nhận giá trị vô hướng hoặc các mở rộng
+\tr{kernel} nhận giá trị \tr{vector} nhất định. Bài báo đề xuất sử dụng RKHM,
+một mở rộng của RKHS dựa trên đại số $C^*$ ($C^*$-algebra), để mô hình hóa các
+cấu trúc phức tạp hơn, đặc biệt là các phép hợp trong mô hình sâu.
+
+Đóng góp chính của bài báo là đề xuất khung RKHM sâu (deep RKHM). Trong khung
+này, các tầng của mô hình được mô tả thông qua các ánh xạ trong RKHM, còn sự
+hợp giữa các tầng được phân tích bằng toán tử Perron--Frobenius. Bài báo cũng
+đưa ra một chặn tổng quát hóa dựa trên độ phức tạp Rademacher trong bối cảnh
+RKHM. Một điểm đáng chú ý là nhờ cấu trúc đại só $C^*$, chặn này có sự phụ
+thuộc nhẹ hơn vào chiều đầu ra so với một số chặn trước đó.
+
+Mối liên hệ với lý thuyết \tr{kernel} nằm ở việc bài báo mở rộng khái niệm
+RKHS. Trong chương lý thuyết cơ bản, \tr{kernel} xác định một không gian RKHS
+và mỗi hàm học được có thể biểu diễn thông qua \tr{kernel}. Bài báo này giữ
+lại tinh thần đó nhưng thay RKHS bằng RKHM để có thể mô tả các cấu trúc hàm
+phức tạp hơn. Ngoài ra, việc dùng toán tử Perron--Frobenius để phân tích phép
+hợp cho thấy phương pháp \tr{kernel} không chỉ dừng lại ở mô hình một tầng, mà
+còn có thể được mở rộng để nghiên cứu các mô hình sâu.
+
+\subsection{Nhận xét tổng quan về xu hướng phát triển}
+
+Từ ba bài báo trên, có thể thấy phương pháp \tr{kernel} sau năm 2021 đang phát
+triển theo ba xu hướng chính.
+
+Thứ nhất là xu hướng mở rộng quy mô. Các nghiên cứu như
+\emph{Toward Large Kernel Models} cho thấy phương pháp \tr{kernel} không chỉ
+là công cụ lý thuyết hoặc phù hợp với dữ liệu nhỏ, mà còn có thể được thiết kế
+lại để xử lý dữ liệu lớn và tận dụng phần cứng hiện đại.
+
+Thứ hai là xu hướng xấp xỉ \tr{kernel} hiệu quả. Các phương pháp như Đặc trưng
+Gegenbauer Ngẫu nhiên tiếp tục phát triển ý tưởng Đặc trưng Ngẫu nhiên, giúp
+thay thế ma trận \tr{kernel} lớn bằng các biểu diễn đặc trưng hữu hạn chiều.
+Điều này làm giảm chi phí tính toán và mở rộng phạm vi áp dụng của phương pháp
+\tr{kernel}.
+
+Thứ ba là xu hướng kết nối phương pháp \tr{kernel} với học sâu. Các công trình
+về \tr{Kernel} tiếp tuyến nơ-ron, học \tr{kernel} sâu (deep kernel learning)
+và RKHM sâu cho thấy phương pháp \tr{kernel} đang trở thành một công cụ quan
+trọng để giải thích và phân tích mạng nơ-ron sâu. Thay vì xem phương pháp
+\tr{kernel} và học sâu là hai hướng tách biệt, các nghiên cứu gần đây đang cố
+gắng kết hợp ưu điểm của cả hai: tính chặt chẽ lý thuyết của \tr{kernel} và
+khả năng biểu diễn linh hoạt của mô hình sâu.
+
+Nhìn chung, các hướng nghiên cứu gần đây cho thấy phương pháp \tr{kernel} vẫn
+là một lĩnh vực rất quan trọng trong học máy. Trọng tâm của lĩnh vực này đang
+chuyển từ các mô hình \tr{kernel} cổ điển sang các phương pháp \tr{kernel} có
+khả năng mở rộng, có bảo đảm lý thuyết và có mối liên hệ sâu với học sâu hiện
+đại.

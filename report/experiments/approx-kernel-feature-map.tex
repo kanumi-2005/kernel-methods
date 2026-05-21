@@ -1,0 +1,51 @@
+\subsection{Thực nghiệm kiểm chứng Mệnh đề
+\protect\ref{prop:expect-real-kernel}}
+
+Trong mục này, ta tiến hành thực nghiệm nhằm kiểm chứng tính đúng đắn của Mệnh
+đề \ref{prop:expect-real-kernel}. Trong thực nghiệm, ta khảo sát ba loại
+\tr{kernel} bất biến tịnh tiến phổ biến gồm Gaussian, Laplacian và Cauchy. Với
+mỗi \tr{kernel}, giá trị \tr{kernel} chính xác được so sánh với giá trị xấp xỉ
+thu được bằng Đặc trưng Fourier Ngẫu Nhiên (Random Fourier Features) khi sử dụng
+$D=100000$ mẫu ngẫu nhiên. Đồng thời, kiểm định thống kê được thực hiện với
+mức ý nghĩa $\alpha=0.05$ nhằm đánh giá sự khác biệt giữa giá trị lý thuyết và
+giá trị xấp xỉ.
+
+\tablename~\ref{tab:gaussian-kernel}, \tablename~\ref{tab:laplacian-kernel} và
+\tablename~\ref{tab:cauchy-kernel} lần lượt trình bày kết quả kiểm chứng đối
+với các \tr{kernel} Gaussian, Laplacian và Cauchy. Mỗi bảng bao gồm năm cặp
+điểm dữ liệu được chọn ngẫu nhiên, giá trị \tr{kernel} chính xác, giá trị xấp
+xỉ trung bình, thống kê $t$ và giá trị $p-value$ tương ứng.
+
+Các bảng kết quả cho thấy giá trị trung bình xấp xỉ rất gần với giá trị
+\tr{kernel} chính xác đối với cả ba loại \tr{kernel}. Sai số giữa hai giá trị
+là rất nhỏ khi số chiều đặc trưng ngẫu nhiên đủ lớn. Ngoài ra, tất cả các giá
+trị $p-value$ đều lớn hơn mức ý nghĩa $\alpha = 0.05$. Do đó, không có đủ bằng
+chứng thống kê để bác bỏ giả thuyết $H_0$ rằng kỳ vọng của giá trị xấp xỉ bằng
+với giá trị kernel lý thuyết. Kết quả phù hợp với mệnh đề
+\ref{prop:expect-real-kernel}, khẳng định rằng kỳ vọng tích vô hướng  của ánh
+xạ đặc trưng ngẫu nhiên có thể khôi phục chính xác giá trị \tr{kernel} bất
+biến tịnh tiến.
+
+Như vậy, thực nghiệm đã xác nhận tính hiệu quả của phương pháp Đặc trưng
+Fourier Ngẫu nhiên trong việc xấp xỉ các \tr{kernel}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Kết quả kiểm chứng kernel Gaussian}
+  \label{tab:gaussian-kernel}
+  \import{\tablespath}{gaussian-kernel}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Kết quả kiểm chứng kernel Laplacian}
+  \label{tab:laplacian-kernel}
+  \import{\tablespath}{laplacian-kernel}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Kết quả kiểm chứng kernel Cauchy}
+  \label{tab:cauchy-kernel}
+  \import{\tablespath}{cauchy-kernel}
+\end{table}
