@@ -1,0 +1,325 @@
+\section{Các thuật toán dựa trên Nhân}
+
+Trong phần này, ta nghiên cứu cách kết hợp \tr{Support Vector Machines} (SVMs)
+với các \tr{kernel} PDS và phân tích ảnh hưởng của \tr{kernel} đến khả năng tổng
+quát hóa (\tr{generalization}) của mô hình.
+
+\subsection{SVMs với các nhân PDS}
+
+Ở chương 5, chúng ta đã thấy rằng bài toán tối ưu đối ngẫu của SVM, cũng như dạng nghiệm của nó, không phụ thuộc trực tiếp vào các vector dữ liệu đầu vào mà chỉ phụ thuộc vào các phép tích vô hướng giữa chúng.  
+
+Do Nhân PDS có khả năng ngầm định nghĩa một không gian tích vô hướng (theo Định lý~\ref{thm:rkhs}), ta có thể mở rộng SVM bằng cách kết hợp với bất kỳ Nhân PDS $K$ nào bằng cách thay thế mỗi tích vô hướng  $x \cdot x'$ hàm Nhân $K(x, x')$.  
+
+Nhờ vậy, SVM có thể hoạt động trong các không gian đặc trưng có số chiều rất lớn, thậm chí vô hạn chiều, mà không cần biểu diễn tường minh các vector đặc trưng. Điều này dẫn đến dạng tổng quát của bài toán tối ưu và nghiệm SVM với Nhân PDS, mở rộng từ công thức.
+\begin{equation}
+\max_{\alpha}
+\sum_{i=1}^{m}\alpha_i
+-
+\frac12
+\sum_{i,j=1}^{m}
+\alpha_i\alpha_jy_iy_jK(x_i,x_j)
+\label{eq:svm-kernel}
+\end{equation}
+
+\begin{equation}
+\text{với các ràng buộc: }
+\quad
+\left\{
+\begin{aligned}
+0 \le \alpha_i \le C, \\
+\sum_{i=1}^{m} \alpha_i y_i = 0,
+\end{aligned}
+\right.
+\qquad
+\forall i \in [m].
+\end{equation}
+
+Ở đây:
+\begin{itemize}
+    \item $\alpha_i$ là các biến đối ngẫu;
+    \item $y_i\in\{-1,+1\}$ là nhãn lớp;
+    \item $C$ là tham số điều chuẩn;
+    \item $K(x_i,x_j)$ là \tr{kernel} PDS.
+\end{itemize}
+
+Sau khi giải bài toán tối ưu, hàm phân lớp thu được là:
+\begin{equation}
+h(x)
+=
+\operatorname{sgn}
+\left(
+\sum_{i=1}^{m}
+\alpha_i y_i K(x_i,x)
++b
+\right).
+\label{eq:kernel-hypothesis}
+\end{equation}
+
+Hệ số chệch $b$ được tính bằng:
+\begin{equation}
+b
+=
+y_i
+-
+\sum_{j=1}^{m}
+\alpha_j y_j K(x_j,x_i),
+\end{equation}
+với mọi $x_i$ thỏa $0<\alpha_i<C$.
+
+Ta có thể viết lại bài toán tối ưu \eqref{eq:svm-kernel}
+dưới dạng vector bằng cách sử dụng ma trận \tr{kernel}
+$\mathbf{K}$ ứng với tập huấn luyện
+$(x_1,\dots,x_m)$ như sau:
+
+\begin{equation}
+\max_{\boldsymbol{\alpha}}
+\quad
+\mathbf{1}^{\top}\boldsymbol{\alpha}
+-
+(\boldsymbol{\alpha} \circ \mathbf{y})^{\top}
+\mathbf{K}
+(\boldsymbol{\alpha} \circ \mathbf{y}),
+\end{equation}
+
+với các ràng buộc:
+\begin{equation}
+\left\{
+\begin{aligned}
+\mathbf{0} \le \boldsymbol{\alpha} \le \mathbf{C} \\
+\boldsymbol{\alpha}^{\top}\mathbf{y} = 0,
+\end{aligned}
+\right.
+\end{equation}
+
+Trong đó:
+\begin{itemize}
+    \item $\boldsymbol{\alpha} \in \mathbb{R}^{m\times1}$
+    là vector các biến đối ngẫu;
+
+    \item $\mathbf{y} \in \mathbb{R}^{m\times1}$
+    là vector nhãn lớp;
+
+    \item $\mathbf{K} \in \mathbb{R}^{m\times m}$
+    là ma trận \tr{kernel} với
+    $K_{ij}=K(x_i,x_j)$;
+
+    \item $\boldsymbol{\alpha}\circ\mathbf{y}$
+    là tích Hadamard (Hadamard product)
+    hay tích theo từng phần tử
+    (entry-wise product) của hai vector
+    $\boldsymbol{\alpha}$ và $\mathbf{y}$.
+\end{itemize}
+
+Do đó,
+$\boldsymbol{\alpha}\circ\mathbf{y}$
+là vector cột trong $\mathbb{R}^{m\times1}$
+mà phần tử thứ $i$ bằng $\alpha_i y_i$.
+
+Nghiệm dưới dạng vector tương tự như trong
+\eqref{eq:kernel-hypothesis}, nhưng với
+
+\begin{equation}
+b
+=
+y_i
+-
+(\boldsymbol{\alpha}\circ\mathbf{y})^{\top}
+\mathbf{K}\mathbf{e}_i,
+\end{equation}
+
+với mọi $x_i$ thỏa $0 < \alpha_i < C$.
+
+Phiên bản SVM sử dụng \tr{kernel} PDS này
+là dạng tổng quát của SVM sẽ được sử dụng
+trong các phần tiếp theo.
+Việc mở rộng này rất quan trọng vì nó cho phép
+ánh xạ phi tuyến một cách ngầm định
+các điểm dữ liệu đầu vào vào một không gian
+có số chiều cao hơn, nơi việc phân tách
+với biên lớn (large-margin separation)
+được thực hiện.
+
+Nhiều thuật toán khác trong các lĩnh vực như
+hồi quy (regression), xếp hạng (ranking),
+giảm chiều (dimensionality reduction)
+hay phân cụm (clustering)
+cũng có thể được mở rộng bằng
+\tr{kernel} PDS theo cùng một cơ chế.
+
+% \subsection{Representer theorem}
+
+% Quan sát rằng nghiệm của SVM có thể được viết thành tổ hợp tuyến tính của các
+% hàm
+% \[
+% K(x_i,\cdot).
+% \]
+
+% Điều này thực ra là một tính chất tổng quát hơn được mô tả bởi
+% \tr{Representer Theorem}.
+
+% \begin{thm}[Representer theorem]
+% Cho
+% \[
+% K:X\times X\to\mathbb{R}
+% \]
+% là một PDS kernel và $\mathcal{H}$ là RKHS tương ứng.
+
+% Với mọi hàm không giảm
+% \[
+% G:\mathbb{R}\to\mathbb{R}
+% \]
+% và hàm mất mát
+% \[
+% L:\mathbb{R}^m\to\mathbb{R}\cup\{+\infty\},
+% \]
+% bài toán tối ưu:
+% \begin{equation}
+% \arg\min_{h\in\mathcal{H}}
+% \left[
+% G(\|h\|_{\mathcal{H}})
+% +
+% L(h(x_1),\dots,h(x_m))
+% \right]
+% \end{equation}
+
+% luôn có nghiệm dạng:
+% \begin{equation}
+% h^\ast
+% =
+% \sum_{i=1}^{m}
+% \alpha_i K(x_i,\cdot).
+% \end{equation}
+
+% Nếu $G$ là hàm tăng nghiêm ngặt thì mọi nghiệm đều có dạng trên.
+% \end{thm}
+
+% \subsubsection{Ý nghĩa}
+
+% Định lý này cho thấy:
+% \begin{itemize}
+%     \item nghiệm tối ưu luôn nằm trong không gian sinh bởi các điểm huấn luyện;
+%     \item ta không cần làm việc trực tiếp trong không gian đặc trưng có số chiều
+%     rất lớn;
+%     \item toàn bộ bài toán chỉ phụ thuộc vào kernel evaluations.
+% \end{itemize}
+
+% Đây là nền tảng lý thuyết của hầu hết các phương pháp kernel hiện đại.
+
+% \subsection{Learning guarantees}
+
+% Ta tiếp tục khảo sát khả năng tổng quát hóa của các mô hình kernel thông qua
+% \tr{Rademacher complexity}.
+
+% Xét lớp giả thuyết:
+% \begin{equation}
+% \mathcal{H}
+% =
+% \left\{
+% x\mapsto
+% w\cdot\Phi(x)
+% :
+% \|w\|_{\mathcal{H}}\le\Lambda
+% \right\},
+% \end{equation}
+% trong đó:
+% \begin{itemize}
+%     \item $\Phi$ là ánh xạ đặc trưng tương ứng với kernel;
+%     \item $\Lambda$ là cận trên của chuẩn trong RKHS.
+% \end{itemize}
+
+% \subsubsection{Rademacher complexity}
+
+% \begin{thm}
+% Cho $K$ là một PDS kernel và $\Phi$ là ánh xạ đặc trưng tương ứng.
+
+% Giả sử:
+% \[
+% K(x,x)\le r^2
+% \]
+% với mọi $x$.
+
+% Khi đó:
+% \begin{equation}
+% \widehat{\mathfrak{R}}_S(\mathcal{H})
+% \le
+% \frac{\Lambda\sqrt{\operatorname{Tr}[K]}}{m}
+% \le
+% \frac{r\Lambda}{\sqrt{m}}.
+% \label{eq:rademacher-bound}
+% \end{equation}
+% \end{thm}
+
+% \subsubsection{Ý nghĩa}
+
+% Kết quả trên cho thấy:
+% \begin{itemize}
+%     \item độ phức tạp của mô hình phụ thuộc vào trace của ma trận kernel;
+%     \item chuẩn RKHS càng nhỏ thì mô hình càng ít phức tạp;
+%     \item số mẫu $m$ càng lớn thì khả năng tổng quát hóa càng tốt.
+% \end{itemize}
+
+% \subsubsection{Margin bounds}
+
+% Kết hợp với các bất đẳng thức tổng quát hóa trước đó, ta thu được cận sai số:
+
+% \begin{cor}
+% Cho:
+% \[
+% \mathcal{H}
+% =
+% \left\{
+% x\mapsto w\cdot\Phi(x)
+% :
+% \|w\|_{\mathcal{H}}\le\Lambda
+% \right\}.
+% \]
+
+% Khi đó, với xác suất ít nhất $1-\delta$, mọi $h\in\mathcal{H}$ thỏa:
+% \begin{equation}
+% R(h)
+% \le
+% \widehat{R}_\rho(h)
+% +
+% \frac{2r^2\Lambda^2}{\rho^2\sqrt{m}}
+% +
+% \sqrt{
+% \frac{\log(1/\delta)}{2m}
+% }.
+% \label{eq:margin-bound-1}
+% \end{equation}
+
+% Ngoài ra:
+% \begin{equation}
+% R(h)
+% \le
+% \widehat{R}_\rho(h)
+% +
+% 2
+% \sqrt{
+% \frac{
+% \operatorname{Tr}[K]\Lambda^2
+% }{
+% \rho^2m
+% }
+% }
+% +
+% 3
+% \sqrt{
+% \frac{\log(2/\delta)}{2m}
+% }.
+% \label{eq:margin-bound-2}
+% \end{equation}
+% \end{cor}
+
+% \subsubsection{Kết luận}
+
+% Các cận trên cho thấy khả năng tổng quát hóa của mô hình kernel phụ thuộc vào:
+% \begin{itemize}
+%     \item biên phân tách $\rho$;
+%     \item chuẩn RKHS $\Lambda$;
+%     \item độ phức tạp của kernel matrix;
+%     \item số lượng mẫu huấn luyện.
+% \end{itemize}
+
+% Do đó, kernel methods không chỉ mạnh về mặt biểu diễn mà còn có nền tảng lý
+% thuyết vững chắc về khả năng học và tổng quát hóa.
