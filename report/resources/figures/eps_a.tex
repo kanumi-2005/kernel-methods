@@ -1,0 +1,31 @@
+\begin{tikzpicture}[
+    scale=0.82, transform shape, % Ép thu nhỏ để chống nhảy dòng
+    baseline=(s0.center),
+    shorten >=1pt, >=Stealth, thick,
+    state/.style={circle, draw, minimum size=0.75cm, font=\scriptsize},
+    bold_state/.style={circle, draw, line width=1.6pt, minimum size=0.75cm, font=\scriptsize},
+    accepting/.style={circle, draw, double, double distance=1.5pt, minimum size=0.75cm, font=\scriptsize},
+    every node/.style={font=\scriptsize}
+]
+    % (Toàn bộ phần thân scope bên trong giữ nguyên như cũ của file eps_a...)
+    \begin{scope}[yshift=0cm]
+        \node[bold_state] (s0) at (0,0) {0};
+        \node[state] (s1) at (2.0,0) {1};
+        \node[state] (s2) at (4.0,0) {2};
+        \node[state] (s3) at (6.0,0) {3};
+        \node[accepting] (s4) at (8.0,0) {4};
+        \path[->] (s0) edge node[above] {a:a} (s1) (s1) edge node[above] {b:$\boldsymbol{\epsilon}$} (s2) (s2) edge node[above] {c:$\boldsymbol{\epsilon}$} (s3) (s3) edge node[above] {d:d} (s4);
+        \node[font=\small] at (4.0, -0.7) {$T_1$};
+    \end{scope}
+    \begin{scope}[yshift=-3.3cm]
+        \node[bold_state] (t0) at (0,0) {0}; \node[state] (t1) at (2.0,0) {1}; \node[state] (t2) at (4.0,0) {2}; \node[state] (t3) at (6.0,0) {3}; \node[accepting] (t4) at (8.0,0) {4};
+        \path[->] (t0) edge node[above] {a:a} (t1) (t1) edge[red!60!black] node[above, text=black] {b:$\boldsymbol{\epsilon}2$} (t2) (t2) edge[red!60!black] node[above, text=black] {c:$\boldsymbol{\epsilon}2$} (t3) (t3) edge node[above] {d:d} (t4);
+        \foreach \n in {t0,t1,t2,t3,t4} \path[->, green!60!black] (\n) edge[loop above, out=105, in=75, looseness=3.2] node[above, text=black] {$\boldsymbol{\epsilon}:\boldsymbol{\epsilon}1$} (\n);
+        \node[font=\small] at (4.0, -0.75) {$\tilde{T}_1$};
+    \end{scope}
+    \begin{scope}[yshift=-10.3cm]
+        \node[bold_state] (g00) at (0, 0) {0,0}; \node[state] (g11) at (2.0, 0) {1,1}; \node[state] (g12) at (5.8, 0) {1,2}; \node[state] (g21) at (2.0, -2.4) {2,1}; \node[state] (g22) at (5.8, -2.4) {2,2}; \node[state] (g31) at (2.0, -4.8) {3,1}; \node[state] (g32) at (5.8, -4.8) {3,2}; \node[accepting] (g43) at (7.8, -6.2) {4,3};
+        \path[->, line width=1.6pt] (g00) edge node[above] {\shortstack{a:d\\(x:x)}} (g11); \path[->, green!60!black] (g11) edge node[above, text=black] {\shortstack{$\boldsymbol{\epsilon}$:e\\($\boldsymbol{\epsilon}1$:$\boldsymbol{\epsilon}1$)}} (g12); \path[->, red!60!black] (g11) edge node[left=3pt, text=black] {\shortstack{b:$\boldsymbol{\epsilon}$\\($\boldsymbol{\epsilon}2$:$\boldsymbol{\epsilon}2$)}} (g21); \path[->, brown!60!black, line width=1.6pt] (g11) edge node[pos=0.42, above right=-2pt, text=black] {\shortstack{b:e\\($\boldsymbol{\epsilon}2$:$\boldsymbol{\epsilon}1$)}} (g22); \path[->, red!60!black, dashed] (g12) edge node[right=3pt, text=black] {\shortstack{b:$\boldsymbol{\epsilon}$\\($\boldsymbol{\epsilon}2$:$\boldsymbol{\epsilon}2$)}} (g22); \path[->, green!60!black, dashed] (g21) edge node[above, text=black] {\shortstack{$\boldsymbol{\epsilon}$:e\\($\boldsymbol{\epsilon}1$:$\boldsymbol{\epsilon}1$)}} (g22); \path[->, red!60!black] (g21) edge node[left=3pt, text=black] {\shortstack{c:$\boldsymbol{\epsilon}$\\($\boldsymbol{\epsilon}2$:$\boldsymbol{\epsilon}2$)}} (g31); \path[->, red!50!black, line width=1.6pt] (g22) edge node[right=3pt, text=black] {\shortstack{c:$\boldsymbol{\epsilon}$\\($\boldsymbol{\epsilon}2$:$\boldsymbol{\epsilon}2$)}} (g32); \path[->, green!60!black, dashed] (g31) edge node[above] {\shortstack{$\boldsymbol{\epsilon}$:e\\($\boldsymbol{\epsilon}1$:$\boldsymbol{\epsilon}1$)}} (g32); \path[->, brown!60!black, dashed] (g21) edge (g32); \path[->, line width=1.6pt] (g32) edge node[above right=-1pt, text=black] {\shortstack{d:a\\(x:x)}} (g43);
+        \node[font=\small] at (3.9, -7.0) {(a)};
+    \end{scope}
+\end{tikzpicture}
