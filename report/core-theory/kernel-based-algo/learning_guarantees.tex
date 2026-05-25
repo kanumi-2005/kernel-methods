@@ -1,0 +1,93 @@
+\subsubsection{Các đảm bảo về khả năng học}
+
+Trong phần này, chúng tôi trình bày các đảm bảo học tổng quát cho các lớp giả thuyết dựa trên \tr{kernel} xác định dương đối xứng (PDS).
+
+Xét lớp hàm:
+\[
+\mathcal{H}_\Lambda
+=
+\{h \in \mathcal{H} : \|h\|_{\mathcal{H}} \le \Lambda\},
+\]
+trong đó $\mathcal{H}$ là không gian Hilbert tái sinh (RKHS) tương ứng với \tr{kernel} $K$.
+
+Theo tính chất tái sinh:
+\[
+h(x)
+=
+\langle h, K(x,\cdot)\rangle_{\mathcal{H}}
+=
+\langle \boldsymbol{w}, \Phi(x)\rangle,
+\]
+với $\|\boldsymbol{w}\|_{\mathcal{H}} \le \Lambda$.
+
+Do đó ta có:
+\[
+\mathcal{H}_\Lambda
+=
+\{x \mapsto \langle \boldsymbol{w}, \Phi(x)\rangle :
+\|\boldsymbol{w}\|_{\mathcal{H}} \le \Lambda\}.
+\]
+
+\begin{thm}[Độ phức tạp Rademacher của lớp hàm dựa trên \tr{kernel}]
+\label{thm:kernel_rademacher}
+
+Cho $K:\mathcal{X}\times\mathcal{X}\to\mathbb{R}$ là \tr{kernel} PDS,
+$\Phi$ là ánh xạ đặc trưng tương ứng,
+và $S=\{x_1,\dots,x_m\}$ sao cho $K(x,x)\le r^2$ với mọi $x\in S$.
+
+Khi đó:
+\[
+\widehat{\mathfrak{R}}_S(\mathcal{H}_\Lambda)
+\le
+\frac{\Lambda \sqrt{\mathrm{Tr}(\mathbf{K})}}{m}
+\le
+\frac{\Lambda r}{\sqrt{m}}.
+\]
+
+\end{thm}
+
+\begin{proof}
+\begin{align*}
+\widehat{\mathfrak{R}}_S(\mathcal{H}_\Lambda)
+&=
+\frac{1}{m}
+\mathbb{E}_{\boldsymbol{\sigma}}
+\left[
+\sup_{\|\boldsymbol{w}\|_{\mathcal{H}} \le \Lambda}
+\left\langle
+\boldsymbol{w},
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\rangle
+\right]
+\\
+&=
+\frac{\Lambda}{m}
+\mathbb{E}_{\boldsymbol{\sigma}}
+\left[
+\left\|
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\|_{\mathcal{H}}
+\right]
+\\
+&\le
+\frac{\Lambda}{m}
+\left(
+\mathbb{E}
+\left[
+\left\|
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\|_{\mathcal{H}}^2
+\right]
+\right)^{1/2}
+\\
+&=
+\frac{\Lambda}{m}
+\left(
+\sum_{i=1}^{m}
+\|\Phi(x_i)\|_{\mathcal{H}}^2
+\right)^{1/2}
+\\
+&=
+\frac{\Lambda \sqrt{\mathrm{Tr}(\mathbf{K})}}{m}.
+\end{align*}
+\end{proof}

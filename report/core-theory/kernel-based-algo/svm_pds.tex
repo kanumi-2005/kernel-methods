@@ -1,0 +1,130 @@
+\subsubsection{SVM với các \tr{kernel} PDS}
+
+Như ta đã học, chúng ta đã thấy rằng bài toán tối ưu đối ngẫu của SVM,
+cũng như dạng nghiệm của nó, không phụ thuộc trực tiếp vào các
+\tr{vector} dữ liệu đầu vào mà chỉ phụ thuộc vào các phép tích trong
+giữa chúng. Do \tr{kernel} PDS có khả năng ngầm định nghĩa một không
+gian tích trong (theo Định lý~\ref{thm:rkhs}), ta có thể mở rộng SVM
+bằng cách kết hợp với bất kỳ \tr{kernel} PDS $K$ nào thông qua việc
+thay thế mỗi tích trong $x \cdot x'$ bằng hàm \tr{kernel} $K(x,x')$.
+
+Nhờ vậy, SVM có thể hoạt động trong các không gian đặc trưng có số
+chiều rất lớn, thậm chí vô hạn chiều, mà không cần biểu diễn tường
+minh các \tr{vector} đặc trưng. Điều này dẫn đến dạng tổng quát của
+bài toán tối ưu và nghiệm SVM với \tr{kernel} PDS như sau:
+\begin{equation}
+\max_{\boldsymbol{\alpha}}
+\quad
+\sum_{i=1}^{m}\alpha_i
+-
+\frac{1}{2}
+\sum_{i,j=1}^{m}
+\alpha_i\alpha_jy_iy_jK(x_i,x_j),
+\label{eq:svm-kernel}
+\end{equation}
+
+với các ràng buộc:
+\begin{equation}
+0 \le \alpha_i \le C,
+\quad
+\sum_{i=1}^{m}\alpha_i y_i = 0,
+\quad
+\forall i \in [m].
+\end{equation}
+
+trong đó:
+\begin{itemize}
+    \item $\alpha_i$ là các biến đối ngẫu;
+
+    \item $y_i \in \{-1,+1\}$ là nhãn lớp;
+
+    \item $C$ là tham số điều chuẩn;
+
+    \item $K(x_i,x_j)$ là \tr{kernel} PDS.
+\end{itemize}
+
+Sau khi giải bài toán tối ưu, hàm phân lớp thu được là:
+\begin{equation}
+h(x)
+=
+\sign\left(
+\sum_{i=1}^{m}\alpha_i y_i K(x_i,x)
++ b
+\right).
+\label{eq:kernel-hypothesis}
+\end{equation}
+
+Hệ số chệch $b$ được tính bởi
+\begin{equation}
+b
+=
+y_i
+-
+\sum_{j=1}^{m}\alpha_j y_j K(x_j,x_i),
+\end{equation}
+với mọi $x_i$ thỏa mãn $0 < \alpha_i < C$.
+
+Ta cũng có thể viết lại bài toán tối ưu
+\eqref{eq:svm-kernel}
+dưới dạng \tr{vector} bằng cách sử dụng ma trận
+\tr{kernel} $\mathbf{K}$ ứng với tập huấn luyện
+$(x_1,\dots,x_m)$:
+\begin{equation}
+\max_{\boldsymbol{\alpha}}
+\quad
+\mathbf{1}^{\top}\boldsymbol{\alpha}
+-
+\frac{1}{2}
+(\boldsymbol{\alpha}\circ\mathbf{y})^{\top}
+\mathbf{K}
+(\boldsymbol{\alpha}\circ\mathbf{y}),
+\end{equation}
+
+với các ràng buộc
+\begin{equation}
+\mathbf{0}
+\le
+\boldsymbol{\alpha}
+\le
+\mathbf{C},
+\quad
+\boldsymbol{\alpha}^{\top}\mathbf{y}
+= 0.
+\end{equation}
+
+Trong đó:
+\begin{itemize}
+    \item $\boldsymbol{\alpha}\in\mathbb{R}^{m\times1}$ là \tr{vector} các biến đối ngẫu;
+
+    \item $\mathbf{y}\in\mathbb{R}^{m\times1}$ là \tr{vector} nhãn lớp;
+
+    \item $\mathbf{K}\in\mathbb{R}^{m\times m}$ là ma trận \tr{kernel} với
+    $K_{ij}=K(x_i,x_j)$;
+
+    \item $\boldsymbol{\alpha}\circ\mathbf{y}$ là tích Hadamard (entry-wise product).
+\end{itemize}
+
+Do đó, $\boldsymbol{\alpha}\circ\mathbf{y}$ là \tr{vector} cột trong
+$\mathbb{R}^{m\times1}$, với phần tử thứ $i$ bằng $\alpha_i y_i$.
+
+Nghiệm dưới dạng \tr{vector} tương tự như trong
+\eqref{eq:kernel-hypothesis}, nhưng với
+\begin{equation}
+b
+=
+y_i
+-
+(\boldsymbol{\alpha}\circ\mathbf{y})^{\top}
+\mathbf{K}\mathbf{e}_i,
+\end{equation}
+với mọi $x_i$ thỏa mãn $0 < \alpha_i < C$.
+
+Phiên bản SVM sử dụng \tr{kernel} PDS này là dạng tổng quát của SVM
+sẽ được sử dụng trong các phần tiếp theo. Việc mở rộng này đặc biệt
+quan trọng vì nó cho phép ánh xạ phi tuyến một cách ngầm định các điểm
+dữ liệu đầu vào vào một không gian có số chiều cao hơn, nơi việc phân
+tách với biên lớn (large-margin separation) có thể được thực hiện hiệu quả.
+
+Nhiều thuật toán khác trong các lĩnh vực như regression, ranking,
+dimensionality reduction hay clustering cũng có thể được mở rộng bằng
+\tr{kernel} PDS theo cùng một cơ chế.
