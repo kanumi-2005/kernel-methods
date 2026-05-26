@@ -11,10 +11,9 @@ x \mapsto \langle h, K(x,\cdot) \rangle = \langle h, \Phi(x) \rangle,
 $ với $\|h\|_{\mathbb{H}} \le \Lambda$, 
 trong đó $\Phi$ là ánh xạ đặc trưng (feature map) tương ứng với \tr{kernel} $K$, tức là $ \Phi(x)$.
 Do đó, ta có thể biểu diễn hàm giả thuyết dưới dạng tuyến tính trong không gian đặc trưng:
-$x \mapsto \langle  \boldsymbol{w}, \Phi(x) \rangle$ với $\boldsymbol{w}\|_{\mathbb{H}} \le \Lambda$ .
+$x \mapsto \langle  \boldsymbol{w}, \Phi(x) \rangle$ với $\| \boldsymbol{w}\|_{\mathbb{H}} \le \Lambda$ .
 
 \begin{thm}[Độ phức tạp Rademacher của lớp hàm dựa trên \tr{kernel}]
-
 Cho $K:\mathcal{X}\times\mathcal{X}\to\mathbb{R}$ là \tr{kernel} PDS,
 $\Phi$ là ánh xạ đặc trưng tương ứng,
 Lấy tập mẫu $S \subseteq \{ x : K(x,x) \le r^2 \}$ có kích thước $m$, và xét
@@ -40,7 +39,7 @@ Khi đó:
 \widehat{\mathfrak{R}}_S(\mathcal{H}_\Lambda)
 &=
 \frac{1}{m}
-\mathbb{E}_{\boldsymbol{\sigma}}
+\expect_{\boldsymbol{\sigma}}
 \left[
 \sup_{\|\boldsymbol{w}\| \le \Lambda}
 \left\langle
@@ -51,7 +50,7 @@ Khi đó:
 \\
 &=
 \frac{\Lambda}{m}
-\mathbb{E}_{\boldsymbol{\sigma}}
+\expect_{\boldsymbol{\sigma}}
 \left[
 \left\|
 \sum_{i=1}^{m}\sigma_i \Phi(x_i)
@@ -62,7 +61,7 @@ Khi đó:
 &\le
 \frac{\Lambda}{m}
 \left[
-\mathbb{E}_{\boldsymbol{\sigma}}
+\expect_{\boldsymbol{\sigma}}
 \left[
 \left\|
 \sum_{i=1}^{m}\sigma_i \Phi(x_i)
@@ -74,18 +73,18 @@ Khi đó:
 &=
 \frac{\Lambda}{m}
 \left[
-\mathbb{E}_{\boldsymbol{\sigma}}
+\expect_{\boldsymbol{\sigma}}
 \left[
 \sum_{i=1}^{m}
 \|\Phi(x_i)\|_{\mathbb{H}}^2
 \right]
 \right]^{1/2}
-\quad (i \ne j \Rightarrow \mathbb{E}_{\sigma}[\sigma_i\sigma_j]=0)
+\quad (i \ne j \Rightarrow \expect_{\sigma}[\sigma_i\sigma_j]=0)
 \\
 &=
 \frac{\Lambda}{m}
 \left[
-\mathbb{E}_{\boldsymbol{\sigma}}
+\expect_{\boldsymbol{\sigma}}
 \left[
 \sum_{i=1}^{m}
  K(x_i,x_j)
@@ -93,7 +92,9 @@ Khi đó:
 \right]^{1/2}
 \\
 &=
-\frac{\Lambda \sqrt{\mathrm{Tr}[\mathbf{K}]}}{m} \le \sqrt{\frac{r^2 \Lambda^2}{m}}.
+\frac{\Lambda \sqrt{\mathrm{Tr}[\mathbf{K}]}}{m}
+\le
+\sqrt{\frac{r^2 \Lambda^2}{m}}.
 \end{align*}
 \end{proof}
 
@@ -105,10 +106,10 @@ Bất đẳng thức tiếp theo thu được từ bất đẳng thức Jensen
 áp dụng cho hàm lõm $\sqrt{\cdot}$.
 Đẳng thức sau đó là hệ quả của
 $
-\mathbb{E}_{\sigma}[\sigma_i \sigma_j]
+\expect_{\sigma}[\sigma_i \sigma_j]
 =
-\mathbb{E}_{\sigma}[\sigma_i]
-\mathbb{E}_{\sigma}[\sigma_j]
+\expect_{\sigma}[\sigma_i]
+\expect_{\sigma}[\sigma_j]
 =
 $
 với $\qquad i \ne j$
@@ -149,12 +150,12 @@ thì các bất đẳng thức ~\ref{eq:rademacher-bound} đúng với mọi m�
 \label{cor:margin-bound-kernel}
 
 Cho $K : \mathcal{X} \times \mathcal{X} \to \mathbb{R}$
-là một kernel xác định dương (\textit{PDS kernel}) thỏa mãn
+là một \tr{kernel} PDS thỏa mãn
 $r^2 = \sup_{x \in \mathcal{X}} K(x,x)$.
 Gọi $\Phi : \mathcal{X} \to \mathcal{H}$
 là ánh xạ đặc trưng tương ứng với $K$ và đặt
 $
-\mathcal{H}_\Lambda
+\expect_\Lambda
 =
 \left\{
 x \mapsto \mathbf{w}\cdot \Phi(x)
