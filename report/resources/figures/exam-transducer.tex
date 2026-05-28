@@ -1,0 +1,33 @@
+\begin{tikzpicture}[
+    >=Stealth,
+    node distance=2.2cm and 2.8cm,
+    % Đã giảm minimum size từ 0.9cm xuống 0.6cm
+    state/.style={circle, draw, thick, minimum size=0.8cm, font=\scriptsize},
+    % initial state nét đậm hơn
+    initial/.style={->, thick, line width=1.5pt},
+    accepting/.style={double, double distance=1pt},
+    every node/.style={font=\scriptsize},
+    bend angle=25
+]
+    % Định nghĩa các node
+    \node[state, initial] (q0) at (0,0) {0};
+    \node[state] (q1) at (2.2, 1.4) {1};
+    \node[state, accepting] (q2) at (2.2, -1.4) {2/8};
+    \node[state, accepting] (q3) at (4.8, 0) {3/2};
+
+    % Các cạnh
+    \path[->, thick]
+        % Cạnh từ 0
+        (q0) edge[bend left=15] node[above, sloped] {a:b/3} (q1)
+        (q0) edge[bend right=15] node[below, sloped] {b:b/2} (q2)
+        
+        % Cạnh từ 1
+        (q1) edge[loop above] node[above] {a:a/1} (q1)
+        (q1) edge[bend left=10] node[right] {a:a/2} (q2)
+        (q1) edge[bend left=10] node[above, sloped] {b:a/4} (q3)
+        
+        % Cạnh từ 2
+        (q2) edge[loop below] node[below] {b:b/2} (q2)
+        (q2) edge[bend right=10] node[below, sloped] {b:a/3} (q3);
+
+\end{tikzpicture}

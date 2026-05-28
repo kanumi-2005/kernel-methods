@@ -1,0 +1,61 @@
+\begin{tikzpicture}[
+    shorten >=1pt,
+    >=Stealth,
+    thick,
+    state/.style={
+        circle, 
+        draw, 
+        thick, 
+        minimum size=0.8cm, 
+        inner sep=0pt,       % Quan trọng: loại bỏ khoảng đệm mặc định
+        text width=0.8cm,    % Ép chiều rộng
+        align=center,        % Căn giữa nội dung
+        font=\small
+    },
+    final_state/.style={
+        circle,
+        draw,
+        minimum size=0.8cm,
+        font=\small,
+    },
+    bold_state/.style={
+        circle,
+        draw,
+        minimum size=0.8cm,
+        font=\small,
+        line width=1.8pt
+    },
+    red_state/.style={
+        circle,
+        draw=red,
+        text=red,
+        minimum size=0.8cm,
+        font=\small,
+        line width=1pt
+    },
+    initial/.style={line width=1.5pt},
+    every node/.style={font=\scriptsize}
+]
+    % Định nghĩa các trạng thái (Nodes)
+    \node[bold_state] (q00) at (0,0) {(0,0)};
+    \node[state] (q11) at (2.5,0) {(1,1)};
+    \node[state] (q21) at (2.5,1.8) {(2,1)};
+    \node[state] (q01) at (2.5,-1.8) {(0,1)};
+    \node[state] (q31) at (4.8,0.5) {(3,1)};
+    \node[final_state, accepting] (q33) at (7.2,0.5) {(3,3)};
+    \node[red_state] (q32) at (5.8,-1.2) {(3,2)};
+    
+    % Các đường chuyển trạng thái thông thường
+    \path[->]
+        (q00) edge node [above] {a:b/.01} (q11)
+        (q11) edge node [left] {b:a/.06} (q21)
+        (q21) edge node [above right=-2pt] {a:a/0.1} (q31)
+        (q11) edge node [below] {b:a/.08} (q31)
+        (q31) edge node [above] {a:b/.24} (q33)
+        (q11) edge [bend left=25] node [right] {a:a/.04} (q01)
+        (q01) edge [bend left=25] node [left] {a:a/.02} (q11);
+        
+    % Đường mũi tên màu đỏ dẫn tới trạng thái không đồng tiếp cận (3,2)
+    \path[->, red]
+        (q31) edge node [right, text=red] {a:b/.18} (q32);
+\end{tikzpicture}

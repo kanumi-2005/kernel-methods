@@ -1,8 +1,7 @@
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
 \usepackage{tikz}
-\usetikzlibrary{automata,positioning}
-
+\usetikzlibrary{arrows.meta,automata,positioning}
 % \usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{vietnamese}
@@ -65,7 +64,6 @@
 \AtBeginDocument{\renewcommand{\tblrcontheadname}{(Tiếp theo)}}
 \UseTblrLibrary{varwidth}
 \UseTblrLibrary{diagbox}
-
 \newcommand{\resourcespath}{resources}
 \newcommand{\figurespath}{\resourcespath/figures}
 \newcommand{\imagespath}{\figurespath}
@@ -73,6 +71,7 @@
 \newcommand{\tablespath}{\resourcespath/tables}
 
 \newcommand{\elaborate}{\textbf{[MỞ RỘNG]}}
+\newtheorem{definition}{Định nghĩa}
 
 % Terminology config
 
@@ -135,6 +134,7 @@
 \DeclareMathOperator{\real}{Re}
 \DeclareMathOperator{\expect}{\mathbb{E}}
 \DeclareMathOperator{\prob}{\mathbb{P}}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \tikzset{
   self loop/.style={
