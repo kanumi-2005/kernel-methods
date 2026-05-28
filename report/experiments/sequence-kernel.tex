@@ -1,8 +1,8 @@
-\subsection{Thực nghiệm kiểm chứng thuật toán Hợp các Bộ chuyển đổi và Bộ lọc Epsilon}
+\subsection{Thực nghiệm kiểm chứng thuật toán hợp các \protect\tr{transducer} và bộ lọc Epsilon}
 
 Trong mục này, ta tiến hành thực nghiệm nhằm kiểm chứng tính đúng đắn và hiệu quả
-của thuật toán Hợp các có trọng số (Weighted Finite-State Transducer - WFST) 
-kết hợp cơ chế cắt tỉa trạng thái chết và bộ lọc dịch chuyển rỗng.Thực nghiệm được đối chứng trực tiếp với các 
+của thuật toán hợp các \tr{transducer} hữu hạn trạng thái có trọng số
+kết hợp cơ chế cắt tỉa trạng thái chết và bộ lọc \tr{transition} rỗng. Thực nghiệm được đối chứng trực tiếp với các 
 mô hình chuẩn hóa lý thuyết.
 
 Các Hình~\ref{fig:exp-t1}, \ref{fig:exp-t2} và \ref{fig:exp-comp} lần lượt trình bày kết 
@@ -11,14 +11,14 @@ quả cấu trúc đồ thị thu được từ chương trình mô phỏng sử
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.75\textwidth]{transducer_T1}
-  \caption{Đồ thị cấu trúc Transducer $T_1$ sinh ra từ thực nghiệm}
+  \caption{Đồ thị cấu trúc \protect\tr{transducer} $T_1$ sinh ra từ thực nghiệm}
   \label{fig:exp-t1}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.75\textwidth]{transducer_T2}
-  \caption{Đồ thị cấu trúc Transducer $T_2$ sinh ra từ thực nghiệm}
+  \caption{Đồ thị cấu trúc \protect\tr{transducer} $T_2$ sinh ra từ thực nghiệm}
   \label{fig:exp-t2}
 \end{figure}
 
@@ -29,11 +29,9 @@ quả cấu trúc đồ thị thu được từ chương trình mô phỏng sử
   \label{fig:exp-comp}
 \end{figure}
 
-\texttt{Nhận xét và Phân tích kết quả thực nghiệm}
-
-Kết quả trực quan hóa cho thấy các transducer $T_1$ và $T_2$ được xây dựng chính xác theo mô hình lý thuyết. Các trạng thái bắt đầu, trạng thái kết thúc và các nhãn chuyển tiếp đầu vào/đầu ra đều được bảo toàn đầy đủ. Đồ thị hợp thành thu được sau phép composition phản ánh đúng cơ chế đồng bộ giữa nhãn đầu 
+Kết quả trực quan hóa cho thấy các \tr{transducer} $T_1$ và $T_2$ được xây dựng chính xác theo mô hình lý thuyết. Các trạng thái bắt đầu, trạng thái kết thúc và các nhãn \tr{transition} đầu vào/đầu ra đều được bảo toàn đầy đủ. Đồ thị hợp thu được sau phép hợp phản ánh đúng cơ chế đồng bộ giữa nhãn đầu 
 ra của $T_1$ và nhãn đầu vào của $T_2$.
 
-Bộ lọc $\epsilon$ hoạt động hiệu quả khi loại bỏ các đường đi rỗng dư thừa sinh ra trong quá trình hợp thành. Nhờ đó, đồ thị kết quả không xuất hiện các nhánh lặp hoặc các chuỗi chuyển tiếp $\epsilon$ không cần thiết. Đồng thời, thuật toán Trim cũng loại bỏ thành công các trạng thái chết và các trạng thái không thể dẫn tới trạng thái kết thúc.
+Bộ lọc $\epsilon$ hoạt động hiệu quả khi loại bỏ các đường đi rỗng dư thừa sinh ra trong quá trình hợp. Nhờ đó, đồ thị kết quả không xuất hiện các nhánh lặp hoặc các chuỗi \tr{transition} $\epsilon$ không cần thiết. Đồng thời, thuật toán Trim cũng loại bỏ thành công các trạng thái chết và các trạng thái không thể dẫn tới trạng thái kết thúc.
 
 Mặc dù bố cục hình học của đồ thị thực nghiệm khác với sơ đồ tuyến tính trong lý thuyết do sử dụng thuật toán \textit{spring layout}, cấu trúc topo, nhãn chuyển tiếp và trọng số vẫn được bảo toàn hoàn toàn. Điều này xác nhận rằng chương trình cài đặt đã hiện thực đúng thuật toán hợp thành WFST, bộ lọc $\epsilon$ và cơ chế cắt tỉa trạng thái theo lý thuyết.
