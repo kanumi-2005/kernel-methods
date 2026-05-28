@@ -1,0 +1,115 @@
+\subsubsection{Định lý biểu diễn}
+
+Lưu ý rằng, bỏ qua hệ số dịch chuyển $b$, nghiệm của SVM
+có thể được biểu diễn dưới dạng tổ hợp tuyến tính của các hàm
+$K(x_i,\cdot)$, trong đó $x_i$ là các điểm dữ liệu huấn luyện.
+Định lý sau đây, được gọi là \emph{định lý biểu diễn}
+(\emph{Representer Theorem}), cho thấy rằng đây là một tính chất
+tổng quát đúng cho nhiều lớp bài toán tối ưu,
+bao gồm cả SVM không có hệ số dịch chuyển.
+
+\begin{thm}[Định lý biểu diễn]
+\label{thm:representer}
+
+Cho
+$
+K\colon \mathcal{X}\times\mathcal{X}\to\mathbb{R}
+$
+là một hàm \protect\tr{kernel} đối xứng xác định dương (PDS),
+và $\mathbb{H}$ là không gian Hilbert nhân tái tạo
+(RKHS) tương ứng với $K$.
+Khi đó, với mọi hàm không giảm
+$
+G\colon \mathbb{R}\to\mathbb{R}
+$
+và mọi hàm mất mát
+$
+L\colon \mathbb{R}^{m}\to\mathbb{R}\cup\{+\infty\},
+$
+bài toán tối ưu
+\begin{equation}
+\arg\min_{h\in\mathbb{H}} F(h)
+=
+\arg\min_{h\in\mathbb{H}}
+\Bigl[
+G\bigl(\|h\|_{\mathbb{H}}\bigr)
++
+L\bigl(h(x_1),\dots,h(x_m)\bigr)
+\Bigr]
+\end{equation}
+luôn tồn tại một nghiệm có dạng
+\begin{equation}
+h^{*}
+=
+\sum_{i=1}^{m}
+\alpha_i K(x_i,\cdot).
+\end{equation}
+Nếu $G$ còn được giả sử là hàm tăng,
+thì mọi nghiệm của bài toán tối ưu
+đều có dạng trên.
+\end{thm}
+\begin{proof}
+Gọi
+\begin{equation}
+\mathbb{H}_1
+=
+\mathrm{span}\{K(x_i,\cdot)\colon i \in [m]\}.
+\end{equation}
+Khi đó mọi $h \in \mathbb{H}$ có phân rã trực giao
+\begin{equation}
+h = h_1 + h^\perp,
+\end{equation}
+với
+\begin{equation}
+\mathbb{H}
+=
+\mathbb{H}_1 \oplus \mathbb{H}_1^\perp.
+\end{equation}
+trong đó $\oplus$ là tổng trực tiếp.
+Vì $G$ là hàm không giảm nên
+\begin{equation}
+G(\|h_1\|_{\mathbb{H}})
+\le
+G\Biggl(
+\sqrt{
+\|h_1\|_{\mathbb{H}}^2
++
+\|h^\perp\|_{\mathbb{H}}^2
+}
+\Biggr)
+=
+G(\|h\|_{\mathbb{H}}).
+\end{equation}
+Theo tính chất tái sinh, với mọi $i \in [m]$,
+\begin{equation}
+h(x_i)
+=
+\langle h, K(x_i,\cdot)\rangle
+=
+\langle h_1, K(x_i,\cdot)\rangle
+=
+h_1(x_i).
+\end{equation}
+Do đó,
+\begin{equation}
+L(h(x_1),\ldots,h(x_m))
+=
+L(h_1(x_1),\ldots,h_1(x_m)),
+\end{equation}
+suy ra
+\begin{equation}
+F(h_1) \le F(h).
+\end{equation}
+Điều này chứng minh phần đầu của định lý.
+Nếu $G$ còn là hàm tăng nghiêm ngặt và
+\begin{equation}
+\|h^\perp\|_{\mathbb{H}} > 0,
+\end{equation}
+thì
+\begin{equation}
+F(h_1) < F(h),
+\end{equation}
+do đó mọi nghiệm tối ưu đều phải thuộc
+$\mathbb{H}_1$.
+
+\end{proof}

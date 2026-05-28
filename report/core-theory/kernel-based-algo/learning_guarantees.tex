@@ -1,0 +1,197 @@
+\subsubsection{Các đảm bảo về khả năng học}
+
+Trong phần này, chúng tôi trình bày các đảm bảo học tổng quát cho các lớp giả thuyết dựa trên \tr{kernel} xác định dương đối xứng (PDS).
+
+Định lý sau đưa ra một chặn tổng quát cho độ phức tạp Rademacher thực nghiệm của các giả thuyết dựa trên \tr{kernel} với chuẩn bị chặn, tức là tập giả thuyết có dạng
+$\mathcal{H} = \{ h \in \mathbb{H} : \|h\|_{\mathbb{H}} \le \Lambda \}$ với một số $\Lambda \ge 0$ nào đó,
+trong đó $\mathbb{H}$ là một RKHS tương ứng với \tr{kernel} $K$.
+Theo tính chất tái tạo (reproducing property), mọi $h \in \mathcal{H}$ có thể viết dưới dạng
+$
+x \mapsto \langle h, K(x,\cdot) \rangle = \langle h, \Phi(x) \rangle,
+$ với $\|h\|_{\mathbb{H}} \le \Lambda$, 
+trong đó $\Phi$ là ánh xạ đặc trưng (feature map) tương ứng với \tr{kernel} $K$, tức là $ \Phi(x)$.
+Do đó, ta có thể biểu diễn hàm giả thuyết dưới dạng tuyến tính trong không gian đặc trưng:
+$x \mapsto \langle  \boldsymbol{w}, \Phi(x) \rangle$ với $\| \boldsymbol{w}\|_{\mathbb{H}} \le \Lambda$ .
+
+\begin{thm}[Độ phức tạp Rademacher của lớp hàm dựa trên \tr{kernel}]
+Cho $K:\mathcal{X}\times\mathcal{X}\to\mathbb{R}$ là \tr{kernel} PDS,
+$\Phi$ là ánh xạ đặc trưng tương ứng,
+Lấy tập mẫu $S \subseteq \{ x : K(x,x) \le r^2 \}$ có kích thước $m$, và xét
+$
+\mathcal{H} = \{ x \mapsto \langle \boldsymbol{w}, \Phi(x) \rangle : \|\boldsymbol{w}\|_{\mathbb{H}} \le \Lambda \}
+$
+với $\Lambda \ge 0$.
+
+Khi đó:
+\begin{equation}
+\label{eq:rademacher-bound}
+\widehat{\mathfrak{R}}_S(\mathcal{H}_\Lambda)
+\le
+\frac{\Lambda \sqrt{\mathrm{Tr}[\mathbf{K}]}}{m}
+\le
+\sqrt{\frac{r^2 \Lambda^2}{m}}.
+\end{equation}
+\label{thm:rademacher-kernel}
+\end{thm}
+
+\begin{proof}
+\begin{align*}
+\widehat{\mathfrak{R}}_S(\mathcal{H}_\Lambda)
+&=
+\frac{1}{m}
+\expect_{\boldsymbol{\sigma}}
+\left[
+\sup_{\|\boldsymbol{w}\| \le \Lambda}
+\left\langle
+\boldsymbol{w},
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\rangle
+\right]
+\\
+&=
+\frac{\Lambda}{m}
+\expect_{\boldsymbol{\sigma}}
+\left[
+\left\|
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\|_{\mathbb{H}}
+\right]
+\quad \text{(Cauchy--Schwarz, Trường hợp đặc biệt)}
+\\ 
+&\le
+\frac{\Lambda}{m}
+\left[
+\expect_{\boldsymbol{\sigma}}
+\left[
+\left\|
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\|_{\mathbb{H}}^2
+\right]
+\right]^{1/2}
+\quad \text{(Bất đẳng thức Jensen.)}
+\\
+&=
+\frac{\Lambda}{m}
+\left[
+\expect_{\boldsymbol{\sigma}}
+\left[
+\sum_{i=1}^{m}
+\|\Phi(x_i)\|_{\mathbb{H}}^2
+\right]
+\right]^{1/2}
+\quad (i \ne j \Rightarrow \expect_{\sigma}[\sigma_i\sigma_j]=0)
+\\
+&=
+\frac{\Lambda}{m}
+\left[
+\expect_{\boldsymbol{\sigma}}
+\left[
+\sum_{i=1}^{m}
+ K(x_i,x_j)
+\right]
+\right]^{1/2}
+\\
+&=
+\frac{\Lambda \sqrt{\mathrm{Tr}[\mathbf{K}]}}{m}
+\le
+\sqrt{\frac{r^2 \Lambda^2}{m}}.
+\end{align*}
+\end{proof}
+
+Đẳng thức đầu tiên đúng theo định nghĩa của độ phức tạp Rademacher thực nghiệm
+(định nghĩa 3.1). Bất đẳng thức đầu tiên là hệ quả của bất đẳng thức
+Cauchy--Schwarz cùng với điều kiện
+$\|\mathbf{w}\|_{\mathbb{H}} \le \Lambda$.
+Bất đẳng thức tiếp theo thu được từ bất đẳng thức Jensen
+áp dụng cho hàm lõm $\sqrt{\cdot}$.
+Đẳng thức sau đó là hệ quả của
+$
+\expect_{\sigma}[\sigma_i \sigma_j]
+=
+\expect_{\sigma}[\sigma_i]
+\expect_{\sigma}[\sigma_j]
+=
+$
+với $\qquad i \ne j$
+do các biến Rademacher $\sigma_i$ và $\sigma_j$ độc lập với nhau.
+Kết luận của định lý suy ra bằng cách nhận thấy rằng
+$
+\mathrm{Tr}[\mathbf{K}] \le mr^2.
+$
+
+Định lý cho thấy rằng vết (\textit{trace}) của ma trận \tr{Kernel} là một đại lượng
+quan trọng trong việc kiểm soát độ phức tạp của các lớp giả thuyết dựa trên
+\tr{Kernel}. Lưu ý rằng theo bất đẳng thức Khintchine--Kahane (D.24),
+độ phức tạp Rademacher thực nghiệm
+$
+\widehat{\mathfrak{R}}_S(\mathcal{H})
+=
+\frac{\Lambda}{m}
+\mathbb{E}_{\sigma}
+\left[
+\left\|
+\sum_{i=1}^{m}\sigma_i \Phi(x_i)
+\right\|_{\mathbb{H}}
+\right]
+$
+cũng có thể được chặn dưới bởi
+$
+\frac{1}{\sqrt{2}}
+\frac{\Lambda \sqrt{\mathrm{Tr}[\mathbf{K}]}}{m},
+$
+chỉ khác với chặn trên ở hằng số $\frac{1}{\sqrt{2}}$.
+Ngoài ra, nếu
+$
+K(x,x) \le r^2, \forall x \in X,
+$
+thì các bất đẳng thức ~\ref{eq:rademacher-bound} đúng với mọi mẫu $S$.
+
+\begin{cor}[Chặn biên cho các giả thuyết dựa trên kernel]
+\label{cor:margin-bound-kernel}
+
+Cho $K : \mathcal{X} \times \mathcal{X} \to \mathbb{R}$
+là một \tr{kernel} PDS thỏa mãn
+$r^2 = \sup_{x \in \mathcal{X}} K(x,x)$.
+Gọi $\Phi : \mathcal{X} \to \mathcal{H}$
+là ánh xạ đặc trưng tương ứng với $K$ và đặt
+$
+\expect_\Lambda
+=
+\left\{
+x \mapsto \mathbf{w}\cdot \Phi(x)
+:\;
+\|\mathbf{w}\|_{\mathbb{H}} \le \Lambda
+\right\}
+$,
+với một hằng số $\Lambda \ge 0$. Cố định $\rho > 0$
+Khi đó, với mọi $\delta > 0$, mỗi mệnh đề sau đây đúng với xác suất ít nhất
+$1-\delta$ đối với mọi $h \in \mathcal{H}_\Lambda$:
+\begin{equation}
+R(h)
+\le
+\widehat{R}_{S,\rho}(h)
++
+2\sqrt{
+\frac{r^2\Lambda^2}{\rho^2 m}
+}
++
+\sqrt{
+\frac{\log \frac{1}{\delta}}{2m}
+}.
+\end{equation}
+
+\begin{equation}
+R(h)
+\le
+\widehat{R}_{S,\rho}(h)
++
+2\frac{
+\sqrt{\mathrm{Tr}[\mathbf{K}]\,\Lambda^2/\rho^2}
+}{m}
++
+3\sqrt{
+\frac{\log \frac{2}{\delta}}{2m}
+}.
+\end{equation}
+
+\end{cor}
