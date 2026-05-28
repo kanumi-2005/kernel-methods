@@ -24,9 +24,7 @@ bài toán tối ưu và nghiệm SVM với \protect\tr{kernel} PDS như sau:
 \sum_{i,j=1}^{m}
 \alpha_i\alpha_j y_i y_j K(x_i,x_j),
 \end{equation}
-
 với các ràng buộc:
-
 \begin{equation}
 0 \le \alpha_i \le C
 \wedge
@@ -34,7 +32,6 @@ với các ràng buộc:
 \qquad
 \forall i \in [m].
 \end{equation}
-
 trong đó:
 \begin{itemize}
     \item $\alpha_i$ là các biến đối ngẫu;
@@ -42,9 +39,7 @@ trong đó:
     \item $C$ là tham số điều chuẩn;
     \item $K(x_i,x_j)$ là \protect\tr{kernel} PDS.
 \end{itemize}
-
 Sau khi giải bài toán tối ưu, hàm phân lớp thu được là:
-
 \begin{equation}
 \label{eq:kernel-hypothesis}
 h(x)
@@ -54,21 +49,16 @@ h(x)
 + b
 \biggr).
 \end{equation}
-
 Hệ số chệch $b$ được tính bởi
-
 \begin{equation}
 b = y_i - \sum_{j=1}^{m}\alpha_j y_j K(x_j,x_i),
 \end{equation}
-
 với mọi $x_i$ thỏa mãn $0 < \alpha_i < C$.
-
 Ta cũng có thể viết lại bài toán tối ưu
 \eqref{eq:svm-kernel}
 dưới dạng \tr{vector} bằng cách sử dụng ma trận
 \protect\tr{kernel} $\mathbf{K}$ ứng với tập huấn luyện
 $(x_1,\dots,x_m)$:
-
 \begin{equation}
 \max_{\boldsymbol{\alpha}}
 \;
@@ -79,9 +69,7 @@ $(x_1,\dots,x_m)$:
 \mathbf{K}
 (\boldsymbol{\alpha}\circ\mathbf{y}),
 \end{equation}
-
 với các ràng buộc
-
 \begin{equation}
 \mathbf{0}
 \le
@@ -92,7 +80,6 @@ với các ràng buộc
 \boldsymbol{\alpha}^{\intercal}\mathbf{y}
 = 0.
 \end{equation}
-
 Trong đó:
 \begin{itemize}
     \item $\boldsymbol{\alpha}\in\mathbb{R}^{m\times1}$ là \tr{vector} các biến đối ngẫu;
@@ -104,7 +91,6 @@ Trong đó:
 
 Do đó, $\boldsymbol{\alpha}\circ\mathbf{y}$ là \tr{vector} cột trong
 $\mathbb{R}^{m\times1}$, với phần tử thứ $i$ bằng $\alpha_i y_i$.
-
 Nghiệm dưới dạng \tr{vector} tương tự như trong
 \eqref{eq:kernel-hypothesis}, nhưng với
 
@@ -112,7 +98,6 @@ Nghiệm dưới dạng \tr{vector} tương tự như trong
 b = y_i - (\boldsymbol{\alpha}\circ\mathbf{y})^{\intercal}
 \mathbf{K}\mathbf{e}_i,
 \end{equation}
-
 với mọi $x_i$ thỏa mãn $0 < \alpha_i < C$.
 
 Phiên bản SVM sử dụng \protect\tr{kernel} PDS này là dạng tổng quát
