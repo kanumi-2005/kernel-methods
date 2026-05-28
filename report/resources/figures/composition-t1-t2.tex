@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+    >=stealth,
+    node distance=2cm and 2.2cm,
+    red/.style={
+        draw=red,
+        text=red
+    }
+]
+\node[initial,state] (q00) {(0,0)};
+\node[state, right=of q00] (q11) {(1,1)};
+\node[state, above right=of q11] (q21) {(2,1)};
+\node[state, below right=of q11] (q01) {(0,1)};
+\node[state, right=of q11] (q31) {(3,1)};
+\node[state, accepting, right=of q31] (q33) {(3,3)};
+\node[state, red, below right=of q31] (q32) {(3,2)};
+
+\path[->]
+(q00) edge node [above] {a:b/.01} (q11)
+(q11) edge node [left] {b:a/.06} (q21)
+(q21) edge node [right] {a:a/0.1} (q31)
+(q11) edge node [above] {b:a/.08} (q31)
+(q31) edge node [above] {a:b/.24} (q33)
+(q11) edge[bend left=25] node[right] {a:a/.04} (q01)
+(q01) edge[bend left=25] node[left] {a:a/.02} (q11);
+
+\path[->, red]
+(q31) edge node[right] {a:b/.18} (q32);
+
+\end{tikzpicture}

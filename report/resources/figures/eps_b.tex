@@ -1,0 +1,59 @@
+\begin{tikzpicture}[
+]
+    % --- LỚP 1: TRANSDUCER T2 ---
+    \begin{scope}[yshift=0cm]
+        \node[state,initial] (s0) at (0,0) {0}; 
+        \node[state] (s1) at (2.0,0) {1}; 
+        \node[state] (s2) at (4.0,0) {2}; 
+        \node[accepting,state] (s3) at (6.0,0) {3};
+        
+        \path[->] 
+            (s0) edge node[above] {a:d} (s1) 
+            (s1) edge node[above] {${\epsilon}$:e} (s2) 
+            (s2) edge node[above] {d:a} (s3);
+            
+        \node[font=\small] at (3.0, -0.65) {$T_2$};
+    \end{scope}
+
+    % --- LỚP 2: TRANSDUCER T2 NGÃ ---
+    \begin{scope}[yshift=-3.3cm]
+        \node[initial, state] (t0) at (0,0) {0}; 
+        \node[state] (t1) at (2.0,0) {1}; 
+        \node[state] (t2) at (4.0,0) {2}; 
+        \node[accepting,state] (t4) at (6.0,0) {3};
+        
+        \path[->] 
+            (t0) edge node[above] {a:d} (t1) 
+            (t1) edge[green!60!black] node[above, text=black] {${\epsilon}1$:e} (t2) 
+            (t2) edge node[above] {d:a} (t4);
+            
+        \foreach \n in {t0,t1,t2,t4} 
+            \path[->, red!60!black] (\n) edge[self loop] node[above, text=black] {${\epsilon}2:{\epsilon}$} (\n);
+            
+        \node[font=\small] at (3.0, -0.7) {$\tilde{T}_2$};
+    \end{scope}
+
+    \begin{scope}[yshift=-10.0cm]
+        \node[initial, accepting, state] (f0) at (0, -1.0) {0}; 
+        \node[accepting,state] (f1) at (3.6, 0.5) {1}; 
+        \node[accepting,state] (f2) at (3.6, -2.5) {2};
+        
+        % CẠNH TRÊN (0 đếm 1): Dùng sloped để nhãn nằm dọc theo đường cong
+        \path[->, green!60!black] (f0) edge[bend left=25] node[above, sloped] {${\epsilon}1$:${\epsilon}1$} (f1); 
+        \path[->] (f1) edge[bend left=25] node[above, sloped] {x:x} (f0); 
+        
+        % CẠNH DƯỚI (0 đến 2): Dùng sloped để nhãn nằm dọc theo đường cong
+        \path[->, red!60!black] (f0) edge[bend right=25] node[below, sloped] {${\epsilon}2$:${\epsilon}2$} (f2); 
+        \path[->] (f2) edge[bend right=25] node[below, sloped] {x:x} (f0); 
+        
+        % LOOPS TẠI NÚT 0: Đẩy nhãn ra xa bằng khoảng cách cụ thể
+        \path[->, brown!80!black] (f0) edge[loop, out=120, in=170, looseness=4.5] node[left=6pt, text=black] {${\epsilon}2$:${\epsilon}1$} (f0); 
+        \path[->] (f0) edge[loop, out=190, in=240, looseness=4.5] node[left=6pt] {x:x} (f0); 
+        
+        % Loops độc lập tại node 1 và node 2
+        \path[->, green!60!black] (f1) edge[loop above, looseness=3.5] node[above] {${\epsilon}1$:${\epsilon}1$} (f1); 
+        \path[->, red!60!black] (f2) edge[loop below, looseness=3.5] node[below] {${\epsilon}2$:${\epsilon}2$} (f2);
+        
+        \node[font=\small] at (1.8, -3.9) {(b)};
+    \end{scope}
+\end{tikzpicture}

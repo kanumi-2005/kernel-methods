@@ -1,0 +1,27 @@
+\begin{tikzpicture}[
+]
+    % Định nghĩa các trạng thái
+    \node[state, initial] (q0) {0};
+
+    \node[state, below right=1cm and 2.5cm of q0] (q1) {1};
+
+    \node[state, above right=1cm and 2.5cm of q0] (q2) {2};
+
+    \node[state, accepting, right=5cm of q0] (q3) {3/0.6};
+        % Các đường chuyển trạng thái
+    \path[->]
+        % (0) -> (1)
+        (q0) edge node[above, sloped] {b:b/0.1} (q1)
+        
+        % (1) -> (2)
+        (q1) edge node[left] {a:b/0.3} (q2)
+        
+        % (2) -> (3)
+        (q2) edge node[above, sloped] {b:a/0.5} (q3)
+        
+        % (1) -> (3) - Uốn cong xuống dưới để tránh nhãn khác
+        (q1) edge node[above] {a:b/0.4} (q3)
+        
+        % (1) -> (1) - Vòng lặp hướng sang phải/dưới
+        (q1) edge[loop right, min distance=1cm] node[right=1pt] {b:a/0.2} (q1);
+\end{tikzpicture}

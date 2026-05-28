@@ -1,0 +1,23 @@
+\begin{tikzpicture}[
+]   
+    \node[state, initial] (q0) {0};
+    \node[state, below right=1cm and 2.5cm of q0] (q1) {1};
+    \node[state, above right=1cm and 2.5cm of q0] (q2) {2};
+    \node[state, accepting, right=5cm of q0] (q3) {3/0.7};
+        
+    % Các đường chuyển trạng thái
+    \path[->]
+        % Cặp q0 <-> q1 với độ cong tự nhiên
+        (q0) edge[bend left=20] node[above, sloped] {a:b/0.1} (q1)
+        (q1) edge[bend left=20] node[below, sloped] {a:b/0.2} (q0)
+        
+        % q1 -> q2 (thẳng đứng)
+        (q1) edge node[right] {b:b/0.3} (q2)
+        
+        % q1 -> q3 và q2 -> q3
+        (q1) edge node[below, sloped] {b:b/0.4} (q3)
+        (q2) edge node[above, sloped] {a:b/0.5} (q3)
+        
+        % Vòng lặp tại q3
+        (q3) edge[self loop] node[above] {a:a/0.6} (q3);
+\end{tikzpicture}
