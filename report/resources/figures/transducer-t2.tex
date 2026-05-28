@@ -1,19 +1,15 @@
 \begin{tikzpicture}[
-    >=Stealth,
-    shorten >=1pt,
-    state/.style={circle, draw, thick, minimum size=0.8cm, font=\small},
-    bold_state/.style={circle, draw, line width=1.5pt, minimum size=0.8cm, font=\small},
-    accepting_state/.style={circle, draw, double, double distance=1.5pt, thick, minimum size=0.8cm, font=\small},
-    every node/.style={font=\scriptsize}
 ]
     % Định nghĩa các trạng thái
-    \node[bold_state] (q0) at (0,0) {0};
-    \node[state] (q1) at (2.5,-1) {1};
-    \node[state] (q2) at (2.5,1) {2};
-    \node[accepting_state] (q3) at (5,0) {3/0.6};
+    \node[state, initial] (q0) {0};
 
-    % Các đường chuyển trạng thái
-    \path[->, thick]
+    \node[state, below right=1cm and 2.5cm of q0] (q1) {1};
+
+    \node[state, above right=1cm and 2.5cm of q0] (q2) {2};
+
+    \node[state, accepting, right=5cm of q0] (q3) {3/0.6};
+        % Các đường chuyển trạng thái
+    \path[->]
         % (0) -> (1)
         (q0) edge node[above, sloped] {b:b/0.1} (q1)
         

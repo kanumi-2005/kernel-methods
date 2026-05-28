@@ -1,21 +1,12 @@
 \begin{tikzpicture}[
-    >=Stealth,
-    shorten >=1pt,
-    % Thiết lập style để nút nhỏ gọn và nét vẽ đẹp
-    state/.style={circle, draw, thick, minimum size=0.8cm, font=\small},
-    % Nút 0 là nút khởi tạo, tô đậm viền
-    initial/.style={line width=1.5pt},
-    every node/.style={font=\scriptsize},
-    bend angle=25
-]
-    % Định nghĩa tọa độ các trạng thái cho giống hình mẫu
-    \node[state, initial] (q0) at (0,0) {0};
-    \node[state] (q1) at (2.5, -0.6) {1};
-    \node[state] (q2) at (2.5, 1.2) {2};
-    \node[state, accepting] (q3) at (5, 0) {3/0.7};
-    
+]   
+    \node[state, initial] (q0) {0};
+    \node[state, below right=1cm and 2.5cm of q0] (q1) {1};
+    \node[state, above right=1cm and 2.5cm of q0] (q2) {2};
+    \node[state, accepting, right=5cm of q0] (q3) {3/0.7};
+        
     % Các đường chuyển trạng thái
-    \path[->, thick]
+    \path[->]
         % Cặp q0 <-> q1 với độ cong tự nhiên
         (q0) edge[bend left=20] node[above, sloped] {a:b/0.1} (q1)
         (q1) edge[bend left=20] node[below, sloped] {a:b/0.2} (q0)
@@ -28,5 +19,5 @@
         (q2) edge node[above, sloped] {a:b/0.5} (q3)
         
         % Vòng lặp tại q3
-        (q3) edge[loop right, looseness=5] node[right=2pt] {a:a/0.6} (q3);
+        (q3) edge[self loop] node[above] {a:a/0.6} (q3);
 \end{tikzpicture}

@@ -1,9 +1,9 @@
-\subsubsection{Bộ chuyển trạng thái trọng số (Weighted Transducers)}
+\subsubsection{\protect\tr{Transducer} trọng số}
 
-Chuỗi kernel có thể được biểu diễn và tính toán hiệu quả thông qua các bộ chuyển trạng thái có trọng số (weighted transducers). Trong định nghĩa sau, ký hiệu $\Sigma$ là một bảng chữ cái đầu vào hữu hạn, $\Delta$ là bảng chữ cái đầu ra hữu hạn, và ký hiệu $\epsilon$ là chuỗi rỗng (hoặc nhãn rỗng), có tính chất khi nối với bất kỳ chuỗi nào thì không làm thay đổi chuỗi đó.
+\tr{Kernel} chuỗi có thể được biểu diễn và tính toán hiệu quả thông qua các \tr{transducer} có trọng số (weighted transducers). Trong định nghĩa sau, ký hiệu $\Sigma$ là một bảng chữ cái đầu vào hữu hạn, $\Delta$ là bảng chữ cái đầu ra hữu hạn, và ký hiệu $\epsilon$ là chuỗi rỗng (hoặc nhãn rỗng), có tính chất khi nối với bất kỳ chuỗi nào thì không làm thay đổi chuỗi đó.
 
-\begin{defn}[Bộ chuyển trạng thái có trọng số]
-Một bộ chuyển trạng thái có trọng số $T$ được định nghĩa là một bộ 7
+\begin{defn}[\tr{Transducer} có trọng số]
+Một \tr{transducer} có trọng số $T$ được định nghĩa là một bộ 7
 \[
 T=(\Sigma,\Delta,Q,I,F,E,\rho),
 \]
@@ -11,7 +11,7 @@ trong đó $\Sigma$ là bảng chữ cái đầu vào hữu hạn, $\Delta$ là 
 \[
 E \subseteq Q \times (\Sigma \cup \{\epsilon\}) \times (\Delta \cup \{\epsilon\}) \times \mathbb{R} \times Q
 \]
-là tập hữu hạn các chuyển tiếp có trọng số, và $\rho : F \to \mathbb{R}$ là hàm trọng số kết thúc ánh xạ mỗi trạng thái kết thúc sang một số thực. Kích thước của bộ chuyển trạng thái $T$ được định nghĩa là tổng số trạng thái và số chuyển tiếp:
+là tập hữu hạn các chuyển tiếp có trọng số, và $\rho : F \to \mathbb{R}$ là hàm trọng số kết thúc ánh xạ mỗi trạng thái kết thúc sang một số thực. Kích thước của \tr{transducer} $T$ được định nghĩa là tổng số trạng thái và số chuyển tiếp:
 \[
 |T| = |Q| + |E|.
 \]
@@ -20,44 +20,41 @@ là tập hữu hạn các chuyển tiếp có trọng số, và $\rho : F \to \
 \begin{figure}[htbp]
     \centering
     \import{\figurespath}{exam-transducer}
-    \caption{Ví dụ về bộ chuyển trạng thái có trọng số}
+    \caption{Ví dụ về \tr{transducer} trọng số}
     \label{fig:wfst-example}
 \end{figure}
 
-Các bộ chuyển trạng thái có trọng số là một dạng mở rộng của tự động hữu hạn (finite automata), trong đó mỗi chuyển tiếp được gán đồng thời một nhãn đầu vào, một nhãn đầu ra và một trọng số thực. Hình~\ref{fig:wfst-example} minh họa một ví dụ về bộ chuyển trạng thái hữu hạn có trọng số (weighted finite-state transducer), trong đó nhãn đầu vào và đầu ra được phân tách bằng dấu ``:'', còn trọng số được đặt sau dấu ``/''.
+Các \tr{Transducer} có trọng số là một dạng mở rộng của \tr{automaton} hữu hạn (finite automata), trong đó mỗi \tr{transition} được gán đồng thời một nhãn đầu vào, một nhãn đầu ra và một trọng số thực. Hình~\ref{fig:wfst-example} minh họa một ví dụ về \tr{transducer} hữu hạn trạng thái có trọng số (weighted finite-state transducer), trong đó nhãn đầu vào và đầu ra được phân tách bằng dấu ``:'', còn trọng số được đặt sau dấu ``/''.
 Các trạng thái khởi đầu được biểu diễn bằng vòng tròn in đậm, còn các trạng thái kết thúc được biểu diễn bằng vòng tròn kép. Trọng số kết thúc $\rho[q]$ tại trạng thái kết thúc $q$ được hiển thị sau dấu gạch chéo “/”.
+Nhãn đầu vào của một đường đi $\pi$ là một chuỗi thuộc $\Sigma^{*}$, được tạo thành bằng cách nối các nhãn đầu vào dọc theo $\pi$. Tương tự, nhãn đầu ra của một đường đi $\pi$ được tạo thành bằng cách nối các nhãn đầu ra dọc theo $\pi$. Một đường đi từ trạng thái khởi đầu đến trạng thái kết thúc được gọi là một đường đi chấp nhận (\emph{accepting path}). Trọng số của một đường đi chấp nhận được xác định bằng cách nhân các trọng số của các \tr{transition} cấu thành đường đi đó với trọng số của trạng thái kết thúc của đường đi.
 
-Nhãn đầu vào của một đường đi $\pi$ là một chuỗi thuộc $\Sigma^{*}$, được tạo thành bằng cách nối các nhãn đầu vào dọc theo $\pi$. Tương tự, nhãn đầu ra của một đường đi $\pi$ được tạo thành bằng cách nối các nhãn đầu ra dọc theo $\pi$. Một đường đi từ trạng thái khởi đầu đến trạng thái kết thúc được gọi là một đường đi chấp nhận (\textit{accepting path}). Trọng số của một đường đi chấp nhận được xác định bằng cách nhân các trọng số của các chuyển tiếp cấu thành đường đi đó với trọng số của trạng thái kết thúc của đường đi.
+Một \tr{transducer} có trọng số xác định một ánh xạ từ $\Sigma^{*} \times \Delta^{*}$ sang $\mathbb{R}$. Trọng số mà một \tr{transducer} có trọng số $T$ gán cho một cặp chuỗi $(x,y)\in \Sigma^{*}\times\Delta^{*}$ được ký hiệu là $T(x,y)$ và được tính bằng tổng trọng số của tất cả các đường đi chấp nhận có nhãn đầu vào là $x$ và nhãn đầu ra là $y$.
+Ví dụ, \tr{transducer} trong Hình~\ref{fig:wfst-example} gán cho cặp chuỗi $(aab, baa)$ trọng số $3 \times 1 \times 4 \times 2 + 3 \times 2 \times 3 \times 2$, vì tồn tại một đường đi có nhãn đầu vào $aab$, nhãn đầu ra $baa$ và trọng số $3 \times 1 \times 4 \times 2$, đồng thời tồn tại một đường đi khác với trọng số $3 \times 2 \times 3 \times 2$.
 
-Một bộ chuyển trạng thái có trọng số xác định một ánh xạ từ $\Sigma^{*} \times \Delta^{*}$ sang $\mathbb{R}$. Trọng số mà một transducer có trọng số $T$ gán cho một cặp chuỗi $(x,y)\in \Sigma^{*}\times\Delta^{*}$ được ký hiệu là $T(x,y)$ và được tính bằng tổng trọng số của tất cả các đường đi chấp nhận có nhãn đầu vào là $x$ và nhãn đầu ra là $y$.
+Tổng trọng số của tất cả các đường đi chấp nhận trong một \tr{transducer} không chu trình (acyclic transducer), tức là một \tr{transducer} $T$ không chứa chu trình, có thể được tính trong thời gian tuyến tính $O(|T|)$ bằng cách sử dụng các thuật toán khoảng cách ngắn nhất tổng quát (general shortest-distance) hoặc thuật toán forward-backward. Đây là các thuật toán tương đối đơn giản, tuy nhiên việc trình bày chi tiết sẽ vượt quá phạm vi chính của chương này.
 
-Ví dụ, transducer trong Hình~\ref{fig:wfst-example} gán cho cặp chuỗi $(aab, baa)$ trọng số $3 \times 1 \times 4 \times 2 + 3 \times 2 \times 3 \times 2$, vì tồn tại một đường đi có nhãn đầu vào $aab$, nhãn đầu ra $baa$ và trọng số $3 \times 1 \times 4 \times 2$, đồng thời tồn tại một đường đi khác với trọng số $3 \times 2 \times 3 \times 2$.
-
-Tổng trọng số của tất cả các đường đi chấp nhận trong một transducer không chu trình (acyclic transducer), tức là một transducer $T$ không chứa chu trình, có thể được tính trong thời gian tuyến tính $O(|T|)$ bằng cách sử dụng các thuật toán khoảng cách ngắn nhất tổng quát (general shortest-distance) hoặc thuật toán forward-backward. Đây là các thuật toán tương đối đơn giản, tuy nhiên việc trình bày chi tiết sẽ vượt quá phạm vi chính của chương này.
-
-\textbf{Phép hợp thành (\textit{Composition}).} Một phép toán quan trọng đối với bộ chuyển đổi có trọng số (\textit{weighted transducer}) là phép hợp thành (\textit{composition}), có thể được sử dụng để kết hợp hai hoặc nhiều bộ chuyển đổi có trọng số nhằm tạo thành các bộ chuyển đổi có trọng số phức tạp hơn. Như sẽ trình bày sau, phép toán này hữu ích trong việc xây dựng và tính toán các \textit{sequence kernel}. Định nghĩa của phép hợp thành dựa trên định nghĩa của phép hợp thành quan hệ. Cho hai bộ chuyển đổi có trọng số $T_1=(\Sigma,\Delta,Q_1,I_1,F_1,E_1,\rho_1)$ và $T_2=(\Delta,\Omega,Q_2,I_2,F_2,E_2,\rho_2)$, kết quả của phép hợp thành giữa $T_1$ và $T_2$ là một bộ chuyển đổi có trọng số mới, ký hiệu là $T_1 \circ T_2$, và được định nghĩa,
+\paragraph{Phép hợp} Một phép toán quan trọng đối với \tr{transducer} có trọng số là phép hợp  (\emph{composition}), có thể được sử dụng để kết hợp hai hoặc nhiều \tr{transducer} có trọng số nhằm tạo thành các \tr{transducer} có trọng số phức tạp hơn. Như sẽ trình bày sau, phép toán này hữu ích trong việc xây dựng và tính toán các chuỗi \tr{kernel}. Định nghĩa của phép hợp dựa trên định nghĩa của phép hợp của những quan hệ. 
+Cho hai \tr{transducer} có trọng số $T_1=(\Sigma,\Delta,Q_1,I_1,F_1,E_1,\rho_1)$ và $T_2=(\Delta,\Omega,Q_2,I_2,F_2,E_2,\rho_2)$, kết quả của phép hợp giữa $T_1$ và $T_2$ là một \tr{transducer} có trọng số mới, ký hiệu là $T_1 \circ T_2$, và được định nghĩa,
 với mọi $x \in \Sigma^{*}$ và $y \in \Omega^{*}$, bởi
-
 \begin{equation}
 (T_1 \circ T_2)(x,y)
 =
 \sum_{z \in \Delta^{*}}
-T_1(x,z)\cdot T_2(z,y)
+T_1(x,z)\cdot T_2(z,y),
 \end{equation}
-
 trong đó tổng được lấy trên tất cả các chuỗi $z$ thuộc bảng chữ cái $\Delta$.
-Do đó, phép hợp thành có thể được xem như tương tự phép nhân ma trận,
+Do đó, phép hợp có thể được xem như tương tự phép nhân ma trận,
 nhưng trên các ma trận vô hạn.
 
-Tồn tại một thuật toán tổng quát và hiệu quả để tính phép hợp thành của hai
-bộ chuyển đổi có trọng số. Trong trường hợp không có ký hiệu
+Tồn tại một thuật toán tổng quát và hiệu quả để tính phép hợp của hai
+\tr{transducer} có trọng số. Trong trường hợp không có ký hiệu
 $\epsilon$ ở phía đầu vào của $T_1$ hoặc phía đầu ra của $T_2$,
-các trạng thái của bộ chuyển đổi hợp thành
+các trạng thái của \tr{transducer} hợp 
 $T_1 \circ T_2=(\Sigma,\Omega,Q,I,F,E,\rho)$
 có thể được biểu diễn bằng các cặp trạng thái của $T_1$ và $T_2$, tức là
 $Q \subseteq Q_1 \times Q_2$.
 Các trạng thái khởi đầu được xác định bằng cách ghép các trạng thái khởi đầu
-của hai bộ chuyển đổi:
+của hai \tr{transducer}:
 $I = I_1 \times I_2$.
 Tương tự, tập trạng thái kết thúc được xác định bởi
 $F = Q \cap (F_1 \times F_2)$.
@@ -66,10 +63,9 @@ Trọng số kết thúc tại trạng thái $(q_1,q_2)\in F_1 \times F_2$
 $\rho(q)=\rho_1(q_1)\rho_2(q_2)$,
 nghĩa là tích của các trọng số kết thúc tương ứng tại $q_1$ và $q_2$.
 
-Các chuyển tiếp của bộ chuyển đổi hợp thành được xây dựng bằng cách ghép
-một chuyển tiếp của $T_1$ với một chuyển tiếp của $T_2$
-có cùng nhãn trung gian. Cụ thể, tập chuyển tiếp được xác định như sau:
-
+Các \tr{transition} của \tr{transducer} hợp được xây dựng bằng cách ghép
+một \tr{transition} của $T_1$ với một \tr{transition} của $T_2$
+có cùng nhãn trung gian. Cụ thể, tập \tr{transition} được xác định như sau:
 \begin{equation}
 E=
 \biguplus_
@@ -77,15 +73,15 @@ E=
 (q_1,a,b,w_1,q_2)\in E_1 \\
 (q'_1,b,c,w_2,q'_2)\in E_2
 }}
-\left\{
-\left(
+\Bigl\{
+\bigl(
 (q_1,q'_1),
 a,
 c,
 w_1 \otimes w_2,
 (q_2,q'_2)
-\right)
-\right\}
+\bigr)
+\Bigr\}
 \end{equation}
 
 \begin{figure}[htbp]
@@ -114,11 +110,11 @@ w_1 \otimes w_2,
     \label{fig:composition-t1-t2}
   \end{subfigure}
 
-  \caption[\protect\tr{Hợp thành} các \protect\tr{transducer} có trọng số]{
-    \subref*{fig:transducer-t1}~\tr{Bộ chuyển đổi} có trọng số $T_1$. 
-    \subref*{fig:transducer-t2}~\tr{Bộ chuyển đổi} có trọng số $T_2$. 
-    \subref*{fig:composition-t1-t2}~Kết quả của phép hợp thành $T_1$ và $T_2$, $T_1 \circ T_2$. 
-    Một số trạng thái có thể được tạo ra trong quá trình thực hiện thuật toán nhưng không đồng tiếp cận (\tr{co-accessible}), nghĩa là chúng không dẫn đến trạng thái kết thúc, ví dụ: $(3,2)$. 
+  \caption[Hợp các \protect\tr{transducer} có trọng số]{
+    \subref*{fig:transducer-t1}~\tr{Transducer} có trọng số $T_1$. 
+    \subref*{fig:transducer-t2}~\tr{Transducer} có trọng số $T_2$. 
+    \subref*{fig:composition-t1-t2}~Kết quả của phép hợp $T_1$ và $T_2$, $T_1 \circ T_2$. 
+    Một số trạng thái có thể được tạo ra trong quá trình thực hiện thuật toán nhưng không đồng tiếp cận (co-accessible), nghĩa là chúng không dẫn đến trạng thái kết thúc, ví dụ: $(3,2)$. 
     Các trạng thái và các \tr{transition} liên quan (màu đỏ) có thể được loại bỏ bằng thuật toán tinh gọn trimming trong thời gian tuyến tính.
   }
   \label{fig:full-composition-trimming}
@@ -129,21 +125,21 @@ Trong đó, ký hiệu $\uplus$ biểu diễn phép hợp đa tập
 Ví dụ:
 $\{1,2\} \uplus \{1,3\} = \{1,1,2,3\}$.
 Phép toán này bảo toàn số lần xuất hiện
-của các chuyển tiếp.
+của các \tr{transition}.
 
 Trong trường hợp xấu nhất,
-mọi chuyển tiếp của $T_1$
+mọi \tr{transition} của $T_1$
 rời khỏi trạng thái $q_1$
-đều khớp với mọi chuyển tiếp của $T_2$
+đều khớp với mọi \tr{transition} của $T_2$
 rời khỏi trạng thái $q'_1$.
 Do đó,
 độ phức tạp thời gian và không gian
-của phép hợp thành là
+của phép hợp là
 $O(|T_1||T_2|)$.
 Tuy nhiên,
 trên thực tế,
 những trường hợp như vậy hiếm khi xảy ra
-và phép hợp thành thường hoạt động hiệu quả.
+và phép hợp thường hoạt động hiệu quả.
 Hình~\ref{fig:full-composition-trimming}
 minh họa thuật toán
 trong một trường hợp cụ thể.
@@ -156,11 +152,11 @@ các đường đi $\epsilon$ dư thừa,
 dẫn đến kết quả không chính xác.
 Khi đó,
 trọng số của các đường đi khớp
-trong các bộ chuyển đổi ban đầu
+trong các \tr{transducer} ban đầu
 sẽ bị đếm lặp $p$ lần,
 với $p$
 là số lượng đường đi dư thừa
-được tạo ra trong phép hợp thành.
+được tạo ra trong phép hợp.
 Để khắc phục vấn đề này,
 cần loại bỏ tất cả các đường đi $\epsilon$
 dư thừa ngoại trừ một đường duy nhất. Trong Hình ~\ref{fig:epsilon-filter-composition}
@@ -168,26 +164,25 @@ dư thừa ngoại trừ một đường duy nhất. Trong Hình ~\ref{fig:epsil
 đồng thời cũng là đường ngắn nhất
 trong trường hợp này. Đáng chú ý,
 cơ chế lọc đó có thể được biểu diễn
-bởi một bộ chuyển đổi trạng thái hữu hạn $F$
-(\textit{finite-state transducer}) (Hình~\ref{fig:epsilon-filter-composition}b).
+bởi một \tr{transducer} hữu hạn trạng thái $F$ (Hình~\ref{fig:epsilon-filter-composition}b).
 
 
 \begin{figure}[htbp]
   \centering
-  \begin{subfigure}{0.49\textwidth}
+  \begin{subfigure}[T]{0.49\textwidth}
     \centering
     \import{\figurespath}{eps_a}
     \label{fig:eps_a}
   \end{subfigure}
   \hfill
-  \begin{subfigure}{0.49\textwidth}
+  \begin{subfigure}[T]{0.49\textwidth}
     \centering
     \import{\figurespath}{eps_b}
     \label{fig:eps_b}
   \end{subfigure}
   \caption[Đường đi $\epsilon$ dư thừa và Bộ lọc $F$]{
-    Các đường đi $\epsilon$ dư thừa trong phép hợp thành. Tất cả các trọng số chuyển tiếp và kết thúc đều bằng 1. 
-    (a) Việc mở rộng trực tiếp cho trường hợp không có $\epsilon$ sẽ tạo ra mọi con đường từ $(1,1)$ đến $(3,2)$ khi hợp thành $T_1$ và $T_2$, dẫn đến kết quả sai trong các nửa vành không có tính lũy đẳng. 
+    Các đường đi $\epsilon$ dư thừa trong phép hợp. Tất cả các trọng số \tr{transition} và kết thúc đều bằng 1. 
+    (a) Việc mở rộng trực tiếp cho trường hợp không có $\epsilon$ sẽ tạo ra mọi con đường từ $(1,1)$ đến $(3,2)$ khi hợp $T_1$ và $T_2$, dẫn đến kết quả sai trong các nửa vành không có tính lũy đẳng. 
     (b) Bộ lọc chuyển trạng thái $F$. Ký hiệu $x$ đại diện cho một phần tử bất kỳ thuộc tập mẫu $\Sigma$.
   }
   \label{fig:epsilon-filter-composition}
@@ -200,7 +195,7 @@ nhằm biểu diễn tường minh
 ngữ nghĩa của $\epsilon$.
 Ký hiệu $\tilde{T}_1$
 (tương ứng $\tilde{T}_2$)
-là bộ chuyển đổi có trọng số
+là \tr{transducer} có trọng số
 thu được từ $T_1$
 (tương ứng $T_2$)
 bằng cách thay các nhãn đầu ra
@@ -213,10 +208,10 @@ Khi đó,
 việc khớp với ký hiệu $\epsilon_1$
 tương ứng với việc giữ nguyên
 trạng thái hiện tại của $T_1$
-và thực hiện một chuyển tiếp của $T_2$
+và thực hiện một \tr{transition} của $T_2$
 có đầu vào $\epsilon$.
 Ký hiệu $\epsilon_2$
-được mô tả theo cách đối xứng tương tự. Bộ chuyển đổi lọc $F$
+được mô tả theo cách đối xứng tương tự. \tr{Transducer} lọc $F$
 không cho phép một phép khớp
 $(\epsilon_2, \epsilon_2)$
 xuất hiện ngay sau
@@ -242,11 +237,11 @@ Theo cách tương tự,
 $(\epsilon_2, \epsilon_2)(\epsilon_2, \epsilon_1)$
 cũng bị loại bỏ.
 Không khó để kiểm chứng rằng
-bộ chuyển đổi lọc $F$
-chính là một tự động hữu hạn
+\tr{transducer} lọc $F$
+chính là một \tr{automaton} hữu hạn
 trên các cặp ký hiệu,
 chấp nhận phần bù của ngôn ngữ
-\[
+\begin{equation}
 L = \sigma^*
 \big(
 (\epsilon_1,\epsilon_1)(\epsilon_2,\epsilon_2)
@@ -259,7 +254,7 @@ L = \sigma^*
 \big)
 \sigma^*
 ,
-\]
+\end{equation}
 trong đó
 $
 \sigma =
@@ -270,16 +265,15 @@ $
 x
 \}.
 $
-
 Do đó,
 bộ lọc $F$
 đảm bảo rằng
 chính xác một đường đi $\epsilon$
 được cho phép
-trong phép hợp thành
+trong phép hợp
 của mỗi chuỗi $\epsilon$.
-Để thu được kết quả hợp thành chính xác,
-chỉ cần sử dụng thuật toán hợp thành không-$\epsilon$
+Để thu được kết quả hợp chính xác,
+chỉ cần sử dụng thuật toán hợp không-$\epsilon$ ($\epsilon$-free )
 đã được mô tả trước đó
 và tính
 $
@@ -299,48 +293,44 @@ trong số các đường đi $\epsilon$
 tương đương,
 chỉ duy nhất một đường đi
 được giữ lại
-trong kết quả hợp thành.
+trong kết quả hợp.
 
-Sau khi mở rộng các bộ chuyển đổi
+Sau khi mở rộng các \tr{transducer}
 và áp dụng bộ lọc,
-phép hợp thành giữa hai bộ chuyển đổi
+phép hợp giữa hai \tr{transducer}
 có trọng số được xác định bởi
 \begin{equation}
 T_1 \circ T_2
 =
-\tilde{T}_1 \circ F \circ \tilde{T}_2
+\tilde{T}_1 \circ F \circ \tilde{T}_2,
 \end{equation}
-
 trong đó:
 \begin{itemize}
     \item $\tilde{T}_1$ thu được từ $T_1$
     bằng cách thay mọi nhãn đầu ra $\epsilon$
     thành $\epsilon_2$;
-
     \item $\tilde{T}_2$ thu được từ $T_2$
     bằng cách thay mọi nhãn đầu vào $\epsilon$
     thành $\epsilon_1$;
-
     \item $F$ là bộ lọc hữu hạn
     dùng để loại bỏ các đường đi $\epsilon$
     dư thừa.
 \end{itemize}
 
 Cơ chế này cho phép xử lý chính xác
-các chuyển tiếp $\epsilon$
-trong phép hợp thành
+các \tr{transition} $\epsilon$
+trong phép hợp
 mà không làm thay đổi tổng trọng số
 của các đường đi hợp lệ.
-
 Đây là một kỹ thuật quan trọng
 trong các hệ thống
-\textit{weighted finite-state transducer} (WFST),
+\tr{transducer} hữu hạn trạng thái có trọng số,
 đặc biệt trong xử lý ngôn ngữ tự nhiên
 và nhận dạng tiếng nói.
 
 
-Thật vậy, hai phép hợp thành trong 
+Thật vậy, hai phép hợp trong 
 $\tilde{T}_1 \circ F \circ \tilde{T}_2$
-không còn liên quan đến các ký hiệu $\epsilon$. Vì kích thước của bộ chuyển đổi lọc (\textit{filter transducer}) $F$ là hằng số, nên độ phức tạp của phép hợp thành tổng quát giống với trường hợp không có $\epsilon$, tức là $O(|T_1||T_2|)$.
-
-Trong thực tế, các bộ chuyển đổi mở rộng $\tilde{T}_1$ và $\tilde{T}_2$ không được xây dựng tường minh; thay vào đó, sự hiện diện của các ký hiệu phụ trợ được mô phỏng. Các tối ưu hóa bổ sung của bộ lọc còn giúp hạn chế số lượng trạng thái không đồng tiếp cận được (\textit{non-coaccessible states}) được tạo ra, ví dụ bằng cách xem xét cẩn thận hơn trường hợp các trạng thái chỉ có các chuyển tiếp ra không-$\epsilon$ hoặc chỉ có các chuyển tiếp ra $\epsilon$.
+không còn liên quan đến các ký hiệu $\epsilon$. Vì kích thước của \tr{transducer} lọc $F$ là hằng số, nên độ phức tạp của phép hợp tổng quát giống với trường hợp không có $\epsilon$, tức là $O(|T_1||T_2|)$.
+Trong thực tế, các \tr{transducer} mở rộng $\tilde{T}_1$ và $\tilde{T}_2$ không được xây dựng tường minh; thay vào đó, sự hiện diện của các ký hiệu phụ trợ được mô phỏng.
+Các tối ưu hóa bổ sung của bộ lọc còn giúp hạn chế số lượng trạng thái không đồng tiếp cận được (\textit{non-coaccessible states}) được tạo ra, ví dụ bằng cách xem xét cẩn thận hơn trường hợp các trạng thái chỉ có các \tr{transition} ra không-$\epsilon$ hoặc chỉ có các \tr{transition} ra $\epsilon$.
