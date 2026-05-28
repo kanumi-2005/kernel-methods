@@ -1,0 +1,191 @@
+\section{Kiến thức chuẩn bị}
+
+\subsection{Giải tích}
+
+Ngoại trừ định nghĩa về không gian Hilbert, các định nghĩa sau được tham khảo
+từ \cite[chương~2, 3 và~7]{Rudin1976principles}.
+
+\begin{defn}[Không gian \tr{metric}]
+  Một tập $X$, với các phần tử gọi là điểm, được gọi là không gian \tr{metric}
+  (metric space) nếu với hai điểm $p$ và $q$ bất kì của $X$, tồn tại một số
+  thực $d(p, q)$ tương ứng, được gọi là khoảng cách từ $p$ đến $q$, sao cho
+  \begin{itemize}
+    \item $d(p, q) > 0$ nếu $p \ne q$; $d(p, p) = 0$;
+    \item $d(p, q) = d(q, p)$;
+    \item $d(p, q) \le d(p, r) + d(r, q)$ với mọi $r \in X$.
+  \end{itemize} Mọi hàm thỏa cả ba tính chất trên được gọi là hàm khoảng cách
+  (distance function) hay là \tr{metric} (metric).
+\end{defn}
+
+\begin{defn}
+  Cho không gian \tr{metric} $X$, tất cả các điểm và tập sau đây đều xem là
+  điểm hoặc tập con của $X$. \begin{itemize}
+    \item Một lân cận (neighborhood) của $p$ là một tập $N_r(p)$ gồm tất cả các
+      điểm $q$ sao cho $d(p, q) < r$ với $r > 0$ nào đó. $N_r(p)$ còn được gọi
+      là quả cầu (ball) mở có tâm là $p$ và bán kính $r$.
+    \item Một điểm $p$ được gọi là điểm giới hạn (limit point) của tập $E$ nếu
+      mọi lân cận của $p$ đều chứa ít nhất một điểm $q \ne p$ thuộc $E$.
+    \item Điểm $p$ được gọi là điểm cô lập nếu nó không phải điểm giới hạn.
+    \item Tập $E$ được gọi là đóng (closed) nếu mọi điểm giới hạn của $E$ đều
+      thuộc $E$.
+    \item Một điểm $p$ được gọi điểm trong (interior point) của $E$ nếu tồn tại
+      một lân cận của $p$ là tập con của $E$.
+    \item Tập $E$ được gọi là mở (open) nếu mọi điểm của $E$ đều là điểm trong
+      của $E$.
+    \item Tập $E$ được gọi là hoàn hảo (perfect) nếu $E$ đóng và mọi điểm của
+      $E$ đều là điểm giới hạn của $E$.
+    \item Tập $E$ được gọi là bị chặn (bounded) nếu tồn tại số thực $M$ và điểm
+      $q$ sao cho $d(p, q) < M$ với mọi $p \in E$.
+    \item Tập $E$ được gọi là trù mật (dense) trong $X$ nếu mọi điểm của $X$
+      đều là điểm giới hạn của $E$ hay thuộc $E$.
+  \end{itemize}
+\end{defn}
+
+\begin{defn}[Phủ mở]
+  Một phủ mở (open cover) của một tập $E$ trong không gian \tr{metric} $X$ là
+  một họ $\{G_\alpha\}$ các tập con mở của $X$ sao cho $E \subseteq \cup_\alpha
+  G_\alpha$.
+\end{defn}
+
+\begin{defn}[Tập \tr{compact}]
+  Tập con $K$ của không gian \tr{metric} $X$ được gọi là \tr{compact} (compact)
+  nếu mọi phủ mở của $K$ đều tồn tại một phủ mở con hữu hạn trong đó. Rõ ràng
+  hơn, nếu ${G_\alpha}$ là một phủ mở của $K$ thì tồn tại các chỉ số hữu hạn
+  $\alpha_1$, $\alpha_2$, $\ldots\,$, $\alpha_n$ sao cho $\{G_{\alpha_i} \colon
+  i \in [n]\}$ là một phủ mở của $K$.
+\end{defn}
+
+\begin{defn}[Không gian \tr{compact} địa phương]
+  Không gian \tr{metric} $X$ được gọi là \tr{compact} địa phương (locally
+  compact) nếu mọi điểm $p \in X$ đều có một lân cận \tr{compact}, tức là tồn
+  tại một tập mở $U$ và một tập \tr{compact} $K$ sao cho $ x\in U \subseteq K$.
+\end{defn}
+
+\begin{defn}[Dãy hội tụ]
+  Một dãy $(p_n)$ trong không gian \tr{metric} $X$ được gọi là hội tụ
+  (converge) nếu tồn tại một điểm $p \in X$ thỏa tính chất sau: Với mọi
+  $\varepsilon > 0$, tồn tại số nguyên $N$ sao cho $n \ge N$ kéo theo $d(p,
+  p_n) \le \varepsilon$. (Ở đây $d$ kí hiệu khoảng cách trong $X$.) Và ta kí
+  hiệu \begin{equation}
+    \lim_{n\to\infty} p_n = p.
+  \end{equation}
+\end{defn}
+
+\begin{defn}[Dãy Cauchy]
+  Một dãy $(p_n)$ trong không gian \tr{metric} $X$ được gọi là dãy Cauchy
+  (Cauchy sequence) nếu với mọi $\varepsilon > 0$, tồn tại số nguyên $N$ sao
+  cho $d(p_n, p_m) < \varepsilon$ nếu $n \ge N$ và $m \ge N$.
+\end{defn}
+
+\begin{defn}[Không gian \tr{metric} đầy đủ]
+  Không gian \tr{metric} được gọi là đầy đủ (complete) nếu mọi dãy Cauchy trong
+  đó đều hội tụ.
+\end{defn}
+
+\begin{defn}[Hội tụ điểm]
+  Giả sử $(f_n)_{n = 1}^\infty$ là dãy các hàm được định nghĩa trên tập $E$, và
+  giả sử mọi dãy $\bigl( f_n(x) \bigr )$ đều hội tụ với mọi $x \in E$. Khi đó,
+  ta có thể định nghĩa hàm $f$ bởi \begin{equation}
+    f(x) = \lim_{n\to \infty} f_n(x) \quad (x \in E).
+  \end{equation} Khi này $f$ được gọi hội tụ điểm  (pointwise limit) của dãy
+  hàm $(f_n)_{n = 1}^\infty$ trên $E$.
+\end{defn}
+
+\begin{defn}[Hội tụ đều]
+  Ta nói dãy các hàm $(f_n)_{n = 1}^\infty$ hội tụ đều (converge uniformly)
+  trên $E$ đến một hàm $f$ nếu với mọi $\varepsilon > 0$, tồn tại số nguyên $N$
+  sao cho $n \ge N$ kéo theo $\bigl \lvert f_n(x) - f(x) \bigr \rvert \le
+  \varepsilon$ với mọi $x \in E$.
+\end{defn}
+
+\begin{defn}[Tiên đề về tích trong]
+  Giả sử $V$ là một không gian \tr{vector} trên trường số vô hướng $\mathbb{F}$
+  (trường thực hoặc phức). Ánh xạ $\langle \cdot, \cdot \rangle \colon V \times
+  V \to \mathbb{F}$ được gọi là tích trong trên $V$ nếu nó thỏa mãn ba tiên đề
+  sau với mọi $x, y , z \in V$ và mọi $\alpha, \beta \mathbb{F}$:
+  \begin{itemize}
+    \item Đối xứng liên hợp (conjugate symmetry): $\langle x, y \rangle
+      = \overline{\langle y, x \rangle}$.
+    \item Tuyến tính theo biến thứ nhất (linearity in the first argument):
+      $\langle \alpha x + \beta y, z \rangle = \alpha\langle x, z \rangle +
+      \beta \langle y, z \rangle$.
+    \item Xác định dương (positive-definiteness): $\langle x, x \rangle \ge 0$
+      và $\langle x, x \rangle  = 0$ khi và chỉ khi $x = 0$.
+  \end{itemize}
+\end{defn}
+
+\begin{defn}[Không gian Hilbert]
+  Không gian Hilbert (Hilbert space) là một không gian \tr{vector} được gắn với
+  một tích trong $\langle \cdot, \cdot \rangle$ và đầy đủ với khoảng cách được
+  sinh ra từ chuẩn được định nghĩa như sau: \begin{equation}
+    \forall x \in \mathbb{H}, \quad \lVert x \rVert_\mathbb{H} = \sqrt{\langle
+    x, x \rangle }.
+  \end{equation}
+\end{defn}
+
+\subsection{Ngôn ngữ hình thức}
+
+Các định nghĩa sau được tham khảo từ \cite[chương~1]{Phuong2018}.
+
+\begin{defn}[Bảng chữ cái]
+  Bảng chữ cái là tập hữu hạn khác rỗng các kí tự (hay kí hiệu) thường được
+  biểu diễn bởi chữ cái Hy Lạp $\Sigma$.
+\end{defn}
+
+\begin{defn}[Chuỗi]
+  Một chuỗi là dãy hữu hạn các kí tự thuộc bảng chữ cái $\Sigma$. Đặc biệt,
+  chuỗi rỗng, kí hiệu là $\epsilon$, có thể hình từ mọi bảng chữ cái $\Sigma$
+  bất kì.
+\end{defn}
+
+\begin{defn}[Ngôn ngữ]
+  Cho bảng chữ cái $\Sigma$, ngôn ngữ lạ tập hợp $\mathcal{L}$ của các chuỗi
+  được hình thành từ $\Sigma$. Trong ngữ cảnh này, một chuỗi của $\mathcal{L}$
+  được gọi là câu.
+\end{defn}
+
+\begin{defn}[Văn phạm]
+  Văn phạm $\mathcal{G}$ là bộ bốn thành phần \begin{equation}
+    \mathcal{G} = (V, T, P, S),
+  \end{equation} trong đó \begin{itemize}
+    \item $V$ là tập hữu hạn các kí hiệu không kết thúc;
+    \item $T$ là tâp hữu hạn các kí hiệu kết thúc;
+    \item $P$ là tập hữu hạn các luật sinh của văn phạm;
+    \item $S \in V$ là kí hiệu bắt đầu của văn phạm.
+  \end{itemize}
+\end{defn}
+
+\begin{defn}[Ngôn ngữ của văn phạm]
+  Cho văn phạm $\mathcal{G}$, ngôn ngữ $\mathcal{L}(\mathcal{G})$ của văn phạm
+  là tập tất cả các câu mà một văn phạm có thể sinh ra được.
+\end{defn}
+
+\begin{defn}[\tr{Automaton}]
+  Một \tr{automaton} gồm (không nhất thiết đầy đủ ngoại trừ bộ điều khiển) các
+  thành phần:\begin{itemize}
+    \item Tệp nhập: Dãy tuyến tính vô hạn các ô nhớ chứa thông tin cần xử lí.
+      Mỗi đơn vị thông tin được hình thức hóa dưới dạng một kí hiệu thuộc bảng
+      chữ cái, lưu trữ trên một ô nhớ.
+    \item Tệp xuất: Dãy tuyến tính vô hạn các ô nhớ chứa thông tin sau xử lí.
+    \item Tệp nhớ: Dãy tuyến tính vô hạn các ô nhớ lưu trữ thông tin trong quá
+      trình vận hành. Một đơn vị thông tin được hình thức hóa dưới dạng một kí
+      hiệu (không nhất thiết thuộc bảng chữ cái), lưu trữ trên một ô nhớ.
+    \item Bộ điều khiển: Tập hữu hạn các trạng thái điều khiển.
+  \end{itemize} Các trạng thái điều khiển bao gồm: \begin{itemize}
+    \item Trạng thái kết thúc (hay chấp nhận): có ít nhất một trạng thái kiểu
+      này;
+    \item Trạng thái không kết thúc: các trạng thái còn lại;
+    \item Trạng thái bắt đầu: là trạng thái đặc biệt đại diện cho nơi máy ảo
+      ``đứng'' trước khi vận hạnh, có thể thuộc một trong hai loại trên.
+  \end{itemize} Các trạng thái được kết nối với nhau qua hàm truyền. Tham số
+  đầu vào của hàm là những thông tin khả dụng đối với \tr{automaton} tại thời
+  điểm đang xét, thường là trạng thái hiện hành, kí tự đang được đọc trên tệp
+  nhập và có thể cả kí hiệu đang được đọc trên tệp nhớ. Đầu ra của hàm truyền
+  chính là trạng thái kế tiếp mà \tr{automaton} sẽ chuyển đến, đồng thời, nội
+  dung của ô nhớ hiện tại trên các tệp có thể được duy trì hoặc thay đổi.
+\end{defn}
+
+\begin{defn}[Ngôn ngữ của \tr{automaton}]
+  Ngôn ngữ của \tr{automaton} là tập tất cả các chuỗi nhập mà nó chấp nhận, tức
+  là sau khi xử lý, kết quả ở trạng thái chấp nhận.
+\end{defn}
