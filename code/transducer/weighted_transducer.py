@@ -210,26 +210,34 @@ def compose_transducers(T1, T2):
             
     return T
 
-# Thiết lập T1 từ Hình 6.6
-T1 = WeightedTransducer()
-for s in range(5): T1.add_state(s, start=(s==0), final=(s==4))
-T1.add_transition(0, 1, "a", "a", 1.0)
-T1.add_transition(1, 2, "b", EPS, 1.0) # b:ε
-T1.add_transition(2, 3, "c", EPS, 1.0) # c:ε
-T1.add_transition(3, 4, "d", "d", 1.0)
+if __name__ == "__main__":
 
-# Thiết lập T2 từ Hình 6.6
-T2 = WeightedTransducer()
-for s in range(4): T2.add_state(s, start=(s==0), final=(s==3))
-T2.add_transition(0, 1, "a", "d", 1.0)
-T2.add_transition(1, 2, EPS, "e", 1.0) # ε:e
-T2.add_transition(2, 3, "d", "a", 1.0)
+    # Thiết lập T1 từ Hình 6.6
+    T1 = WeightedTransducer()
+    for s in range(5):
+        T1.add_state(s, start=(s == 0), final=(s == 4))
 
-# Tiến hành hợp
-T1.draw("T1")                      # Vẽ Weighted Transducer T1
-T2.draw("T2")                      # Vẽ Weighted Transducer T2
-T_composed_66 = compose_transducers(T1, T2)
+    T1.add_transition(0, 1, "a", "a", 1.0)
+    T1.add_transition(1, 2, "b", EPS, 1.0)  # b:ε
+    T1.add_transition(2, 3, "c", EPS, 1.0)  # c:ε
+    T1.add_transition(3, 4, "d", "d", 1.0)
 
-print("--- KẾT QUẢ HÌNH 6.6 ---")
-print(f"Số lượng liên kết sinh ra (Đã qua bộ lọc): {len(T_composed_66.transitions)}")
-T_composed_66.draw("Composition Kết Quả Hình 6.6 (Đã lọc ε)")
+    # Thiết lập T2 từ Hình 6.6
+    T2 = WeightedTransducer()
+    for s in range(4):
+        T2.add_state(s, start=(s == 0), final=(s == 3))
+
+    T2.add_transition(0, 1, "a", "d", 1.0)
+    T2.add_transition(1, 2, EPS, "e", 1.0)  # ε:e
+    T2.add_transition(2, 3, "d", "a", 1.0)
+
+    # Tiến hành hợp
+    T1.draw("T1")
+    T2.draw("T2")
+
+    T_composed_66 = compose_transducers(T1, T2)
+
+    print("--- KẾT QUẢ HÌNH 6.6 ---")
+    print(f"Số lượng liên kết sinh ra (Đã qua bộ lọc): {len(T_composed_66.transitions)}")
+
+    T_composed_66.draw("Composition Kết Quả Hình 6.6 (Đã lọc ε)")
